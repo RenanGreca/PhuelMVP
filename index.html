@@ -184,8 +184,8 @@
         }
         
         function updateMaxSolar(value) {
-            seriesSolar = arrSolar.map(val => (val * value)*-1)
-            seriesSolarExcess = seriesSolar.map((val, idx) => val + seriesTotal[idx])
+            seriesSolar = arrSolar.map(val => (val * value))
+            seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
                         
             switchScenario(currentScenario)
         }
