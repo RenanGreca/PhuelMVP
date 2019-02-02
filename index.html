@@ -8,6 +8,9 @@
     <title>Phuel MVP</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <style type="text/css">
+        body {
+            padding: 10px;
+        }
         .chart {
             width: 60%;
             height: 400px;
@@ -16,6 +19,17 @@
         .legend {
             width: 30%;
             float: right;
+        }
+
+        @media only screen and (max-width:600px) {
+            .chart {
+                width: 100%;
+                float: none;
+            }
+            .legend {
+                width: 100%;
+                float: none;
+            }
         }
         
         .legend-label {
