@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+    <title>My first Chartist Tests</title>
+    <link rel="stylesheet"
+    href="css/chartist.css">
+    <style type="text/css">
+        .chart {
+            width: 60%;
+            height: 400px;
+            float: left;
+        }
+        .legend {
+            width: 30%;
+            float: right;
+        }
+        
+        .legend-label {
+            width: 50px;
+            height: 20px;
+            display: inline-block;
+        }
+        
+        .legend-a {
+            background-color: #d70206;
+        }
+        .legend-b {
+            background-color: #f05b4f;
+        }
+        .legend-c {
+            background-color: #f4c63d;
+        }
+        .legend-d {
+            background-color: #d17905;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Site content goes here !-->
+    <script src="js/chartist.js"></script>
+    
+    
+    <div class="chart">
+        <!-- <div class="ct-chart ct-square"></div> -->
+        
+        <canvas id="myChart"></canvas>
+    </div>
+    
+    <div class="legend">
+        <!-- <b>Legenda:</b><br/>
+        <span class="legend-label legend-a"></span> Capacidade do transformador<br/>
+        <span class="legend-label legend-b"></span> Consumo UC1<br/>
+        <span class="legend-label legend-c"></span> Consumo UC2<br/>
+        <span class="legend-label legend-d"></span> Consumo total<br/> -->
+        
+        <b>Inputs:</b><br />
+        Capacidade do transformador: <input type="text" id="capacidade" onkeyup="updateCapacity(this.value);" /><br/>
+        Consumo máximo (UC1): <input type="text" id="consumoUC1" onkeyup="updateUC1(this.value);" /><br/>
+        Consumo máximo (UC2): <input type="text" id="consumoUC2" onkeyup="updateUC2(this.value);" /><br/>
+    </div>
+    
+    <script src="js/Chart.js"></script>
+</body>
+
+<script>
+    
+    // Constants
+    var len = 48
+
+    var colora = "#d70206"
+    var colorb = "#f05b4f"
+    var colorc = "#f4c63d"
+    var colord = "#d17905"
+
+    // Time of day in 30 min interval
+    var hours = ['0','','1','','2','','3','','4','','5','',
+    '6','','7','','8','','9','','10','','11','',
+    '12','','13','','14','','15','','16','','17','',
+    '18','','19','','20','','21','','22','','23','']
+    // Percentage of transformer load at given times
+    var arrPercentage = [0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0.3,0.4,0.45,0.6,0.8,0.9,1,1,1,
+    1,1,1,1,1,1,1,1,0.8,0.7,0.5,0.4,
+    0.4,0.3,0.2,0.1,0,0,0,0,0,0,0,0,0]
+    
+    // (input)
+    var transformerCapacity = 45 // kVA
+    // (input)
+    var UC1 = 10 // kW
+    // (input)
+    var UC2 = 5 // kW
+    
+    // Build the data arrays
+    var seriesTransformer = Array(len).fill(transformerCapacity)
+    var seriesUC1 = arrPercentage.map(val => val * UC1)
+    var seriesUC2 = arrPercentage.map(val => val * UC2)
+    var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
+    
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+        
+        // The data for our dataset
+        data: {
+            labels: hours,
+            datasets: [{
+                label: "Capacidade do transformador",
+                backgroundColor: colora,
+                borderColor: colora,
+                data: seriesTransformer,
+                fill: false,
+                pointRadius: 0,
+                lineTension: 0.2,
+            },{
+                label: "Consumo UC1",
+                backgroundColor: colorb,
+                borderColor: colorb,
+                data: seriesUC1,
+                fill: false,
+                pointRadius: 0,
+                lineTension: 0.2,
+            },{
+                label: "Capacidade do transformador",
+                backgroundColor: colorc,
+                borderColor: colorc,
+                data: seriesUC2,
+                fill: false,
+                pointRadius: 0,
+                lineTension: 0.2,
+            },{
+                label: "Capacidade do transformador",
+                backgroundColor: colord,
+                borderColor: colord,
+                data: seriesTotal,
+                fill: false,
+                pointRadius: 0,
+                lineTension: 0.2,
+            },
+            ]
+        },
+        
+        // Configuration options go here
+        options: {}
+    });
+
+    function updateCapacity(value) {        
+        seriesTransformer = Array(len).fill(value)
+
+        chart.data.datasets[0].data = seriesTransformer
+        
+        chart.update()
+    }
+
+    function updateUC1(value) {
+        seriesUC1 = arrPercentage.map(val => val * value)
+
+        chart.data.datasets[1].data = seriesUC1
+        
+        chart.update()
+    }
+
+    function updateUC2(value) {
+        seriesUC2 = arrPercentage.map(val => val * value)
+
+        chart.data.datasets[2].data = seriesUC2
+        
+        chart.update()
+    }
+</script>
+</html>

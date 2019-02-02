@@ -1,0 +1,22 @@
+%///////////cenario 4 veiculos elétricos c recarga controlada //////%
+
+ vetor_recarga_control = [8	8	7.5	6.5	6	5.6	5.8	6	6.5	6.8	6.5	7	6.5	6	5.4	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2.3	2.8	3.5	5.9	7	7.2	7.5];
+
+
+Ai agora tem q por case, acho
+
+tipo: case1: sem phuel
+
+consumo_VEs = potencia_carregador *  numero_VEs / 5 * vetorchegada_5VEs
+
+end case
+
+case2: com phuel
+
+consumo_VEs =  potencia_carregador* numeroVEs/15* vetor_recarga_control
+
+end case
+
+consumo_total = consumo_VEs + consumoUCs - consumosolar 
+
+

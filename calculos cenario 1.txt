@@ -1,0 +1,61 @@
+A primeira coisa que eu fiz foi um vetor de timeslots
+
+0 0:30 1 1:30 2 2:30 3...... ate 23 23:30 
+
+Ficou assim
+
+vetorhora = [0	0.5	1	1.5	2	2.5	3	3.5	4	4.5	5	5.5	6	6.5	7	7.5	8	8.5	9	9.5	10	10.5	11	11.5	12	12.5	13	13.5	14	14.5	15	15.5	16	16.5	17	17.5	18	18.5	19	19.5	20	20.5	21	21.5	22	22.5	23	23.5
+];
+
+//////Primeiro cen�rio: O que tem na unidade consumidora
+
+(input) Capacidade_transformador (em kVA);
+
+Vet_transformador  = time* Capacidade_transformador;             (� uma linha reta com o input)
+
+(input) Consumom�x_UC1   (em kW)
+(input) Consumom�x_ UC2  (em kW)
+
+vetorporcentconsumo = [ 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0.3	0.4	0.45	0.6	0.8	0.9	1	1	1	1	1	1	1	1	1	1	1	0.8	0.7	0.5	0.4	0.4	0.3	0.2	0.1	0	0	0	0	0	0	0	0	0];
+
+isso aqui eu fiz para simular quanto do m�ximo est� sendo consumido em cada hora do dia
+
+curvauc1 = Consumom�x_UC1 *vetorporcentconsumo
+curvauc2 = Consumom�x_UC2 *vetorporcentconsumo
+
+consumototal = curvauc1+curvauc2
+
+Ai os gr�ficos seriam as curvas
+
+consumototal 
+
+Vet_transformador
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

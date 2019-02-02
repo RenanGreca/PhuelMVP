@@ -1,0 +1,20 @@
+%///////////cenario 3 veiculos elétricos  //////%
+
+(input) potencia_carregador =    //em kW
+
+(input) numero_VEs
+
+%aqui eu coloco a porcentagem de carga relativa a chegada de 5VEs
+
+vetorchegada_5VEs = [2.1 1.7	1.1	0.2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4.5	5	5	4.75	4.7	4.31	4	3.87	3.76	3.71	3.2
+
+
+acredito que pra parametrizar, seria interessante multiplicar   (se chegar 1VE, seria 1/5 deste vetor, se chegar 8 seria 8/5 disso, se chegar 10 seria 2x isso,e  por ai vai.
+
+consumo_VEs = potencia_carregador *  numero_VEs / 5 * vetorchegada_5VEs
+
+
+consumo_ total passa a ser
+
+consumo_VEs + consumoUCs - consumosolar 
+
