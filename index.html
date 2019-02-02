@@ -11,13 +11,18 @@
         body {
             padding: 10px;
         }
+
+        input {
+            width: 40px;
+        }
+
         .chart {
-            width: 60%;
+            width: 55%;
             height: 400px;
             float: left;
         }
         .legend {
-            width: 30%;
+            width: 40%;
             float: right;
         }
 
@@ -45,10 +50,10 @@
     
     <div class="legend">            
             <b>Inputs:</b><br />
-            Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /><br/>
-            Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" /><br/>
-            Consumo máximo (UC2): <input type="text" id="consumoUC2" value="5" onkeyup="updateUC2(this.value);" /><br/>
-            Pico de geração solar: <input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /><br/>
+            Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" />kVA<br/>
+            Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" />kW<br/>
+            Consumo máximo (UC2): <input type="text" id="consumoUC2" value="5" onkeyup="updateUC2(this.value);" />kW<br/>
+            Pico de geração solar: <input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" />kW<br/>
             Número de veículos: <input type="text" id="geracaoSolar" value="5" onkeyup="updateVehicleNumber(this.value);" /><br/>
             
             <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)">Cenário 1</button>
@@ -290,7 +295,15 @@
                     pointRadius: 0,
                     lineTension: 0.2,
                 },{
-                    label: "Consumo de recarga de VEs",
+                    label: "Geração solar",
+                    backgroundColor: colorc,
+                    borderColor: colorc,
+                    data: seriesSolar,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo de veículos em recarga",
                     backgroundColor: colorf,
                     borderColor: colorf,
                     data: seriesVehicles,
@@ -325,7 +338,7 @@
                     pointRadius: 0,
                     lineTension: 0.2,
                 },{
-                    label: "Consumo de recarga de VEs",
+                    label: "Consumo de veículos em recarga",
                     backgroundColor: colorf,
                     borderColor: colorf,
                     data: seriesVehicles,
@@ -333,7 +346,7 @@
                     pointRadius: 0,
                     lineTension: 0.2,
                 },{
-                    label: "Consumo com recargas inteligentes",
+                    label: "Consumo de veículos em recarga inteligente",
                     backgroundColor: colore,
                     borderColor: colore,
                     data: seriesVehiclesControlled,
