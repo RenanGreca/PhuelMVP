@@ -32,31 +32,6 @@
             }
         }
         
-        .legend-label {
-            width: 50px;
-            height: 20px;
-            display: inline-block;
-        }
-        
-        .legend-a {
-            background-color: #d70206;
-        }
-        .legend-b {
-            background-color: #f05b4f;
-        }
-        .legend-c {
-            background-color: #f4c63d;
-        }
-        .legend-d {
-            background-color: #d17905;
-        }
-        .legend-e {
-            background-color: #aac905;
-        }
-        .legend-f {
-            background-color: #aac9e5;
-        }
-        
         .btn {
             margin: 10px 10px 10px 0;
         }
@@ -64,19 +39,11 @@
     </style>
 </head>
 <body>   
-    <div class="chart">
-        <!-- <div class="ct-chart ct-square"></div> -->
-        
+    <div class="chart">        
         <canvas id="myChart"></canvas>
     </div>
     
-    <div class="legend">
-        <!-- <b>Legenda:</b><br/>
-            <span class="legend-label legend-a"></span> Capacidade do transformador<br/>
-            <span class="legend-label legend-b"></span> Consumo UC1<br/>
-            <span class="legend-label legend-c"></span> Consumo UC2<br/>
-            <span class="legend-label legend-d"></span> Consumo total<br/> -->
-            
+    <div class="legend">            
             <b>Inputs:</b><br />
             Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /><br/>
             Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" /><br/>
@@ -134,9 +101,9 @@
         0,4.5,5,5,4.75,4.7,4.31,4,3.87,3.76,3.71,3.2]
         // Energy requirements
         var arrControlledCharge = [8,8,7.5,6.5,6,5.6,5.8,6,6.5,6.8,6.5,7,
-                                6.5,6,5.4,0,0,0,0,0,0,0,0,0,
-                                0,0,0,0,0,0,0,0,0,0,0,0,
-                                0,0,0,0,0,2.3,2.8,3.5,5.9,7,7.2,7.5]
+        6.5,6,5.4,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,2.3,2.8,3.5,5.9,7,7.2,7.5]
         
         // (input)
         var transformerCapacity = 45 // kVA
@@ -152,14 +119,14 @@
         var chargerPower = 25 // kW
         
         // Build the data arrays
-        var seriesTransformer = Array(len).fill(transformerCapacity)
+        var seriesTransformer = Array(len).fill(transformerCapacity*0.92)
         var seriesUC1 = arrPercentage.map(val => val * UC1)
         var seriesUC2 = arrPercentage.map(val => val * UC2)
         var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
         var seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * noVehicles/15);
         var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
-        var seriesSolar = arrSolar.map(val => (val * maxSolar)*-1)
-        var seriesSolarExcess = seriesSolar.map((val, idx) => val + seriesTotal[idx])
+        var seriesSolar = arrSolar.map(val => (val * maxSolar))
+        var seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
         
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
@@ -179,13 +146,13 @@
                     yAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: "kVA"
+                            labelString: "Potência (kW)"
                         }
                     }],
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: "horas do dia"
+                            labelString: "Horário do dia"
                         }
                     }]
                 }
@@ -315,14 +282,6 @@
                     pointRadius: 0,
                     lineTension: 0.2,
                 },{
-                    label: "Consumo UC1",
-                    backgroundColor: colorb,
-                    borderColor: colorb,
-                    data: seriesUC1,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
                     label: "Consumo total",
                     backgroundColor: colord,
                     borderColor: colord,
@@ -346,14 +305,6 @@
                     backgroundColor: colora,
                     borderColor: colora,
                     data: seriesTransformer,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo UC1",
-                    backgroundColor: colorb,
-                    borderColor: colorb,
-                    data: seriesUC1,
                     fill: false,
                     pointRadius: 0,
                     lineTension: 0.2,

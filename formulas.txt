@@ -1,0 +1,41 @@
+Custo da energia
+
+Vetor tarifa normal = 0,49
+
+Vetor tarifa branca = [0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	0.42	.54	.54	0.82	0.82	0.82	0.82	0.82	0.82	0.54	0.54	.42	.42	.42	.42]./2;
+
+Conta de tarifa��o normal = Consumo total da UC * vetor tarifa normal
+
+Conta de tarifa��o branca = Consumo total da UC * vetor tarifa branca
+
+Ai nos cen�rios que tem VE, em vez de calcular a conta com o consumo total, da pra por a variavel que considera
+apenas o consumo de VE, e dividir pelo numero, pra dar custo por VE.
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Carregamento do transformador
+
+Potencia VA = Consumototal_UC / 0,92     (assumindo que o FP dos caras seja 0,92, e q todos )  
+
+Carregamento% = Potencia VA/capacidadetransf* 100   (em %)
+
+Picodeconsumo = max(Consumototal_UC)   (em kW)
+
+tensaosistemabifasico = 220V (poderia colocar um input mas talvez complique pro user)   (em V)
+
+Picocorrente =  Picodeconsumo /sqrt(3)*tensaosistemabifasico*0,92   (em A)
+
+
+
+
+
+
+
+
+
+
+
+
