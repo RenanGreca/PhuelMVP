@@ -74,7 +74,6 @@
             <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button><br/>
             <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>
             <button id="btnCenario4" type="button" class="btn btn-primary" onclick="switchScenario(4)">Cenário 4</button>
-            <button id="btnCenario5" type="button" class="btn btn-primary" onclick="switchScenario(5)">Cenário 5</button>
         </div>
         
         <script src="js/Chart.js"></script>
@@ -95,6 +94,9 @@
         var colord = "#d17905"
         var colore = "#aac905"
         var colorf = "#aac9e5"
+
+        // Variables
+        var currentScenario = 1
         
         // Time of day in 30 min interval
         var hours = ['0','','1','','2','','3','','4','','5','',
@@ -116,6 +118,11 @@
         0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,
         0,4.5,5,5,4.75,4.7,4.31,4,3.87,3.76,3.71,3.2]
+        // Energy requirements
+        var arrControlledCharge = [8,8,7.5,6.5,6,5.6,5.8,6,6.5,6.8,6.5,7,
+                                6.5,6,5.4,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,0,0,0,0,0,0,0,
+                                0,0,0,0,0,2.3,2.8,3.5,5.9,7,7.2,7.5]
         
         // (input)
         var transformerCapacity = 45 // kVA
@@ -135,6 +142,7 @@
         var seriesUC1 = arrPercentage.map(val => val * UC1)
         var seriesUC2 = arrPercentage.map(val => val * UC2)
         var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
+        var seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * noVehicles/15);
         var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
         var seriesSolar = arrSolar.map(val => (val * maxSolar)*-1)
         var seriesSolarExcess = seriesSolar.map((val, idx) => val + seriesTotal[idx])
@@ -173,10 +181,8 @@
         
         function updateCapacity(value) {        
             seriesTransformer = Array(len).fill(value)
-            
-            chart.data.datasets[0].data = seriesTransformer
-            
-            chart.update()
+                        
+            switchScenario(currentScenario)
         }
         
         function updateUC1(value) {
@@ -186,35 +192,28 @@
             chart.data.datasets[1].data = seriesUC1
             chart.data.datasets[3].data = seriesTotal
             
-            chart.update()
+            switchScenario(currentScenario)
         }
         
         function updateUC2(value) {
             seriesUC2 = arrPercentage.map(val => val * value)
             seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
-            
-            chart.data.datasets[2].data = seriesUC2
-            chart.data.datasets[3].data = seriesTotal
-            
-            chart.update()
+                        
+            switchScenario(currentScenario)
         }
         
         function updateMaxSolar(value) {
             seriesSolar = arrSolar.map(val => (val * value)*-1)
             seriesSolarExcess = seriesSolar.map((val, idx) => val + seriesTotal[idx])
-            
-            chart.data.datasets[4].data = seriesSolar
-            chart.data.datasets[5].data = seriesSolarExcess
-            
-            chart.update()
+                        
+            switchScenario(currentScenario)
         }
         
         function updateVehicleNumber(value) {
             seriesVehicles = arrVehicles.map(val => chargerPower * val * value/5);
-            
-            chart.data.datasets[6].data = seriesVehicles
-            
-            chart.update()
+            seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * value/15);
+                        
+            switchScenario(currentScenario)
         }
         
         function switchScenario(number) {
@@ -328,10 +327,59 @@
                 }]
                 break
                 case 4:
-                break
-                case 5:
+                datasets = [{
+                    label: "Capacidade do transformador",
+                    backgroundColor: colora,
+                    borderColor: colora,
+                    data: seriesTransformer,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo UC1",
+                    backgroundColor: colorb,
+                    borderColor: colorb,
+                    data: seriesUC1,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo total",
+                    backgroundColor: colord,
+                    borderColor: colord,
+                    data: seriesTotal,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Geração solar",
+                    backgroundColor: colorc,
+                    borderColor: colorc,
+                    data: seriesSolar,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo de recarga de VEs",
+                    backgroundColor: colorf,
+                    borderColor: colorf,
+                    data: seriesVehicles,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo com recargas inteligentes",
+                    backgroundColor: colore,
+                    borderColor: colore,
+                    data: seriesVehiclesControlled,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                }]
                 break
             }
+
+            currentScenario = number
             
             chart.data.datasets = datasets
             chart.update()
