@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
+
 <html>
 <head>
-    <title>My first Chartist Tests</title>
-    <link rel="stylesheet"
-    href="css/chartist.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Phuel MVP</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
     <style type="text/css">
         .chart {
             width: 60%;
@@ -34,14 +36,20 @@
         .legend-d {
             background-color: #d17905;
         }
+        .legend-e {
+            background-color: #aac905;
+        }
+        .legend-f {
+            background-color: #aac9e5;
+        }
+        
+        .btn {
+            margin: 10px 10px 10px 0;
+        }
         
     </style>
 </head>
-<body>
-    <!-- Site content goes here !-->
-    <script src="js/chartist.js"></script>
-    
-    
+<body>   
     <div class="chart">
         <!-- <div class="ct-chart ct-square"></div> -->
         
@@ -50,124 +58,283 @@
     
     <div class="legend">
         <!-- <b>Legenda:</b><br/>
-        <span class="legend-label legend-a"></span> Capacidade do transformador<br/>
-        <span class="legend-label legend-b"></span> Consumo UC1<br/>
-        <span class="legend-label legend-c"></span> Consumo UC2<br/>
-        <span class="legend-label legend-d"></span> Consumo total<br/> -->
+            <span class="legend-label legend-a"></span> Capacidade do transformador<br/>
+            <span class="legend-label legend-b"></span> Consumo UC1<br/>
+            <span class="legend-label legend-c"></span> Consumo UC2<br/>
+            <span class="legend-label legend-d"></span> Consumo total<br/> -->
+            
+            <b>Inputs:</b><br />
+            Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /><br/>
+            Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" /><br/>
+            Consumo máximo (UC2): <input type="text" id="consumoUC2" value="5" onkeyup="updateUC2(this.value);" /><br/>
+            Pico de geração solar: <input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /><br/>
+            Número de veículos: <input type="text" id="geracaoSolar" value="5" onkeyup="updateVehicleNumber(this.value);" /><br/>
+            
+            <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)">Cenário 1</button>
+            <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button><br/>
+            <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>
+            <button id="btnCenario4" type="button" class="btn btn-primary" onclick="switchScenario(4)">Cenário 4</button>
+            <button id="btnCenario5" type="button" class="btn btn-primary" onclick="switchScenario(5)">Cenário 5</button>
+        </div>
         
-        <b>Inputs:</b><br />
-        Capacidade do transformador: <input type="text" id="capacidade" onkeyup="updateCapacity(this.value);" /><br/>
-        Consumo máximo (UC1): <input type="text" id="consumoUC1" onkeyup="updateUC1(this.value);" /><br/>
-        Consumo máximo (UC2): <input type="text" id="consumoUC2" onkeyup="updateUC2(this.value);" /><br/>
-    </div>
-    
-    <script src="js/Chart.js"></script>
-</body>
-
-<script>
-    
-    // Constants
-    var len = 48
-
-    var colora = "#d70206"
-    var colorb = "#f05b4f"
-    var colorc = "#f4c63d"
-    var colord = "#d17905"
-
-    // Time of day in 30 min interval
-    var hours = ['0','','1','','2','','3','','4','','5','',
-    '6','','7','','8','','9','','10','','11','',
-    '12','','13','','14','','15','','16','','17','',
-    '18','','19','','20','','21','','22','','23','']
-    // Percentage of transformer load at given times
-    var arrPercentage = [0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0.3,0.4,0.45,0.6,0.8,0.9,1,1,1,
-    1,1,1,1,1,1,1,1,0.8,0.7,0.5,0.4,
-    0.4,0.3,0.2,0.1,0,0,0,0,0,0,0,0,0]
-    
-    // (input)
-    var transformerCapacity = 45 // kVA
-    // (input)
-    var UC1 = 10 // kW
-    // (input)
-    var UC2 = 5 // kW
-    
-    // Build the data arrays
-    var seriesTransformer = Array(len).fill(transformerCapacity)
-    var seriesUC1 = arrPercentage.map(val => val * UC1)
-    var seriesUC2 = arrPercentage.map(val => val * UC2)
-    var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
-    
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        // The type of chart we want to create
-        type: 'line',
+        <script src="js/Chart.js"></script>
+        <script src="js/jquery-3.3.1.slim.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.js"></script>
         
-        // The data for our dataset
-        data: {
-            labels: hours,
-            datasets: [{
-                label: "Capacidade do transformador",
-                backgroundColor: colora,
-                borderColor: colora,
-                data: seriesTransformer,
-                fill: false,
-                pointRadius: 0,
-                lineTension: 0.2,
-            },{
-                label: "Consumo UC1",
-                backgroundColor: colorb,
-                borderColor: colorb,
-                data: seriesUC1,
-                fill: false,
-                pointRadius: 0,
-                lineTension: 0.2,
-            },{
-                label: "Capacidade do transformador",
-                backgroundColor: colorc,
-                borderColor: colorc,
-                data: seriesUC2,
-                fill: false,
-                pointRadius: 0,
-                lineTension: 0.2,
-            },{
-                label: "Capacidade do transformador",
-                backgroundColor: colord,
-                borderColor: colord,
-                data: seriesTotal,
-                fill: false,
-                pointRadius: 0,
-                lineTension: 0.2,
+    </body>
+    
+    <script>
+        
+        // Constants
+        var len = 48
+        
+        var colora = "#d70206"
+        var colorb = "#f05b4f"
+        var colorc = "#f4c63d"
+        var colord = "#d17905"
+        var colore = "#aac905"
+        var colorf = "#aac9e5"
+        
+        // Time of day in 30 min interval
+        var hours = ['0','','1','','2','','3','','4','','5','',
+        '6','','7','','8','','9','','10','','11','',
+        '12','','13','','14','','15','','16','','17','',
+        '18','','19','','20','','21','','22','','23','']
+        // Percentage of transformer load at given times
+        var arrPercentage = [0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0.3,0.4,0.45,0.6,0.8,0.9,1,1,1,
+        1,1,1,1,1,1,1,1,0.8,0.7,0.5,0.4,
+        0.4,0.3,0.2,0.1,0,0,0,0,0,0,0,0,0]
+        // Percentage of solar panel production at given times
+        var arrSolar = [0,0,0,0,0,0,0,0,0,0,0,0,
+        0.1,0.11,0.13,0.18,0.25,0.27,0.29,0.4,0.5,0.61,0.78,0.85,
+        0.95,1,1,0.98,0.9,0.82,0.74,0.65,0.44,0.35,0.24,0.21,
+        0.12,0.10,0.05,0.028,0,0,0,0,0,0,0,0]
+        // Energy requirements for 5 charging vehicles
+        var arrVehicles = [2.1,1.7,1.1,0.2,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,
+        0,4.5,5,5,4.75,4.7,4.31,4,3.87,3.76,3.71,3.2]
+        
+        // (input)
+        var transformerCapacity = 45 // kVA
+        // (input)
+        var UC1 = 10 // kW
+        // (input)
+        var UC2 = 5 // kW
+        // (input)
+        var maxSolar = 35 // kW
+        // (input)
+        var noVehicles = 5
+        // (input)
+        var chargerPower = 25 // kW
+        
+        // Build the data arrays
+        var seriesTransformer = Array(len).fill(transformerCapacity)
+        var seriesUC1 = arrPercentage.map(val => val * UC1)
+        var seriesUC2 = arrPercentage.map(val => val * UC2)
+        var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
+        var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
+        var seriesSolar = arrSolar.map(val => (val * maxSolar)*-1)
+        var seriesSolarExcess = seriesSolar.map((val, idx) => val + seriesTotal[idx])
+        
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+            
+            // The data for our dataset
+            data: {
+                labels: hours,
+                datasets: []
             },
-            ]
-        },
+            
+            // Configuration options go here
+            options: {
+                aspectRatio: 1.5,
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "kVA"
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: "horas do dia"
+                        }
+                    }]
+                }
+            }
+        });
+        switchScenario(1);
         
-        // Configuration options go here
-        options: {}
-    });
-
-    function updateCapacity(value) {        
-        seriesTransformer = Array(len).fill(value)
-
-        chart.data.datasets[0].data = seriesTransformer
+        function updateCapacity(value) {        
+            seriesTransformer = Array(len).fill(value)
+            
+            chart.data.datasets[0].data = seriesTransformer
+            
+            chart.update()
+        }
         
-        chart.update()
-    }
-
-    function updateUC1(value) {
-        seriesUC1 = arrPercentage.map(val => val * value)
-
-        chart.data.datasets[1].data = seriesUC1
+        function updateUC1(value) {
+            seriesUC1 = arrPercentage.map(val => val * value)
+            seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
+            
+            chart.data.datasets[1].data = seriesUC1
+            chart.data.datasets[3].data = seriesTotal
+            
+            chart.update()
+        }
         
-        chart.update()
-    }
-
-    function updateUC2(value) {
-        seriesUC2 = arrPercentage.map(val => val * value)
-
-        chart.data.datasets[2].data = seriesUC2
+        function updateUC2(value) {
+            seriesUC2 = arrPercentage.map(val => val * value)
+            seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
+            
+            chart.data.datasets[2].data = seriesUC2
+            chart.data.datasets[3].data = seriesTotal
+            
+            chart.update()
+        }
         
-        chart.update()
-    }
-</script>
-</html>
+        function updateMaxSolar(value) {
+            seriesSolar = arrSolar.map(val => (val * value)*-1)
+            seriesSolarExcess = seriesSolar.map((val, idx) => val + seriesTotal[idx])
+            
+            chart.data.datasets[4].data = seriesSolar
+            chart.data.datasets[5].data = seriesSolarExcess
+            
+            chart.update()
+        }
+        
+        function updateVehicleNumber(value) {
+            seriesVehicles = arrVehicles.map(val => chargerPower * val * value/5);
+            
+            chart.data.datasets[6].data = seriesVehicles
+            
+            chart.update()
+        }
+        
+        function switchScenario(number) {
+            
+            var datasets = []
+            switch (number) {
+                case 1:
+                datasets = [{
+                    label: "Capacidade do transformador",
+                    backgroundColor: colora,
+                    borderColor: colora,
+                    data: seriesTransformer,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo UC1",
+                    backgroundColor: colorb,
+                    borderColor: colorb,
+                    data: seriesUC1,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo UC2",
+                    backgroundColor: colorc,
+                    borderColor: colorc,
+                    data: seriesUC2,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo total",
+                    backgroundColor: colord,
+                    borderColor: colord,
+                    data: seriesTotal,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                }]
+                break
+                case 2:
+                datasets = [
+                {
+                    label: "Capacidade do transformador",
+                    backgroundColor: colora,
+                    borderColor: colora,
+                    data: seriesTransformer,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo total",
+                    backgroundColor: colord,
+                    borderColor: colord,
+                    data: seriesTotal,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Geração solar",
+                    backgroundColor: colore,
+                    borderColor: colore,
+                    data: seriesSolar,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Excedente de geração solar",
+                    backgroundColor: colorf,
+                    borderColor: colorf,
+                    data: seriesSolarExcess,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                }]
+                break
+                case 3:
+                datasets = [{
+                    label: "Capacidade do transformador",
+                    backgroundColor: colora,
+                    borderColor: colora,
+                    data: seriesTransformer,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo UC1",
+                    backgroundColor: colorb,
+                    borderColor: colorb,
+                    data: seriesUC1,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo total",
+                    backgroundColor: colord,
+                    borderColor: colord,
+                    data: seriesTotal,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                },{
+                    label: "Consumo de recarga de VEs",
+                    backgroundColor: colorf,
+                    borderColor: colorf,
+                    data: seriesVehicles,
+                    fill: false,
+                    pointRadius: 0,
+                    lineTension: 0.2,
+                }]
+                break
+                case 4:
+                break
+                case 5:
+                break
+            }
+            
+            chart.data.datasets = datasets
+            chart.update()
+        }
+    </script>
+    </html>
