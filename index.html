@@ -94,6 +94,10 @@
         0,0,0,0.3,0.4,0.45,0.6,0.8,0.9,1,1,1,
         1,1,1,1,1,1,1,1,0.8,0.7,0.5,0.4,
         0.4,0.3,0.2,0.1,0,0,0,0,0,0,0,0,0]
+        var arrPercentage2 = [0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0.5,0.6,0.6,0.7,0.8,0.9,1,0.9,0.8,
+        1,0.9,0.7,0.6,0.6,0.5,0.4,0.3,0.3,0.2,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0]
         // Percentage of solar panel production at given times
         var arrSolar = [0,0,0,0,0,0,0,0,0,0,0,0,
         0.1,0.11,0.13,0.18,0.25,0.27,0.29,0.4,0.5,0.61,0.78,0.85,
@@ -126,7 +130,7 @@
         // Build the data arrays
         var seriesTransformer = Array(len).fill(transformerCapacity*0.92)
         var seriesUC1 = arrPercentage.map(val => val * UC1)
-        var seriesUC2 = arrPercentage.map(val => val * UC2)
+        var seriesUC2 = arrPercentage2.map(val => val * UC2)
         var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
         var seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * noVehicles/15);
         var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
