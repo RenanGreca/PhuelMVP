@@ -8,24 +8,50 @@
     <title>Phuel MVP</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <style type="text/css">
+        /*
+        Phuel azul: #38424E
+        Phuel laranja: #F05022
+        */
+        
         body {
-            padding: 10px;
+            padding-top: 5rem;
+            color: #38424E;
         }
-
+        .starter-template {
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+        
+        
+        
+        .navbar-dark {
+            /* background-color: #F05022; */
+            background-color: #38424E;
+        }
+        
+        .navbar-dark .navbar-nav .active > .nav-link {
+            color: #F05022;
+        }
+        
+        .phuel-brand {
+            height: 30px;
+            width: auto;
+        }
+        
         input {
             width: 40px;
         }
-
+        
         .chart {
             width: 55%;
-            height: 400px;
+            height: 600px;
             float: left;
         }
         .legend {
             width: 40%;
             float: right;
         }
-
+        
         @media only screen and (max-width:600px) {
             .chart {
                 width: 100%;
@@ -43,24 +69,134 @@
         
     </style>
 </head>
-<body>   
-    <div class="chart">        
-        <canvas id="myChart"></canvas>
-    </div>
-    
-    <div class="legend">            
-            <b>Inputs:</b><br />
-            Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" />kVA<br/>
-            Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" />kW<br/>
-            Consumo máximo (UC2): <input type="text" id="consumoUC2" value="5" onkeyup="updateUC2(this.value);" />kW<br/>
-            Pico de geração solar: <input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" />kW<br/>
-            Número de veículos: <input type="text" id="geracaoSolar" value="5" onkeyup="updateVehicleNumber(this.value);" /><br/>
-            
-            <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)">Cenário 1</button>
-            <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button><br/>
-            <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>
-            <button id="btnCenario4" type="button" class="btn btn-primary" onclick="switchScenario(4)">Cenário 4</button>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#"><img class="phuel-brand" src="img/Phuel Laranja.png" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
         </div>
+    </nav>
+    
+    <main role="main" class="container">
+        
+        <div class="starter-template">
+            <h1>Dados do CDD Mooca Ambev</h1>
+            <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart">        
+                <canvas id="myChart"></canvas>
+            </div>
+            
+            <div class="legend">
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Propriedade</th>
+                                <th>Valor</th>
+                                <th>Unidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Capacidade do transformador</td>
+                                <td><input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /></td>
+                                <td>kVA</td>
+                            </tr>
+                            <tr>
+                                <td>Consumo máximo</td>
+                                <td><input type="text" id="consumoUC1" value="15" onkeyup="updateTotal(this.value);" /></td>
+                                <td>kW</td>
+                            </tr>
+                            <tr>
+                                <td>Pico de geração solar</td>
+                                <td><input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /></td>
+                                <td>kW</td>
+                            </tr>
+                            <tr>
+                                <td>Número de veículos</td>
+                                <td><input type="text" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
+                                <td>veículos</td>
+                            </tr>
+                            <tr>
+                                <td>Custo de eletricidade</td>
+                                <td><span id="custototal"></span></td>
+                                <td>R$</td>
+                            </tr>
+                            <tr>
+                                <td>Custo de recarga (tarifa simples, sem recarga inteligente)</td>
+                                <td><span id="custosimples"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                            <tr>
+                                <td>Custo de recarga (tarifa dinâmica, sem recarga inteligente)</td>
+                                <td><span id="custodinamico"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                            <tr>
+                                <td>Custo de recarga (tarifa simples, com recarga inteligente Phuel)</td>
+                                <td><span id="custosimplesphuel"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                            <tr>
+                                <td>Custo de recarga (tarifa dinâmica, com recarga inteligente Phuel)</td>
+                                <td><span id="custodinamicophuel"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>         
+                <!-- <b>Inputs:</b><br />
+                    Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" />kVA<br/>
+                    Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" />kW<br/>
+                    Consumo máximo (UC2): <input type="text" id="consumoUC2" value="5" onkeyup="updateUC2(this.value);" />kW<br/>
+                    Pico de geração solar: <input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" />kW<br/>
+                    Número de veículos: <input type="text" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /><br/> -->
+                    
+                    <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)">Cenário 1</button>
+                    <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button><br/>
+                    <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>
+                    <button id="btnCenario4" type="button" class="btn btn-primary" onclick="switchScenario(4)">Cenário 4</button>
+                    
+                    <p>Este cenário mostra o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca, bem como a capacidade de seu transformador de distribuição.</p>
+                    
+                </div>
+            </div>
+            
+            
+            
+        </main><!-- /.container -->
+        
+        
+        
+        
         
         <script src="js/Chart.js"></script>
         <script src="js/jquery-3.3.1.slim.min.js"></script>
@@ -80,7 +216,10 @@
         var colord = "#d17905"
         var colore = "#aac905"
         var colorf = "#aac9e5"
-
+        
+        var phuelBlue = "#38424E"
+        var phuelOrange = "#F05022"
+        
         // Variables
         var currentScenario = 1
         
@@ -113,6 +252,11 @@
         6.5,6,5.4,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,2.3,2.8,3.5,5.9,7,7.2,7.5]
+        var staticPrice = [0.49];
+        var dynamicPrice = [0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,
+        0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,
+        0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.54,0.54,
+        0.82,0.82,0.82,0.82,0.82,0.82,0.54,0.54,0.42,0.42,0.42,0.42]
         
         // (input)
         var transformerCapacity = 45 // kVA
@@ -150,7 +294,7 @@
             
             // Configuration options go here
             options: {
-                aspectRatio: 1.5,
+                aspectRatio: 1,
                 scales: {
                     yAxes: [{
                         scaleLabel: {
@@ -171,200 +315,202 @@
         
         function updateCapacity(value) {        
             seriesTransformer = Array(len).fill(value)
-                        
+            
             switchScenario(currentScenario)
         }
         
-        function updateUC1(value) {
-            seriesUC1 = arrPercentage.map(val => val * value)
+        function updateTotal(value) {
+            seriesUC1 = arrPercentage.map(val => val * value*2/3)
+            seriesUC2 = arrPercentage2.map(val => val * value*1/3)
             seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
             
-            chart.data.datasets[1].data = seriesUC1
-            chart.data.datasets[3].data = seriesTotal
+            chart.data.datasets[1].data = seriesTotal
+            // chart.data.datasets[3].data = seriesTotal
             
             switchScenario(currentScenario)
         }
         
-        function updateUC2(value) {
-            seriesUC2 = arrPercentage.map(val => val * value)
-            seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
-                        
-            switchScenario(currentScenario)
-        }
-        
-        function updateMaxSolar(value) {
-            seriesSolar = arrSolar.map(val => (val * value))
-            seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
-                        
-            switchScenario(currentScenario)
-        }
-        
-        function updateVehicleNumber(value) {
-            seriesVehicles = arrVehicles.map(val => chargerPower * val * value/5);
-            seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * value/15);
-                        
-            switchScenario(currentScenario)
-        }
-        
-        function switchScenario(number) {
+        // function updateUC2(value) {
+            //     seriesUC2 = arrPercentage.map(val => val * value)
+            //     seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
             
-            var datasets = []
-            switch (number) {
-                case 1:
-                datasets = [{
-                    label: "Capacidade do transformador",
-                    backgroundColor: colora,
-                    borderColor: colora,
-                    data: seriesTransformer,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo UC1",
-                    backgroundColor: colorb,
-                    borderColor: colorb,
-                    data: seriesUC1,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo UC2",
-                    backgroundColor: colorc,
-                    borderColor: colorc,
-                    data: seriesUC2,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo total",
-                    backgroundColor: colord,
-                    borderColor: colord,
-                    data: seriesTotal,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                }]
-                break
-                case 2:
-                datasets = [
-                {
-                    label: "Capacidade do transformador",
-                    backgroundColor: colora,
-                    borderColor: colora,
-                    data: seriesTransformer,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo total",
-                    backgroundColor: colord,
-                    borderColor: colord,
-                    data: seriesTotal,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Geração solar",
-                    backgroundColor: colore,
-                    borderColor: colore,
-                    data: seriesSolar,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Excedente de geração solar",
-                    backgroundColor: colorf,
-                    borderColor: colorf,
-                    data: seriesSolarExcess,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                }]
-                break
-                case 3:
-                datasets = [{
-                    label: "Capacidade do transformador",
-                    backgroundColor: colora,
-                    borderColor: colora,
-                    data: seriesTransformer,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo total",
-                    backgroundColor: colord,
-                    borderColor: colord,
-                    data: seriesTotal,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Geração solar",
-                    backgroundColor: colorc,
-                    borderColor: colorc,
-                    data: seriesSolar,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo de veículos em recarga",
-                    backgroundColor: colorf,
-                    borderColor: colorf,
-                    data: seriesVehicles,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                }]
-                break
-                case 4:
-                datasets = [{
-                    label: "Capacidade do transformador",
-                    backgroundColor: colora,
-                    borderColor: colora,
-                    data: seriesTransformer,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo total",
-                    backgroundColor: colord,
-                    borderColor: colord,
-                    data: seriesTotal,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Geração solar",
-                    backgroundColor: colorc,
-                    borderColor: colorc,
-                    data: seriesSolar,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo de veículos em recarga",
-                    backgroundColor: colorf,
-                    borderColor: colorf,
-                    data: seriesVehicles,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                },{
-                    label: "Consumo de veículos em recarga inteligente",
-                    backgroundColor: colore,
-                    borderColor: colore,
-                    data: seriesVehiclesControlled,
-                    fill: false,
-                    pointRadius: 0,
-                    lineTension: 0.2,
-                }]
-                break
+            //     switchScenario(currentScenario)
+            // }
+            
+            function updateMaxSolar(value) {
+                seriesSolar = arrSolar.map(val => (val * value))
+                seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
+                
+                switchScenario(currentScenario)
             }
-
-            currentScenario = number
             
-            chart.data.datasets = datasets
-            chart.update()
-        }
-    </script>
-    </html>
+            function updateVehicleNumber(value) {
+                noVehicles = value
+
+                seriesVehicles = arrVehicles.map(val => chargerPower * val * value/5);
+                seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * value/15);
+
+                switchScenario(currentScenario)
+            }
+            
+            function switchScenario(number) {
+                
+                var datasets = []
+                switch (number) {
+                    case 1:
+                    datasets = [{
+                        label: "Capacidade do transformador",
+                        backgroundColor: colora,
+                        borderColor: colora,
+                        data: seriesTransformer,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo UC",
+                        backgroundColor: colord,
+                        borderColor: colord,
+                        data: seriesTotal,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    }]
+                    break
+                    case 2:
+                    datasets = [
+                    {
+                        label: "Capacidade do transformador",
+                        backgroundColor: colora,
+                        borderColor: colora,
+                        data: seriesTransformer,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo UC",
+                        backgroundColor: colord,
+                        borderColor: colord,
+                        data: seriesTotal,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Geração solar",
+                        backgroundColor: colorc,
+                        borderColor: colorc,
+                        data: seriesSolar,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Excedente de geração solar",
+                        backgroundColor: colorf,
+                        borderColor: colorf,
+                        data: seriesSolarExcess,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    }]
+                    break
+                    case 3:
+                    datasets = [{
+                        label: "Capacidade do transformador",
+                        backgroundColor: colora,
+                        borderColor: colora,
+                        data: seriesTransformer,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo UC",
+                        backgroundColor: colord,
+                        borderColor: colord,
+                        data: seriesTotal,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Geração solar",
+                        backgroundColor: colorc,
+                        borderColor: colorc,
+                        data: seriesSolar,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo de veículos em recarga",
+                        backgroundColor: colorf,
+                        borderColor: colorf,
+                        data: seriesVehicles,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    }]
+                    break
+                    case 4:
+                    datasets = [{
+                        label: "Capacidade do transformador",
+                        backgroundColor: colora,
+                        borderColor: colora,
+                        data: seriesTransformer,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo UC",
+                        backgroundColor: colord,
+                        borderColor: colord,
+                        data: seriesTotal,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Geração solar",
+                        backgroundColor: colorc,
+                        borderColor: colorc,
+                        data: seriesSolar,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo de veículos em recarga",
+                        backgroundColor: colorf,
+                        borderColor: colorf,
+                        data: seriesVehicles,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    },{
+                        label: "Consumo de veículos em recarga inteligente Phuel",
+                        backgroundColor: colore,
+                        borderColor: colore,
+                        data: seriesVehiclesControlled,
+                        fill: false,
+                        pointRadius: 0,
+                        lineTension: 0.2,
+                    }]
+                    break
+                }
+                
+                currentScenario = number
+                
+                chart.data.datasets = datasets
+                chart.update()
+                
+                var totalCost = (seriesTotal.reduce((acc, val) => acc + val)*staticPrice).toFixed(2);
+                $("#custototal").html(totalCost)
+                
+                var staticCost = (seriesVehicles.reduce((acc, val) => acc + val)*staticPrice/noVehicles).toFixed(2);
+                $("#custosimples").html(staticCost)
+
+                var dynamicCost = (seriesVehicles.map((val, idx) => val * dynamicPrice[idx]).reduce((acc, val) => acc + val)/noVehicles).toFixed(2);
+                $("#custodinamico").html(dynamicCost)
+
+                var staticCostPhuel = (seriesVehiclesControlled.reduce((acc, val) => acc + val)*staticPrice/noVehicles).toFixed(2);
+                $("#custosimplesphuel").html(staticCostPhuel)
+
+                var dynamicCostPhuel = (seriesVehiclesControlled.map((val, idx) => val * dynamicPrice[idx]).reduce((acc, val) => acc + val)/noVehicles).toFixed(2);
+                $("#custodinamicophuel").html(dynamicCostPhuel)
+            }
+        </script>
+        </html>
