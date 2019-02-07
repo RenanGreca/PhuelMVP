@@ -1,0 +1,82 @@
+/*
+Phuel azul: #38424E
+Phuel laranja: #F05022
+*/
+
+body {
+    padding-top: 5rem;
+    color: #38424E;
+}
+.starter-template {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+
+
+.navbar-dark {
+    /* background-color: #F05022; */
+    background-color: #38424E;
+}
+
+.navbar-dark .navbar-nav .active > .nav-link {
+    color: #F05022;
+}
+
+.phuel-brand {
+    height: 30px;
+    width: auto;
+}
+
+input {
+    width: 40px;
+}
+
+.chart {
+    width: 55%;
+    height: 600px;
+    float: left;
+}
+.legend {
+    width: 40%;
+    float: right;
+}
+
+@media only screen and (max-width:600px) {
+    .chart {
+        width: 100%;
+        float: none;
+    }
+    .legend {
+        width: 100%;
+        float: none;
+    }
+}
+
+.btn {
+    margin: 10px 10px 10px 0;
+}
+
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #38424E;
+    border-color: #38424E;
+}
+
+.btn-primary:not(:disabled):not(.disabled) {
+    color: #fff;
+    background-color: #F05022;
+    border-color: #F05022;
+}
+
+.btn-primary:not(:disabled):not(.disabled):hover {
+    color: #fff;
+    background-color: #D04012;
+    border-color: #D04012;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-color: #C03002;
+    border-color: #C03002;
+}
