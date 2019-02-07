@@ -18,3 +18,6 @@
         <img src="http://img.shields.io/badge/swift-4.1-brightgreen.svg" alt="Swift 4.1">
     </a>
 </p>
+
+```docker build -t phuelmvp .
+docker run --name phuelmvp -p 8080:8080 phuelmvp```
