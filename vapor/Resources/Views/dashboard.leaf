@@ -37,10 +37,10 @@
                         <td>
                             <div class="battery-wrapper">
                                 <img src="/img/battery.png" class="battery-icon" />
-                                <div class="battery-level"></div>
+                                <div class="battery-level" style="width: #(vehicle.charge)%;"></div>
                             </div>
                             <div class="battery-number">
-                                50%
+                                #(vehicle.charge)%
                             </div>
                         </td>
                         <!-- <td>kVA</td> -->

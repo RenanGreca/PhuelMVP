@@ -13,6 +13,7 @@ final class VehicleController {
     }
     
     func create(_ req: Request) throws -> Future<Vehicle> {
+        print(req)
         return try req.content.decode(Vehicle.self).flatMap { vehicle in
             return vehicle.save(on: req)
         }
@@ -27,8 +28,8 @@ final class VehicleController {
     func list(_ req: Request) throws -> Future<View> {
         let allVehicles = Vehicle.query(on: req).all()
         
-        return allVehicles.flatMap { users in
-            let data = ["vehicles": users]
+        return allVehicles.flatMap { vehicles in
+            let data = ["vehicles": vehicles]
             return try req.view().render("dashboard", data)
         }
     }

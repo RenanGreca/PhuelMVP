@@ -7,15 +7,17 @@ public func routes(_ router: Router) throws {
     let vehicleController = VehicleController()
     router.get("vehicles", use: vehicleController.index)
     router.post("vehicles", use: vehicleController.create)
-    router.delete("vehicles", Todo.parameter, use: vehicleController.delete)
+    router.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
 
     // Dashboard
     router.get("", use: vehicleController.list)
-
     
-    router.get("cadastros") { req in
-        return "Cadastros"
-    }
+    let vehicleModelController = VehicleModelController()
+    router.get("vehicles/models", use: vehicleModelController.index)
+    router.post("vehicles/models", use: vehicleModelController.create)
+    router.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
+    
+    router.get("cadastros-veiculos", use: vehicleModelController.list)
     
     router.get("simulacao") { req in
         return try req.view().render("simulation", [

@@ -1,0 +1,22 @@
+#set("title") { Phuel MVP }
+#set("cadastro-active") { active }
+
+#set("body") {
+    
+
+    <form method="POST" action="/vehicles">
+        <input type="text" name="licensePlate"><br/>
+
+        <select>
+            #for(vehicleModel in vehicleModels) {
+                <option value="#(vehicleModel.make)-#(vehicleModel.model)">#(vehicleModel.make) #(vehicleModel.model)</option>
+            }
+        </select>
+
+        <input type="hidden" name="model" value="Leaf"><br/>
+        <input type="hidden" name="charge" value="80">
+        <input type="submit" />
+    </form>
+}
+
+#embed("base")

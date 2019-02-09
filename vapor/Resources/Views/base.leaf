@@ -30,7 +30,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/cadastro-uc">Nova UC</a>
-                        <a class="dropdown-item" href="/cadastro-vehicle">Novo Veículo</a>
+                        <a class="dropdown-item" href="/cadastros-veiculos">Novo Veículo</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown #get(graficos-active)">
