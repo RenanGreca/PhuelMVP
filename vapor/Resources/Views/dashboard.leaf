@@ -1,0 +1,7 @@
+#set("title") { Phuel MVP }
+#set("dashboard-active") { active }
+
+#set("body") {
+}
+
+#embed("base")

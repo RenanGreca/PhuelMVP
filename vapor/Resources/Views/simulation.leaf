@@ -1,4 +1,5 @@
 #set("title") { Phuel MVP }
+#set("graficos-active") { active }
 
 #set("body") {
     <div class="starter-template">
@@ -77,7 +78,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>         
+            </div>
             <!-- <b>Inputs:</b><br />
                 Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" />kVA<br/>
                 Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" />kW<br/>
