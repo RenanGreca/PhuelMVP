@@ -1,0 +1,42 @@
+[
+    {
+        "make": "Nissan",
+        "model": "Leaf",
+        "battery": [24, 30, 40]
+    },
+    {
+        "make": "Tesla",
+        "model": "Model S",
+        "battery": [60, 70, 75, 85, 90, 100]
+    },
+    {
+        "make": "Tesla",
+        "model": "Model X",
+        "battery": [60, 70, 75, 90, 100]
+    },
+    {
+        "make": "Tesla",
+        "model": "Model 3",
+        "battery": [50, 62, 75]
+    },
+    {
+        "make": "BMW",
+        "model": "i3",
+        "battery": [22, 33, 42]
+    },
+    {
+        "make": "Renault",
+        "model": "Zoe",
+        "battery": [22, 41]
+    },
+    {
+        "make": "Motiva",
+        "model": "Tres MT15 Ambev",
+        "battery": [4]
+    },
+    {
+        "make": "Motiva",
+        "model": "URBI Ambev",
+        "battery": [4]
+    }
+]

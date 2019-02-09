@@ -8,7 +8,7 @@
 import FluentSQLite
 import Vapor
 
-final class Vehicle: SQLiteModel {
+final class Vehicle: SQLiteModel, Codable {
     
     var id: Int?
     
@@ -16,11 +16,14 @@ final class Vehicle: SQLiteModel {
     var make: String
     var model: String
     
-    init(id: Int? = nil, licensePlate: String, make: String, model: String) {
+    var charge: Int
+    
+    init(id: Int? = nil, licensePlate: String, make: String, model: String, charge: Int) {
         self.id = id
         self.licensePlate = licensePlate
         self.make = make
         self.model = model
+        self.charge = charge
     }
     
     

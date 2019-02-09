@@ -13,14 +13,14 @@ final class VehicleController {
     }
     
     func create(_ req: Request) throws -> Future<Vehicle> {
-        return try req.content.decode(Vehicle.self).flatMap { Vehicle in
-            return Vehicle.save(on: req)
+        return try req.content.decode(Vehicle.self).flatMap { vehicle in
+            return vehicle.save(on: req)
         }
     }
     
     func delete(_ req: Request) throws -> Future<HTTPStatus> {
-        return try req.parameters.next(Vehicle.self).flatMap { Vehicle in
-            return Vehicle.delete(on: req)
+        return try req.parameters.next(Vehicle.self).flatMap { vehicle in
+            return vehicle.delete(on: req)
         }.transform(to: .ok)
     }
     
@@ -32,5 +32,4 @@ final class VehicleController {
             return try req.view().render("dashboard", data)
         }
     }
-
 }
