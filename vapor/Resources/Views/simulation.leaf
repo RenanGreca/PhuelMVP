@@ -9,7 +9,7 @@
         
     <div class="chart-container">
         <div class="chart">
-            <div style="text-align: center;">
+            <div class="btn-group" role="group" aria-label="Basic example">
                 <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)" disabled>Cenário 1</button>
                 <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button>
                 <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>

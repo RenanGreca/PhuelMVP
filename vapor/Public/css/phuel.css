@@ -54,7 +54,18 @@ input {
 }
 
 .btn {
-    margin: 10px 10px 10px 0;
+    margin: 10px 0px 10px 0;
+}
+
+
+.btn-group-container {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.btn-group {
+    width: 100%;
+    text-align: center;
 }
 
 .btn-primary:disabled {
@@ -79,4 +90,41 @@ input {
     color: #fff;
     background-color: #C03002;
     border-color: #C03002;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.vehicle-icon {
+    max-height: 50px;
+    width: auto;
+}
+
+.battery-wrapper {
+    width: 60px;
+    height: 30px;
+    display: inline-block;
+    margin-top: -2px;
+}
+
+.battery-icon {
+    max-height: 100%;
+    width: auto;
+}
+
+.battery-level {
+    /* position: absolute; */
+    /* left: 0; */
+    margin-top: -30px;
+    margin-left: 3px;
+    height: 100%;
+    width:50%;
+    background-color: #00ff00;
+}
+
+.battery-number {
+    display: inline-block;
+    line-height: 30px;
+    padding-left: 10px;
 }

@@ -23,4 +23,14 @@ final class VehicleController {
             return Vehicle.delete(on: req)
         }.transform(to: .ok)
     }
+    
+    func list(_ req: Request) throws -> Future<View> {
+        let allVehicles = Vehicle.query(on: req).all()
+        
+        return allVehicles.flatMap { users in
+            let data = ["vehicles": users]
+            return try req.view().render("dashboard", data)
+        }
+    }
+
 }
