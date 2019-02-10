@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Phuel MVP</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/phuel.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <a class="navbar-brand" href="#"><img class="phuel-brand" src="img/Phuel Laranja.png" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul> -->
+        </div>
+    </nav>
+    
+    <main role="main" class="container">
+        
+        <div class="starter-template">
+            <h1>Dados do CDD Mooca Ambev</h1>
+            <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart">
+                <div style="text-align: center;">
+                    <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)" disabled>Cenário 1</button>
+                    <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button>
+                    <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>
+                    <button id="btnCenario4" type="button" class="btn btn-primary" onclick="switchScenario(4)">Cenário 4</button>
+                </div>
+                <canvas id="myChart"></canvas>
+            </div>
+            
+            <div class="legend">
+                <p id="descricao">Este cenário mostra o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca, bem como a capacidade de seu transformador de distribuição.</p>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Propriedade</th>
+                                <th>Valor</th>
+                                <th>Unidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Capacidade do transformador</td>
+                                <td><input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /></td>
+                                <td>kVA</td>
+                            </tr>
+                            <tr>
+                                <td>Consumo máximo da UC</td>
+                                <td><input type="text" id="consumoUC1" value="15" onkeyup="updateTotal(this.value);" /></td>
+                                <td>kW</td>
+                            </tr>
+                            <tr>
+                                <td>Pico de geração solar</td>
+                                <td><input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /></td>
+                                <td>kW</td>
+                            </tr>
+                            <tr>
+                                <td>Número de veículos elétricos</td>
+                                <td><input type="text" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
+                                <td>veículos</td>
+                            </tr>
+                            <tr>
+                                <td>Custo diário de eletricidade</td>
+                                <td><span id="custototal"></span></td>
+                                <td>R$</td>
+                            </tr>
+                            <tr id="rowcustosimples">
+                                <td>Custo de recarga (tarifa simples, sem recarga inteligente)</td>
+                                <td><span id="custosimples"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                            <tr id="rowcustodinamico">
+                                <td>Custo de recarga (tarifa dinâmica, sem recarga inteligente)</td>
+                                <td><span id="custodinamico"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                            <tr id="rowcustosimplesphuel">
+                                <td>Custo de recarga (tarifa simples, com recarga inteligente Phuel)</td>
+                                <td><span id="custosimplesphuel"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                            <tr id="rowcustodinamicophuel">
+                                <td>Custo de recarga (tarifa dinâmica, com recarga inteligente Phuel)</td>
+                                <td><span id="custodinamicophuel"></span></td>
+                                <td>R$/veículo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>         
+                <!-- <b>Inputs:</b><br />
+                    Capacidade do transformador: <input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" />kVA<br/>
+                    Consumo máximo (UC1): <input type="text" id="consumoUC1" value="10" onkeyup="updateUC1(this.value);" />kW<br/>
+                    Consumo máximo (UC2): <input type="text" id="consumoUC2" value="5" onkeyup="updateUC2(this.value);" />kW<br/>
+                    Pico de geração solar: <input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" />kW<br/>
+                    Número de veículos: <input type="text" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /><br/> -->
+                    
+                </div>
+            </div>
+            
+            
+            
+        </main><!-- /.container -->
+
+        <script src="js/Chart.js"></script>
+        <script src="js/jquery-3.3.1.slim.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/graphs.js"></script>
+    </body>
+
+</html>
