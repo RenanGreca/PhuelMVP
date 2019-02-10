@@ -2,21 +2,63 @@
 #set("cadastro-active") { active }
 
 #set("body") {
-    
+
+    <div class="starter-template">
+        <h1>Cadastro de veículo</h1>
+        <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
+    </div>
+
+    <script>
+        var vehicleModels = Array()
+        #for(vehicleModel in vehicleModels) {
+            var model = Object()
+            model.id = #(vehicleModel.id)
+            model.make = "#(vehicleModel.make)"
+            model.model = "#(vehicleModel.model)"
+
+            vehicleModels.push(model)
+        }
+    </script>
 
     <form method="POST" action="/vehicles">
-        <input type="text" name="licensePlate"><br/>
+        <div class="form-group">
+            <label for="inputModel">Modelo</label>
+            <select id="inputModel" class="form-control" onChange="updateModel(this.value);">
+                <option></option>
+                #for(vehicleModel in vehicleModels) {
+                    <option value="#(vehicleModel.id)">#(vehicleModel.make) #(vehicleModel.model)</option>
+                }
+            </select>
+            <!-- <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
+        </div>
 
-        <select>
+        <div class="form-group" id="form-battery" style="display: none;">
+            <label for="inputBattery">Capacidade da bateria</label>
             #for(vehicleModel in vehicleModels) {
-                <option value="#(vehicleModel.make)-#(vehicleModel.model)">#(vehicleModel.make) #(vehicleModel.model)</option>
+                <select class="form-control select-battery" id="select-battery-#(vehicleModel.id)" style="display: none;">
+                    #for(battery in vehicleModel.battery) {
+                        <option value="#(battery)">#(battery) kWh</option>
+                    }
+                </select>
             }
-        </select>
+        </div>
 
-        <input type="hidden" name="model" value="Leaf"><br/>
-        <input type="hidden" name="charge" value="80">
-        <input type="submit" />
+        <div class="form-group">
+            <label for="exampleInputEmail1">Placa:</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="AAA-0000">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+
+        <input type="hidden" id="modelId" name="modelId" value="0"><br/>
+        <input type="hidden" id="make" name="make" value=""><br/>
+        <input type="hidden" id="model" name="model" value=""><br/>
+        <input type="hidden" id="charge" name="charge" value="100"><br/>
+
+        
+        <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
+
+    <script src="js/form.js"></script>
 }
 
 #embed("base")

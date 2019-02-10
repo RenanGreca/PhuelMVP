@@ -33,7 +33,7 @@ public func boot(_ app: Application) throws {
     
     let models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
     let model = models.filter({$0.make == "Tesla" && $0.model == "Model S"}).first!
-    
+        
     let prius = Vehicle(licensePlate: "AAA-0000", charge: 40, modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0])
     let _ = try prius.create(on: conn).wait()
     
