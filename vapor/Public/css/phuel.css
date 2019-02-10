@@ -113,11 +113,19 @@ input {
     width: auto;
 }
 
-.battery-level {
+.battery-level-wrapper {
     /* position: absolute; */
     /* left: 0; */
     margin-top: -30px;
     margin-left: 3px;
+    height: 100%;
+    width:85%;
+    /* max-width: 85%; */
+    /* background-color: #00ff00; */
+}
+
+
+.battery-level {
     height: 100%;
     width:50%;
     background-color: #00ff00;
@@ -127,4 +135,8 @@ input {
     display: inline-block;
     line-height: 30px;
     padding-left: 10px;
+}
+
+.btn-submit {
+    width: 100%;
 }

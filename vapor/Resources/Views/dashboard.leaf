@@ -37,7 +37,9 @@
                         <td>
                             <div class="battery-wrapper">
                                 <img src="/img/battery.png" class="battery-icon" />
-                                <div class="battery-level" style="width: #(vehicle.charge)%;"></div>
+                                <div class="battery-level-wrapper">
+                                    <div class="battery-level" style="width: #(vehicle.charge)%;"></div>
+                                </div>
                             </div>
                             <div class="battery-number">
                                 #(vehicle.charge)%

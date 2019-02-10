@@ -12,11 +12,11 @@ final class VehicleController {
         return Vehicle.query(on: req).all()
     }
     
-    func create(_ req: Request) throws -> Future<Vehicle> {
+    func create(_ req: Request) throws -> Future<Response> {
         print(req)
         return try req.content.decode(Vehicle.self).flatMap { vehicle in
             return vehicle.save(on: req)
-        }
+        }.transform(to: req.redirect(to: "vehicles/new"))
     }
     
     func delete(_ req: Request) throws -> Future<HTTPStatus> {

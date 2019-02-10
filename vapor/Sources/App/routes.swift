@@ -17,7 +17,8 @@ public func routes(_ router: Router) throws {
     router.post("vehicles/models", use: vehicleModelController.create)
     router.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
     
-    router.get("cadastros-veiculos", use: vehicleModelController.list)
+    router.get("vehicles", "new", use: vehicleModelController.list)
+//    router.get("vehicles", "new", Int.parameter, use: vehicleModelController.list)
     
     router.get("simulacao") { req in
         return try req.view().render("simulation", [

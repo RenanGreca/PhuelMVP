@@ -10,6 +10,7 @@ function updateModel(modelId) {
         $("#modelId").val(model.id)
         $("#make").val(model.make)
         $("#model").val(model.model)
+        $("#battery").val(model.battery[0])
     } else {
         $("#form-battery").css('display', 'none');
         // $("#select-battery-"+modelId).css('display', 'none');
@@ -17,6 +18,11 @@ function updateModel(modelId) {
         $("#modelId").val(0)
         $("#make").val("")
         $("#model").val("")
+        $("#battery").val("")
     }
+}
+
+function updateBattery(batteryValue) {
+    $("#battery").val(batteryValue)
 }
 
