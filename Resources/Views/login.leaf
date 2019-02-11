@@ -1,0 +1,34 @@
+#set("title") { Phuel MVP }
+
+#set("body") {
+
+    <div class="starter-template">
+        <h1>Login</h1>
+        <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
+    </div>  
+
+    <form id="loginForm" method="POST" action="/login">
+        <div class="form-group">
+            <label for="inputEmail">Email:</label>
+            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="exemplo@teste.com" onkeyup="updateLicense(this.value);">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword">Senha:</label>
+            <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Senha">
+        </div>
+
+        <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-submit">Entrar</button>
+        </div>
+    </form>
+
+    <div id="result">
+    
+    </div>
+
+    <script src="/js/form.js"></script>
+}
+
+#embed("base")

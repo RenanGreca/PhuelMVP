@@ -37,6 +37,9 @@ public func boot(_ app: Application) throws {
     let prius = Vehicle(licensePlate: "AAA-0000", charge: 40, modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0])
     let _ = try prius.create(on: conn).wait()
     
+    let user = User(name: "Renan", email: "renan@phuel.com.br", password: "1234")
+    let _ = try user.create(on: conn).wait()
+    
     defer { conn.close() }
 }
 
