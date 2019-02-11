@@ -13,17 +13,17 @@ final class Vehicle: SQLiteModel {
     var id: Int?
     
     let licensePlate: String
-    var charge: Int
+    var charge:Int
     
     let modelId: Int
     let make: String
     let model: String
     let battery: Int
     
-    init(id: Int? = nil, licensePlate: String, charge: Int, modelId: Int, make: String, model: String, battery: Int) {
+    init(id: Int? = nil, licensePlate: String, modelId: Int, make: String, model: String, battery: Int) {
         self.id = id
         self.licensePlate = licensePlate
-        self.charge = charge
+        self.charge = Int.random(in: 0..<100)
         self.modelId = modelId
         self.make = make
         self.model = model

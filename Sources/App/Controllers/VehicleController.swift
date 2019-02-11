@@ -15,6 +15,7 @@ final class VehicleController {
     func create(_ req: Request) throws -> Future<Vehicle> {
         print(req)
         return try req.content.decode(Vehicle.self).flatMap { vehicle in
+            vehicle.charge = Int.random(in: 0..<100)
             return vehicle.save(on: req)
         }//.transform(to: req.redirect(to: "vehicles/new"))
     }
@@ -27,7 +28,5 @@ final class VehicleController {
     
     func list(_ req: Request) throws -> Future<[Vehicle]> {
         return Vehicle.query(on: req).all()
-        
-        
     }
 }
