@@ -2,12 +2,14 @@
 #set("dashboard-active") { active }
 
 #set("body") {
+    <div id="result" class="text-success">
+        #(successMessage)
+    </div>
+
     <div class="starter-template">
         <h1>Dados do CDD Mooca Ambev</h1>
         <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
     </div>
-
-    
 
     <div class="btn-group-container">
         <div class="btn-group" role="group" aria-label="Basic example">
@@ -58,4 +60,5 @@
     </div>
 }
 
+#set("navbar") { #embed("navbar") }
 #embed("base")

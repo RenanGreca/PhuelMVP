@@ -1,0 +1,30 @@
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item #get(dashboard-active)">
+            <a class="nav-link" href="/">Dashboard</a>
+        </li>
+        <li class="nav-item dropdown #get(cadastros-active)">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Cadastros
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/cadastro-uc">Nova UC</a>
+                <a class="dropdown-item" href="/vehicles/new">Novo Veículo</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown #get(graficos-active)">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Gráficos
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/simulation">Simulação</a>
+                <a class="dropdown-item" href="/operation">Operação</a>
+            </div>
+        </li>
+    </ul>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/logout">Sair</a>
+        </li>
+    </ul>
+</div>

@@ -24,8 +24,8 @@
         </div>
     </form>
 
-    <div id="result">
-    
+    <div id="result" class="text-danger">
+        #(errorMessage)
     </div>
 
     <script src="/js/form.js"></script>

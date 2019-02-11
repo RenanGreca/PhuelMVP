@@ -25,12 +25,9 @@ final class VehicleController {
         }.transform(to: .ok)
     }
     
-    func list(_ req: Request) throws -> Future<View> {
-        let allVehicles = Vehicle.query(on: req).all()
+    func list(_ req: Request) throws -> Future<[Vehicle]> {
+        return Vehicle.query(on: req).all()
         
-        return allVehicles.flatMap { vehicles in
-            let data = ["vehicles": vehicles]
-            return try req.view().render("dashboard", data)
-        }
+        
     }
 }

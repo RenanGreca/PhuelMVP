@@ -6,21 +6,21 @@ public func routes(_ router: Router) throws {
     
     // Use user model to create an authentication middleware
     let session = User.authSessionsMiddleware()
-//    let password = User.basicAuthMiddleware(using: BCryptDigest())
+    let login = RedirectMiddleware(A: User.self, path: "/login")
 
     // create a route group wrapped by this middleware
     let auth = router.grouped(session)
+    let loginAuth = auth.grouped(login)
+    
+    var errorMessage = ""
+    var successMessage = ""
 
-    // create new route in this route group
-    auth.get("") { req -> Response in
-        if let _ = try? req.requireAuthenticated(User.self) {
-            return req.redirect(to: "dashboard")
-        } else {
-            return req.redirect(to: "login")
-        }
-        
+    // redirect root to dashboard if user is logged in
+    loginAuth.get("") { req -> Response in
+        return req.redirect(to: "dashboard")
     }
     
+    // process login request
     auth.post("login") { req -> Future<Response> in
         return try req.content.decode(LoginRequest.self).flatMap { loginRequest in
             
@@ -33,8 +33,10 @@ public func routes(_ router: Router) throws {
                     }).first {
                     // If the information is valid, authenticate the user and redirect to the dashboard.
                     try req.authenticate(user)
+                    successMessage = "Bem-vindo, \(user.name)."
                     return req.redirect(to: "dashboard")
                 } else {
+                    errorMessage = "Erro de autenticação."
                     return req.redirect(to: "login")
                 }
             }
@@ -42,38 +44,47 @@ public func routes(_ router: Router) throws {
     }
     
     
-    // Create a route closure wrapped by this middleware
-    auth.get("hello") { req -> String in
-        let user = try req.requireAuthenticated(User.self)
-        return "Hello, \(user.name)."
-    }
-    
-    router.get("login") { req in
-        return try req.view().render("login")
+    router.get("login") { req -> Future<View> in
+        let response = LoginGetResponse(errorMessage: errorMessage, successMessage: successMessage)
+        errorMessage = ""
+        successMessage = ""
+        return try req.view().render("login", response)
     }
 
     
     // Example of configuring a controller
     let vehicleController = VehicleController()
-    router.get("vehicles", use: vehicleController.index)
-    router.post("vehicles", use: vehicleController.create)
-    router.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
+    loginAuth.get("vehicles", use: vehicleController.index)
+    loginAuth.post("vehicles", use: vehicleController.create)
+    loginAuth.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
 
     // Dashboard
-    router.get("dashboard", use: vehicleController.list)
+    loginAuth.get("dashboard") { req -> Future<View> in
+        return try vehicleController.list(req).flatMap { vehicles in
+            let response = DashboardResponse(vehicles: vehicles, errorMessage: errorMessage, successMessage: successMessage)
+            errorMessage = ""
+            successMessage = ""
+            return try req.view().render("dashboard", response)
+        }
+    }
     
     let vehicleModelController = VehicleModelController()
-    router.get("vehicles/models", use: vehicleModelController.index)
-    router.post("vehicles/models", use: vehicleModelController.create)
-    router.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
+    loginAuth.get("vehicles/models", use: vehicleModelController.index)
+    loginAuth.post("vehicles/models", use: vehicleModelController.create)
+    loginAuth.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
     
-    router.get("vehicles", "new", use: vehicleModelController.list)
+    loginAuth.get("vehicles", "new", use: vehicleModelController.list)
     
-    router.get("simulacao") { req in
+    loginAuth.get("simulation") { req in
         return try req.view().render("simulation")
     }
     
-    router.get("operacao") { req in
+    loginAuth.get("operation") { req in
         return "Operação"
+    }
+    
+    router.get("logout") { req -> Response in
+        try req.destroySession()
+        return req.redirect(to: "login")
     }
 }

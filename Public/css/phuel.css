@@ -140,3 +140,8 @@ input {
 .btn-submit {
     width: 100%;
 }
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+}

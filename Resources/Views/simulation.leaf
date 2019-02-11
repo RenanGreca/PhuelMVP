@@ -93,4 +93,5 @@
     <script src="js/graphs.js"></script>
 }
 
+#set("navbar") { #embed("navbar") }
 #embed("base")
