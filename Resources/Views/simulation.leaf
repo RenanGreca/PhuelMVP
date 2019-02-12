@@ -33,22 +33,22 @@
                     <tbody>
                         <tr>
                             <td>Capacidade do transformador</td>
-                            <td><input type="text" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /></td>
                             <td>kVA</td>
                         </tr>
                         <tr>
                             <td>Consumo máximo da UC</td>
-                            <td><input type="text" id="consumoUC1" value="15" onkeyup="updateTotal(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="consumoUC1" value="15" onkeyup="updateTotal(this.value);" /></td>
                             <td>kW</td>
                         </tr>
                         <tr>
                             <td>Pico de geração solar</td>
-                            <td><input type="text" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /></td>
                             <td>kW</td>
                         </tr>
                         <tr>
                             <td>Número de veículos elétricos</td>
-                            <td><input type="text" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
                             <td>veículos</td>
                         </tr>
                         <tr>

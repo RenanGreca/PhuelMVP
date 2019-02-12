@@ -22,11 +22,15 @@
         <div class="form-group">
         <button type="submit" class="btn btn-primary btn-submit">Entrar</button>
         </div>
-    </form>
 
-    <div id="result" class="text-danger">
-        #(errorMessage)
-    </div>
+        <div class="form-group">
+            <a class="btn btn-outline-primary btn-submit" href="/users/new">Cadastrar</a>
+        </div>
+
+        <div id="result" class="text-danger">
+            #(errorMessage)
+        </div>
+    </form>
 
     <script src="/js/form.js"></script>
 }

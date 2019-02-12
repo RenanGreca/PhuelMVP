@@ -50,21 +50,46 @@ public func routes(_ router: Router) throws {
         successMessage = ""
         return try req.view().render("login", response)
     }
-
     
-    // Example of configuring a controller
+    router.get("users", "new") { req -> Future<View> in
+        let response = LoginGetResponse(errorMessage: errorMessage, successMessage: successMessage)
+        errorMessage = ""
+        successMessage = ""
+        return try req.view().render("signup", response)
+    }
+    
     let vehicleController = VehicleController()
     loginAuth.get("vehicles", use: vehicleController.index)
     loginAuth.post("vehicles", use: vehicleController.create)
     loginAuth.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
+    
+    let stationController = StationController()
+    loginAuth.post("stations", use: stationController.create)
+    
+    loginAuth.get("stations", "new") { req -> Future<View> in
+        return try req.view().render("stations-new")
+    }
 
     // Dashboard
-    loginAuth.get("dashboard") { req -> Future<View> in
+    loginAuth.get("dashboard") { req -> Response in
+        return req.redirect(to: "dashboard/fleet")
+    }
+    
+    loginAuth.get("dashboard", "fleet") { req -> Future<View> in
         return try vehicleController.list(req).flatMap { vehicles in
-            let response = DashboardResponse(vehicles: vehicles, errorMessage: errorMessage, successMessage: successMessage)
+            let response = DashboardVehicleResponse(vehicles: vehicles, errorMessage: errorMessage, successMessage: successMessage)
             errorMessage = ""
             successMessage = ""
-            return try req.view().render("dashboard", response)
+            return try req.view().render("dashboard-fleet", response)
+        }
+    }
+    
+    loginAuth.get("dashboard", "stations") { req -> Future<View> in
+        return try stationController.list(req).flatMap { stations in
+            let response = DashboardStationResponse(stations: stations, errorMessage: errorMessage, successMessage: successMessage)
+            errorMessage = ""
+            successMessage = ""
+            return try req.view().render("dashboard-stations", response)
         }
     }
     

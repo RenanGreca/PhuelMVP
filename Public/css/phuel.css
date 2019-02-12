@@ -92,6 +92,23 @@ input {
     border-color: #C03002;
 }
 
+.btn-outline-primary {
+    color: #F05022;
+    border-color: #F05022;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #D04012;
+    border-color: #D04012;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled):active {
+    color: #fff;
+    background-color: #C03002;
+    border-color: #C03002;  
+}
+
 .table td {
     vertical-align: middle;
 }
@@ -144,4 +161,10 @@ input {
 form {
     max-width: 500px;
     margin: 0 auto;
+}
+
+.inputsim {
+    width: 40px;
+    border: 1px solid #38424E;
+    /* border-color: #F05022; */
 }

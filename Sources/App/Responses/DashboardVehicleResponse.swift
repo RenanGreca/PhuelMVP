@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DashboardResponse: Codable {
+struct DashboardVehicleResponse: Codable {
     let vehicles:[Vehicle]
     let errorMessage:String
     let successMessage:String

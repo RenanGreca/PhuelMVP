@@ -303,8 +303,10 @@ function switchScenario(number) {
     if (number == 3 || number == 4) {
         $("#rowcustosimples").css('display', 'table-row')
         $("#rowcustodinamico").css('display', 'table-row')
-        $("#rowcustosimplesphuel").css('display', 'table-row')
-        $("#rowcustodinamicophuel").css('display', 'table-row')
+        if (number == 4) {
+            $("#rowcustosimplesphuel").css('display', 'table-row')
+            $("#rowcustodinamicophuel").css('display', 'table-row')
+        }
         
         var staticCost = (seriesVehicles.reduce((acc, val) => acc + val)*staticPrice/noVehicles).toFixed(2);
         $("#custosimples").html(staticCost)

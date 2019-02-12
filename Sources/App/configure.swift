@@ -35,6 +35,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     migrations.add(model: Vehicle.self, database: .sqlite)
     migrations.add(model: VehicleModel.self, database: .sqlite)
     migrations.add(model: User.self, database: .sqlite)
+    migrations.add(model: Station.self, database: .sqlite)
     services.register(migrations)
     
     try services.register(LeafProvider())

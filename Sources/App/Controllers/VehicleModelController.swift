@@ -30,7 +30,7 @@ final class VehicleModelController {
         return allVehicleModels.flatMap { vehicleModels in
 //            let success = try req.parameters.next(Int.self)
             let data = ["vehicleModels": vehicleModels]
-            return try req.view().render("cadastros-veiculos", data)
+            return try req.view().render("vehicles-new", data)
         }
     }
 }

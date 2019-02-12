@@ -1,0 +1,26 @@
+#set("table") {
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Veículo</th>
+                <th>Placa</th>
+                <th>Carga</th>
+                <!-- <th>Localização</th> -->
+                <th>Última recarga</th>
+                <th>Custo médio</th>
+            </tr>
+        </thead>
+        <tbody>
+            #for(station in stations) {
+                <tr>
+                </tr>
+            }
+
+
+            
+        </tbody>
+    </table>
+}
+
+#set("stations-disabled") { disabled }
+#embed("dashboard")
