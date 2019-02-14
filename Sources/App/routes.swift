@@ -43,20 +43,24 @@ public func routes(_ router: Router) throws {
         }
     }
     
-    
+    let userController = UserController()
     router.get("login") { req -> Future<View> in
-        let response = LoginGetResponse(errorMessage: errorMessage, successMessage: successMessage)
-        errorMessage = ""
-        successMessage = ""
-        return try req.view().render("login", response)
+        return try userController.list(req).flatMap { users in
+            let response = LoginGetResponse(users: users, errorMessage: errorMessage, successMessage: successMessage)
+            errorMessage = ""
+            successMessage = ""
+            return try req.view().render("login", response)
+        }
     }
     
-    router.get("users", "new") { req -> Future<View> in
-        let response = LoginGetResponse(errorMessage: errorMessage, successMessage: successMessage)
-        errorMessage = ""
-        successMessage = ""
-        return try req.view().render("signup", response)
-    }
+//    router.get("users", "new") { req -> Future<View> in
+//        return try userController.list(req).flatMap { vehicles in
+//            let response = LoginGetResponse(errorMessage: errorMessage, successMessage: successMessage)
+//            errorMessage = ""
+//            successMessage = ""
+//            return try req.view().render("signup", response)
+//        }
+//    }
     
     let vehicleController = VehicleController()
     loginAuth.get("vehicles", use: vehicleController.index)

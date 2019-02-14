@@ -8,6 +8,7 @@
 import Foundation
 
 struct LoginGetResponse: Codable {
+    let users:[User]
     let errorMessage:String
     let successMessage:String
 }

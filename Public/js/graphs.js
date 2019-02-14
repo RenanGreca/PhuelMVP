@@ -69,6 +69,10 @@ var maxSolar = 35 // kW
 var noVehicles = 5
 // (input)
 var chargerPower = 25 // kW
+// (input)
+var batteryCapacity = 300*0.9 // kWh
+// (input)
+var SoC = 50
 
 // Build the data arrays
 var seriesTransformer = Array(len).fill(transformerCapacity*0.92)
@@ -77,8 +81,15 @@ var seriesUC2 = arrPercentage2.map(val => val * UC2)
 var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
 var seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * noVehicles/15);
 var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
+var seriesTotalVehiclesControlled = seriesUC1.map((val, idx) => val + seriesUC2[idx] + seriesVehiclesControlled[idx])
 var seriesSolar = arrSolar.map(val => (val * maxSolar))
 var seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
+var seriesSolarExcessVehiclesControlled = seriesSolar.map((val, idx) => val - seriesTotalVehiclesControlled[idx])
+
+var currentBatteryEnergy = batteryCapacity*SoC/100
+var seriesCurrentBatteryEnergy = Array(len)
+var energyGrid = Array(len).fill(0)
+var maxEnergyTransfer = batteryCapacity*2
 
 var ctx = document.getElementById('myChart').getContext('2d');
 var chart = new Chart(ctx, {
@@ -116,12 +127,59 @@ var chart = new Chart(ctx, {
         }
     }
 });
-switchScenario(1);
+updateScenario(1);
 
-function updateCapacity(value) {        
+function setBatterySeries() {
+    currentBatteryEnergy = batteryCapacity*SoC/100
+    energyGrid = Array(len).fill(0)
+    
+    seriesTotalVehiclesControlled = seriesUC1.map((val, idx) => val + seriesUC2[idx] + seriesVehiclesControlled[idx])
+    seriesSolarExcessVehiclesControlled = seriesSolar.map((val, idx) => val - seriesTotalVehiclesControlled[idx])
+
+    // Calculate battery level for each moment
+    for (var i=0; i<len; i++) {
+        if (seriesSolarExcessVehiclesControlled[i] < 0) {
+            // Battery discharge
+            if (seriesSolarExcessVehiclesControlled[i] > -maxEnergyTransfer) {
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + seriesSolarExcessVehiclesControlled[i]
+            } else {
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy - maxEnergyTransfer
+                energyGrid[i] += seriesSolarExcessVehiclesControlled[i] + maxEnergyTransfer
+            }
+            // If level is below zero, adjust
+            if (seriesCurrentBatteryEnergy[i] < 0) {
+                energyGrid[i] += seriesCurrentBatteryEnergy[i]
+                seriesCurrentBatteryEnergy[i] = 0
+            }
+        } 
+        else if (seriesSolarExcessVehiclesControlled[i] > 0) {
+            // Battery charge
+            if (seriesSolarExcessVehiclesControlled[i] < maxEnergyTransfer) {
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + seriesSolarExcessVehiclesControlled[i]
+            } else {
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + maxEnergyTransfer
+                energyGrid[i] += seriesSolarExcessVehiclesControlled[i] - maxEnergyTransfer
+            }
+            // If level is above capacity, adjust
+            if (seriesCurrentBatteryEnergy[i] > batteryCapacity) {
+                energyGrid[i] += seriesCurrentBatteryEnergy[i]-batteryCapacity
+                seriesCurrentBatteryEnergy[i] = batteryCapacity
+            }
+        } 
+        else {
+            // Sweet spot
+            seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + seriesSolarExcessVehiclesControlled[i]
+            energyGrid[i] = 0
+        }
+        currentBatteryEnergy = seriesCurrentBatteryEnergy[i]
+    }
+}
+
+function updateCapacity(value) {
+    transformerCapacity = value  
     seriesTransformer = Array(len).fill(value)
     
-    switchScenario(currentScenario)
+    updateScenario(currentScenario)
 }
 
 function updateTotal(value) {
@@ -132,14 +190,15 @@ function updateTotal(value) {
     chart.data.datasets[1].data = seriesTotal
     // chart.data.datasets[3].data = seriesTotal
     
-    switchScenario(currentScenario)
+    updateScenario(currentScenario)
 }
 
 function updateMaxSolar(value) {
+    maxSolar = value
     seriesSolar = arrSolar.map(val => (val * value))
     seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
     
-    switchScenario(currentScenario)
+    updateScenario(currentScenario)
 }
 
 function updateVehicleNumber(value) {
@@ -148,11 +207,26 @@ function updateVehicleNumber(value) {
     seriesVehicles = arrVehicles.map(val => chargerPower * val * value/5);
     seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * value/15);
     
-    switchScenario(currentScenario)
+    updateScenario(currentScenario)
 }
 
-function switchScenario(number) {
+function updateBatteryCapacity(value) {
+    batteryCapacity = value
+
+    updateScenario(currentScenario)
+}
+
+function updateSoC(value) {
+    if (value >= 0 && value <= 100) {
+        SoC = value
+        updateScenario(currentScenario)
+    }
+}
+
+function updateScenario(number) {
     
+    setBatterySeries()
+
     var datasets = []
     switch (number) {
         case 1:
@@ -288,6 +362,60 @@ function switchScenario(number) {
             lineTension: 0.2,
         }]
         break
+        case 5:
+        datasets = [{
+            label: "Capacidade do transformador",
+            backgroundColor: colora,
+            borderColor: colora,
+            data: seriesTransformer,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+            borderWidth: 1
+        },{
+            label: "Consumo UC",
+            backgroundColor: colord,
+            borderColor: colord,
+            data: seriesTotal,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        },{
+            label: "Geração solar",
+            backgroundColor: colorc,
+            borderColor: colorc,
+            data: seriesSolar,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        },{
+            label: "Consumo de veículos em recarga inteligente Phuel",
+            backgroundColor: colore,
+            borderColor: colore,
+            data: seriesVehiclesControlled,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        },{
+            label: "Nível de energia da bateria",
+            backgroundColor: colorb,
+            borderColor: colorb,
+            data: seriesCurrentBatteryEnergy,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        }
+        // ,{
+        //     label: "Transferência do grid",
+        //     backgroundColor: colorf,
+        //     borderColor: colorf,
+        //     data: energyGrid,
+        //     fill: false,
+        //     pointRadius: 0,
+        //     lineTension: 0.2,
+        // }
+        ]
+        break
     }
     
     currentScenario = number
@@ -300,10 +428,16 @@ function switchScenario(number) {
     var totalCost = (seriesTotal.reduce((acc, val) => acc + val)*staticPrice).toFixed(2);
     $("#custototal").html(totalCost)
     
-    if (number == 3 || number == 4) {
+    $("#rowcustosimples").css('display', 'none')
+    $("#rowcustodinamico").css('display', 'none')
+    $("#rowcustosimplesphuel").css('display', 'none')
+    $("#rowcustodinamicophuel").css('display', 'none')
+    $("#rowbatterycapacity").css('display', 'none')
+    $("#rowsoc").css('display', 'none')
+    if (number >= 3) {
         $("#rowcustosimples").css('display', 'table-row')
         $("#rowcustodinamico").css('display', 'table-row')
-        if (number == 4) {
+        if (number >= 4) {
             $("#rowcustosimplesphuel").css('display', 'table-row')
             $("#rowcustodinamicophuel").css('display', 'table-row')
         }
@@ -319,14 +453,14 @@ function switchScenario(number) {
         
         var dynamicCostPhuel = (seriesVehiclesControlled.map((val, idx) => val * dynamicPrice[idx]).reduce((acc, val) => acc + val)/noVehicles).toFixed(2);
         $("#custodinamicophuel").html(dynamicCostPhuel)
-    } else {
-        $("#rowcustosimples").css('display', 'none')
-        $("#rowcustodinamico").css('display', 'none')
-        $("#rowcustosimplesphuel").css('display', 'none')
-        $("#rowcustodinamicophuel").css('display', 'none')
+
+        if (number == 5) {
+            $("#rowbatterycapacity").css('display', 'table-row')
+            $("#rowsoc").css('display', 'table-row')
+        }
     }
     
-    for (var i=1; i<=4; i++) {
+    for (var i=1; i<=5; i++) {
         $("#btnCenario"+i).removeAttr('disabled')    
     }
     $("#btnCenario"+number).attr("disabled", "true")

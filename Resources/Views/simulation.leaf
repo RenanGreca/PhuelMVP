@@ -10,10 +10,11 @@
     <div class="chart-container">
         <div class="chart">
             <div class="btn-group" role="group" aria-label="Basic example">
-                <button id="btnCenario1" type="button" class="btn btn-primary" onclick="switchScenario(1)" disabled>Cenário 1</button>
-                <button id="btnCenario2" type="button" class="btn btn-primary" onclick="switchScenario(2)">Cenário 2</button>
-                <button id="btnCenario3" type="button" class="btn btn-primary" onclick="switchScenario(3)">Cenário 3</button>
-                <button id="btnCenario4" type="button" class="btn btn-primary" onclick="switchScenario(4)">Cenário 4</button>
+                <button id="btnCenario1" type="button" class="btn btn-primary" onclick="updateScenario(1)" disabled>Cenário 1</button>
+                <button id="btnCenario2" type="button" class="btn btn-primary" onclick="updateScenario(2)">Cenário 2</button>
+                <button id="btnCenario3" type="button" class="btn btn-primary" onclick="updateScenario(3)">Cenário 3</button>
+                <button id="btnCenario4" type="button" class="btn btn-primary" onclick="updateScenario(4)">Cenário 4</button>
+                <button id="btnCenario5" type="button" class="btn btn-primary" onclick="updateScenario(5)">Cenário 5</button>
             </div>
             <canvas id="myChart"></canvas>
         </div>
@@ -50,6 +51,16 @@
                             <td>Número de veículos elétricos</td>
                             <td><input type="text" class="inputsim" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
                             <td>veículos</td>
+                        </tr>
+                        <tr id="rowbatterycapacity">
+                            <td>Capacidade da bateria instalada</td>
+                            <td><input type="text" class="inputsim" id="batteryCap" value="300" onkeyup="updateBatteryCapacity(this.value);" /></td>
+                            <td>kWh</td>
+                        </tr>
+                        <tr id="rowsoc">
+                            <td>Carga inicial da bateria (0-100)</td>
+                            <td><input type="text" class="inputsim" id="SoC" value="50" onkeyup="updateSoC(this.value);" /></td>
+                            <td>%</td>
                         </tr>
                         <tr>
                             <td>Custo diário de eletricidade</td>
