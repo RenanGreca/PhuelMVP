@@ -29,8 +29,8 @@
                         </div>
                     </td>
                     <!-- <td>kVA</td> -->
-                    <td>19/01/2019 15:43</td>
-                    <td>R$0,47/km</td>
+                    <td>#date(vehicle.lastCharged, "dd/MM/yyyy HH:mm")</td>
+                    <td>R$#(vehicle.costPerKM)/km</td>
                 </tr>
             }
         </tbody>

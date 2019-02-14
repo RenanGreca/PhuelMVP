@@ -64,6 +64,7 @@ public func routes(_ router: Router) throws {
     loginAuth.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
     
     let stationController = StationController()
+    loginAuth.get("stations", use: stationController.index)
     loginAuth.post("stations", use: stationController.create)
     
     loginAuth.get("stations", "new") { req -> Future<View> in

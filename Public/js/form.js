@@ -4,8 +4,7 @@ var vehicle = {
     make: "",
     model: "",
     battery: 0,
-    licensePlate: "",
-    charge: 100
+    licensePlate: ""
 }
 
 function updateModel(modelId) {
@@ -55,13 +54,6 @@ $( "#vehicleForm" ).submit(function( event ) {
     // Stop form from submitting normally
     event.preventDefault();
    
-    // Get some values from elements on the page:
-    var modelId = $("#modelId").val()
-    var make = $("#make").val()
-    var model = $("#model").val()
-    var battery = $("#battery").val()
-    var licensePlate = $("#inputLicense").val()
-
     var form = $( this )
     var url = form.attr( "action" );
    
@@ -87,6 +79,51 @@ $( "#vehicleForm" ).submit(function( event ) {
 
     posting.fail(function( ) {
         $( "#result" ).empty().append( "Erro ao cadastrar veículo." );
+        $( "#result" ).removeClass("text-success")
+        $( "#result" ).addClass("text-danger")
+        $( "#result" ).css("display", "block")
+    });
+});
+
+$( "#stationsForm" ).submit(function( event ) {
+    // Stop form from submitting normally
+    event.preventDefault();
+   
+    // Get some values from elements on the page:
+
+    var form = $( this )
+    var url = form.attr( "action" );
+
+    var station = {
+        model: $("#inputModel").val(),
+        current: $('input[name=current]:checked').val(),
+        power: $("#inputPower").val(),
+        specifications: $("#inputSpecifications").val()
+    }
+   
+    console.log(station)
+    // Send the data using post
+    var posting = $.post( url, station );
+   
+    // Put the results in a div
+    posting.done(function( data ) {
+        if (data.model) {
+            $( "#result" ).empty().append( "Estação "+data.model+" adicionada com sucesso." );
+            $( "#result" ).removeClass("text-danger")
+            $( "#result" ).addClass("text-success")
+            $( "#result" ).css("display", "block")
+        }
+
+        if (data.error) {
+            $( "#result" ).empty().append( "Erro ao cadastrar estação." );
+            $( "#result" ).removeClass("text-success")
+            $( "#result" ).addClass("text-danger")
+            $( "#result" ).css("display", "block")
+        }
+    });
+
+    posting.fail(function( ) {
+        $( "#result" ).empty().append( "Erro ao cadastrar estação." );
         $( "#result" ).removeClass("text-success")
         $( "#result" ).addClass("text-danger")
         $( "#result" ).css("display", "block")

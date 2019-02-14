@@ -13,12 +13,14 @@ final class Vehicle: SQLiteModel {
     var id: Int?
     
     let licensePlate: String
-    var charge:Int
+    var charge:Int?
     
     let modelId: Int
     let make: String
     let model: String
     let battery: Int
+    var lastCharged: Date?
+    var costPerKM: Double?
     
     init(id: Int? = nil, licensePlate: String, modelId: Int, make: String, model: String, battery: Int) {
         self.id = id
@@ -28,6 +30,8 @@ final class Vehicle: SQLiteModel {
         self.make = make
         self.model = model
         self.battery = battery
+        self.lastCharged = randomDateInPastWeek()
+        self.costPerKM = Double.random(between: 0.0, and: 1.0).rounded(toPlaces: 2)
     }
     
 }

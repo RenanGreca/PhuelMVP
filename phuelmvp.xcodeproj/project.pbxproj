@@ -28,6 +28,7 @@
 		1F65B2912211D8FC003BD205 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2902211D8FC003BD205 /* LoginRequest.swift */; };
 		1F65B2942211F7B8003BD205 /* DashboardVehicleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2932211F7B8003BD205 /* DashboardVehicleResponse.swift */; };
 		1F65B2962211F896003BD205 /* LoginGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2952211F896003BD205 /* LoginGetResponse.swift */; };
+		1F76336422148B5F006A76BD /* functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F76336322148B5F006A76BD /* functions.swift */; };
 		OBJ_1000 /* HTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "HTTP::HTTP::Product" /* HTTP.framework */; };
 		OBJ_1001 /* NIOHTTP1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "swift-nio::NIOHTTP1::Product" /* NIOHTTP1.framework */; };
 		OBJ_1002 /* CNIOZlib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "swift-nio::CNIOZlib::Product" /* CNIOZlib.framework */; };
@@ -5615,6 +5616,7 @@
 		1F65B2902211D8FC003BD205 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 		1F65B2932211F7B8003BD205 /* DashboardVehicleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardVehicleResponse.swift; sourceTree = "<group>"; };
 		1F65B2952211F896003BD205 /* LoginGetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginGetResponse.swift; sourceTree = "<group>"; };
+		1F76336322148B5F006A76BD /* functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = functions.swift; sourceTree = "<group>"; };
 		"Auth::Authentication::Product" /* Authentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Authentication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Console::Command::Product" /* Command.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Command.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Console::Console::Product" /* Console.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Console.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -9356,6 +9358,7 @@
 				OBJ_19 /* boot.swift */,
 				OBJ_20 /* configure.swift */,
 				OBJ_21 /* routes.swift */,
+				1F76336322148B5F006A76BD /* functions.swift */,
 			);
 			name = App;
 			path = Sources/App;
@@ -12796,6 +12799,7 @@
 				OBJ_978 /* User.swift in Sources */,
 				OBJ_979 /* Vehicle.swift in Sources */,
 				1F65B28E2211D3B3003BD205 /* UserController.swift in Sources */,
+				1F76336422148B5F006A76BD /* functions.swift in Sources */,
 				OBJ_980 /* VehicleModel.swift in Sources */,
 				1F16FC0622132A36004B1F0A /* Station.swift in Sources */,
 				OBJ_981 /* app.swift in Sources */,

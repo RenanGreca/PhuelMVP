@@ -1,0 +1,90 @@
+calculos para colocar no Cenário 5 - de geração e microgrid/bateria etc
+
+
+
+Código de baterias
+
+capacidadebateriainserida = 500 ;   %kwh    Capacidade de bateria instalada na UC, nao no carro.   - acredito que este dado e o de geração solar vai vir do cadastro da UC.
+
+capacidadebateria = capacidadebateriainserida*0.9   %aquela folga que comentei.
+
+
+
+
+SoC = 100 ;    %estado de carga inicial do banco de bateria simulacao
+
+energiaatualbateria = capacidadebateria*SoC/100     
+modvetsolar = abs(vetSolar)                                                                                                          %essa linha aqui serve pra pegar o vetor de energia solar que tá negativo, e considerar como positivo.
+energiaexcedente = modvetsolar -(vetConsumoUc2+vetor_consumoVEs3_1) ;                                      %essa linha serve pra calcular energiaexcedente, que é a geração - o consumo. (acredito que ja fazemos isso) - entao pode substituir pelo que voce ta fazendo de geracao - consumo
+
+
+vetenergiaatualbateria =zeros(1,(size(vetorhora,2)))
+energygrid =zeros(1,(size(vetorhora,2)))                                                  %zerando as variaveis, coisa de matlab
+%função horária que altera a carga da bateria
+
+for i=1:size(vetorhora,2))								%esse codigo basicamente diz que se a energia excedente for maior que 0, entao ta carregando, se for menor que 0, ta descarregando, e se for igual entao mantem.									
+
+            if energiaexcedente(i)<0
+
+		 if energiaexcedente(i)<-maxtransferenergia
+  			  vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i);
+   				 else
+     					   vetenergiaatualbateria(i) = energiaatualbateria -maxtransferenergia;
+   	                   end
+
+   	 vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i)
+    		    if vetenergiaatualbateria(i)<0
+    			    energygrid(i)= vetenergiaatualbateria(i)
+    			    vetenergiaatualbateria(i) = 0
+
+    		    end
+                             energiaatualbateria = vetenergiaatualbateria(i)
+
+             elseif energiaexcedente(i)>0
+
+			if energiaexcedente(i)<maxtransferenergia
+      				     vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i);
+			else
+   				 vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i)
+   			  
+   		if(vetenergiaatualbateria(i)>capacidadebateria)
+        				energygrid(i)= vetenergiaatualbateria(i)-capacidadebateria
+      				 vetenergiaatualbateria(i) = capacidadebateria
+                                    end
+
+      	            energiaatualbateria = vetenergiaatualbateria(i)
+
+           else
+		   vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i)
+		   energygrid(i)=0;
+		   energiaatualbateria = vetenergiaatualbateria(i)
+
+             end
+       end
+end
+
+
+% se a variavel energygrid for positiva, entao vai ter venda de energia pro grid. se for negativa, vai ter consumo (custo). então o custo total da operacao vai estar em funcao dele. se ele for positivo, ganhamos dinheiro. se for negativo, perdemos
+
+%Logo se eu multiplico o vetor energygrid pela tarifa, eu tenho receita se ele for positivo, ou prejuizo se ele for negativo.
+
+%ai eu pus estas linhas pra quantificar quanto estamos gastando
+
+
+contatarifanormal_5s = vetorTN.*energygrid;          				 %custodiário na situação com baterias
+contatarifanormal_5s = sum(contatarifanormal_5s)*-1;
+contatarifabranca_5s = vetorTB.*energygrid;
+contatarifabranca_5s = sum(contatarifabranca_5s)*-1;
+
+contatarifanormal_5c = vetorTN.* variavelconsumototal    %custodiário na situação sem baterias e sem geração.   %entao pode substituir pelo que voce ta fazendo de geracao - consumo
+contatarifanormal_5c = sum(contatarifanormal_5c);
+contatarifabranca_5c = vetorTB.* variavelconsumototal
+contatarifabranca_5c = sum(contatarifabranca_5c);
+
+
+
+
+
+
+
+

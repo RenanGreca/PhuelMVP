@@ -1,0 +1,32 @@
+for i=1:size(vetorhora,2)
+if energiaexcedente(i)<0
+    if energiaexcedente(i)>-maxtransferenergia   %essa é a linha que mudou
+    vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i)
+    else
+        vetenergiaatualbateria(i) = energiaatualbateria -maxtransferenergia
+    end
+         if vetenergiaatualbateria(i)<0
+        energygrid(i)= vetenergiaatualbateria(i)
+        vetenergiaatualbateria(i) = 0
+        end
+   energiaatualbateria = vetenergiaatualbateria(i)
+%disp('descarga')
+elseif energiaexcedente(i)>0
+       if energiaexcedente(i)<maxtransferenergia
+           vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i)
+       else
+        vetenergiaatualbateria(i) = energiaatualbateria + maxtransferenergia
+       end
+            if(vetenergiaatualbateria(i)>capacidadebateria)
+             energygrid(i)= vetenergiaatualbateria(i)-capacidadebateria
+             vetenergiaatualbateria(i) = capacidadebateria
+             end
+        energiaatualbateria = vetenergiaatualbateria(i)
+%disp('carga')
+else
+    vetenergiaatualbateria(i) = energiaatualbateria + energiaexcedente(i)
+    energygrid(i)=0
+    energiaatualbateria = vetenergiaatualbateria(i)
+    %disp('carga se manteve')
+end
+end

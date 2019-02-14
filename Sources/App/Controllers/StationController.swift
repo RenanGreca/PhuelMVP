@@ -13,14 +13,17 @@ final class StationController {
     }
     
     func create(_ req: Request) throws -> Future<Station> {
-        return try req.content.decode(Station.self).flatMap { vehicleModel in
-            return vehicleModel.save(on: req)
+        print(req)
+        return try req.content.decode(Station.self).flatMap { station in
+            station.status = StationStatus.allCases.randomElement()!.rawValue
+            station.lastUsed = randomDateInPastWeek()
+            return station.save(on: req)
         }
     }
     
     func delete(_ req: Request) throws -> Future<HTTPStatus> {
-        return try req.parameters.next(Station.self).flatMap { vehicleModel in
-            return vehicleModel.delete(on: req)
+        return try req.parameters.next(Station.self).flatMap { station in
+            return station.delete(on: req)
         }.transform(to: .ok)
     }
     

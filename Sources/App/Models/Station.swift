@@ -11,9 +11,15 @@ import Vapor
 enum Current:String,Codable {
     case ac = "AC"
     case dc = "DC"
+}
+
+enum StationStatus:Int,Codable,CaseIterable {
+    case inUse
+    case available
+    case underMaintenance
     
-    var description:String {
-        return self.rawValue
+    static var random:StationStatus? {
+        return self.allCases.randomElement()
     }
 }
 
@@ -25,6 +31,8 @@ final class Station: SQLiteModel {
     let current: String // AC or DC
     let power: Int // kW or kVA
     let specifications: String
+    var status: Int?
+    var lastUsed: Date?
     
     init(id: Int? = nil, model:String, current: String, power: Int, specifications: String) {
         self.id = id
@@ -33,6 +41,9 @@ final class Station: SQLiteModel {
         self.current = current
         self.power = power
         self.specifications = specifications
+        self.status = StationStatus.random?.rawValue
+        self.lastUsed = randomDateInPastWeek()
+        
     }
     
 }

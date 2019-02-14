@@ -16,6 +16,8 @@ final class VehicleController {
         print(req)
         return try req.content.decode(Vehicle.self).flatMap { vehicle in
             vehicle.charge = Int.random(in: 0..<100)
+            vehicle.lastCharged = randomDateInPastWeek()
+            vehicle.costPerKM = Double.random(between: 0.0, and: 1.0).rounded(toPlaces: 2)
             return vehicle.save(on: req)
         }//.transform(to: req.redirect(to: "vehicles/new"))
     }
