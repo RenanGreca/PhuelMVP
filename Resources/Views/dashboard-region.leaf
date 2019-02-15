@@ -1,0 +1,11 @@
+#set("title") { Phuel MVP }
+#set("dashboard-active") { active }
+
+#set("body") {
+
+    #(region.name)
+
+}
+
+#set("navbar") { #embed("navbar") }
+#embed("base")

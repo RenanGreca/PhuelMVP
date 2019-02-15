@@ -8,6 +8,7 @@
 import Foundation
 
 struct DashboardVehicleResponse: Codable {
+    let consumerUnit:ConsumerUnit?
     let vehicles:[Vehicle]
     let errorMessage:String
     let successMessage:String

@@ -20,6 +20,12 @@ public func routes(_ router: Router) throws {
         return req.redirect(to: "dashboard")
     }
     
+    var currentConsumerUnit:ConsumerUnit?
+    var currentRegion:Region?
+    
+    let consumerUnitController = ConsumerUnitController()
+    let regionController = RegionController()
+    
     // process login request
     auth.post("login") { req -> Future<Response> in
         return try req.content.decode(LoginRequest.self).flatMap { loginRequest in
@@ -33,8 +39,24 @@ public func routes(_ router: Router) throws {
                     }).first {
                     // If the information is valid, authenticate the user and redirect to the dashboard.
                     try req.authenticate(user)
+                    
+                    let _ = try consumerUnitController.item(managedBy: user, req).do { consumerUnit in
+                        if let consumerUnit = consumerUnit, let id = consumerUnit.id {
+                            currentConsumerUnit = consumerUnit
+                            try? req.session()["consumerUnit"] = String(id)
+                        }
+                    }
+                    
+                    let _ = try regionController.item(managedBy: user, req).do { region in
+                        if let region = region, let id = region.id {
+                            currentRegion = region
+                            try? req.session()["region"] = String(id)
+                        }
+                    }
+                    
                     successMessage = "Bem-vindo, \(user.name)."
                     return req.redirect(to: "dashboard")
+                    
                 } else {
                     errorMessage = "Erro de autenticação."
                     return req.redirect(to: "login")
@@ -77,25 +99,34 @@ public func routes(_ router: Router) throws {
 
     // Dashboard
     loginAuth.get("dashboard") { req -> Response in
-        return req.redirect(to: "dashboard/fleet")
+        if let _ = currentConsumerUnit {
+            return req.redirect(to: "dashboard/fleet")
+        }
+        if let _ = currentRegion {
+            return req.redirect(to: "dashboard/region")
+        }
+        return req.redirect(to: "login")
     }
     
     loginAuth.get("dashboard", "fleet") { req -> Future<View> in
-        return try vehicleController.list(req).flatMap { vehicles in
-            let response = DashboardVehicleResponse(vehicles: vehicles, errorMessage: errorMessage, successMessage: successMessage)
-            errorMessage = ""
-            successMessage = ""
-            return try req.view().render("dashboard-fleet", response)
-        }
+        let response = DashboardVehicleResponse(consumerUnit: currentConsumerUnit, vehicles: currentConsumerUnit!.vehicles, errorMessage: errorMessage, successMessage: successMessage)
+        errorMessage = ""
+        successMessage = ""
+        return try req.view().render("dashboard-fleet", response)
     }
     
     loginAuth.get("dashboard", "stations") { req -> Future<View> in
-        return try stationController.list(req).flatMap { stations in
-            let response = DashboardStationResponse(stations: stations, errorMessage: errorMessage, successMessage: successMessage)
-            errorMessage = ""
-            successMessage = ""
-            return try req.view().render("dashboard-stations", response)
-        }
+        let response = DashboardStationResponse(consumerUnit: currentConsumerUnit, stations: currentConsumerUnit!.stations, errorMessage: errorMessage, successMessage: successMessage)
+        errorMessage = ""
+        successMessage = ""
+        return try req.view().render("dashboard-stations", response)
+    }
+    
+    loginAuth.get("dashboard", "region") { req -> Future<View> in
+        let response = DashboardRegionResponse(region: currentRegion!, errorMessage: errorMessage, successMessage: successMessage)
+        errorMessage = ""
+        successMessage = ""
+        return try req.view().render("dashboard-region", response)
     }
     
     let vehicleModelController = VehicleModelController()
@@ -114,6 +145,8 @@ public func routes(_ router: Router) throws {
     }
     
     router.get("logout") { req -> Response in
+        currentConsumerUnit = nil
+        currentRegion = nil
         try req.destroySession()
         return req.redirect(to: "login")
     }

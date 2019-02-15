@@ -24,6 +24,11 @@
 		1F16FC0622132A36004B1F0A /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16FC0522132A36004B1F0A /* Station.swift */; };
 		1F16FC0822133219004B1F0A /* StationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16FC0722133219004B1F0A /* StationController.swift */; };
 		1F16FC0A22133624004B1F0A /* DashboardStationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F16FC0922133624004B1F0A /* DashboardStationResponse.swift */; };
+		1F23D2172216EEF5004D7A4F /* ConsumerUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D2162216EEF5004D7A4F /* ConsumerUnit.swift */; };
+		1F23D2192216F145004D7A4F /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D2182216F145004D7A4F /* Region.swift */; };
+		1F23D21B2216F8F7004D7A4F /* ConsumerUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D21A2216F8F7004D7A4F /* ConsumerUnitController.swift */; };
+		1F23D21D2216FA55004D7A4F /* RegionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D21C2216FA55004D7A4F /* RegionController.swift */; };
+		1F23D21F2217040B004D7A4F /* DashboardRegionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D21E2217040B004D7A4F /* DashboardRegionResponse.swift */; };
 		1F65B28E2211D3B3003BD205 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B28D2211D3B3003BD205 /* UserController.swift */; };
 		1F65B2912211D8FC003BD205 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2902211D8FC003BD205 /* LoginRequest.swift */; };
 		1F65B2942211F7B8003BD205 /* DashboardVehicleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2932211F7B8003BD205 /* DashboardVehicleResponse.swift */; };
@@ -5611,6 +5616,11 @@
 		1F16FC0522132A36004B1F0A /* Station.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		1F16FC0722133219004B1F0A /* StationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationController.swift; sourceTree = "<group>"; };
 		1F16FC0922133624004B1F0A /* DashboardStationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStationResponse.swift; sourceTree = "<group>"; };
+		1F23D2162216EEF5004D7A4F /* ConsumerUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumerUnit.swift; sourceTree = "<group>"; };
+		1F23D2182216F145004D7A4F /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		1F23D21A2216F8F7004D7A4F /* ConsumerUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumerUnitController.swift; sourceTree = "<group>"; };
+		1F23D21C2216FA55004D7A4F /* RegionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionController.swift; sourceTree = "<group>"; };
+		1F23D21E2217040B004D7A4F /* DashboardRegionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRegionResponse.swift; sourceTree = "<group>"; };
 		1F65B28B2211CE3C003BD205 /* libcommonCrypto.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcommonCrypto.tbd; path = usr/lib/system/libcommonCrypto.tbd; sourceTree = SDKROOT; };
 		1F65B28D2211D3B3003BD205 /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		1F65B2902211D8FC003BD205 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
@@ -7353,6 +7363,7 @@
 			isa = PBXGroup;
 			children = (
 				1F65B2932211F7B8003BD205 /* DashboardVehicleResponse.swift */,
+				1F23D21E2217040B004D7A4F /* DashboardRegionResponse.swift */,
 				1F16FC0922133624004B1F0A /* DashboardStationResponse.swift */,
 				1F65B2952211F896003BD205 /* LoginGetResponse.swift */,
 			);
@@ -7447,6 +7458,8 @@
 				OBJ_16 /* Vehicle.swift */,
 				OBJ_17 /* VehicleModel.swift */,
 				1F16FC0522132A36004B1F0A /* Station.swift */,
+				1F23D2162216EEF5004D7A4F /* ConsumerUnit.swift */,
+				1F23D2182216F145004D7A4F /* Region.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -9679,6 +9692,8 @@
 				OBJ_12 /* VehicleModelController.swift */,
 				1F65B28D2211D3B3003BD205 /* UserController.swift */,
 				1F16FC0722133219004B1F0A /* StationController.swift */,
+				1F23D21A2216F8F7004D7A4F /* ConsumerUnitController.swift */,
+				1F23D21C2216FA55004D7A4F /* RegionController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -12791,6 +12806,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_974 /* TodoController.swift in Sources */,
+				1F23D2172216EEF5004D7A4F /* ConsumerUnit.swift in Sources */,
 				1F65B2912211D8FC003BD205 /* LoginRequest.swift in Sources */,
 				OBJ_975 /* VehicleController.swift in Sources */,
 				1F65B2962211F896003BD205 /* LoginGetResponse.swift in Sources */,
@@ -12800,13 +12816,17 @@
 				OBJ_979 /* Vehicle.swift in Sources */,
 				1F65B28E2211D3B3003BD205 /* UserController.swift in Sources */,
 				1F76336422148B5F006A76BD /* functions.swift in Sources */,
+				1F23D21F2217040B004D7A4F /* DashboardRegionResponse.swift in Sources */,
 				OBJ_980 /* VehicleModel.swift in Sources */,
 				1F16FC0622132A36004B1F0A /* Station.swift in Sources */,
 				OBJ_981 /* app.swift in Sources */,
 				OBJ_982 /* boot.swift in Sources */,
+				1F23D21B2216F8F7004D7A4F /* ConsumerUnitController.swift in Sources */,
 				OBJ_983 /* configure.swift in Sources */,
+				1F23D21D2216FA55004D7A4F /* RegionController.swift in Sources */,
 				1F16FC0A22133624004B1F0A /* DashboardStationResponse.swift in Sources */,
 				1F16FC0822133219004B1F0A /* StationController.swift in Sources */,
+				1F23D2192216F145004D7A4F /* Region.swift in Sources */,
 				1F65B2942211F7B8003BD205 /* DashboardVehicleResponse.swift in Sources */,
 				OBJ_984 /* routes.swift in Sources */,
 			);
