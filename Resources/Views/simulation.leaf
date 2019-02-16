@@ -20,6 +20,7 @@
         </div>
         
         <div class="legend">
+            <h3 id="title">Unidade Consumidora</h3>
             <p id="descricao">Este cenário mostra o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca, bem como a capacidade de seu transformador de distribuição.</p>
             
             <div class="table-responsive">
@@ -42,18 +43,18 @@
                             <td><input type="text" class="inputsim" id="consumoUC1" value="15" onkeyup="updateTotal(this.value);" /></td>
                             <td>kW</td>
                         </tr>
-                        <tr>
+                        <tr id="rowsolarpower">
                             <td>Pico de geração solar</td>
                             <td><input type="text" class="inputsim" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /></td>
-                            <td>kW</td>
+                            <td>kWp</td>
                         </tr>
-                        <tr>
+                        <tr id="rowvehicles">
                             <td>Número de veículos elétricos</td>
                             <td><input type="text" class="inputsim" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
                             <td>veículos</td>
                         </tr>
                         <tr id="rowbatterycapacity">
-                            <td>Capacidade da bateria instalada</td>
+                            <td>Capacidade instalada das baterias</td>
                             <td><input type="text" class="inputsim" id="batteryCap" value="300" onkeyup="updateBatteryCapacity(this.value);" /></td>
                             <td>kWh</td>
                         </tr>
@@ -63,27 +64,27 @@
                             <td>%</td>
                         </tr>
                         <tr>
-                            <td>Custo diário de eletricidade</td>
+                            <td>Custo diário de energia da UC</td>
                             <td><span id="custototal"></span></td>
                             <td>R$</td>
                         </tr>
                         <tr id="rowcustosimples">
-                            <td>Custo de recarga (tarifa simples, sem recarga inteligente)</td>
+                            <td>Custo fora de ponta (sem recarga inteligente)</td>
                             <td><span id="custosimples"></span></td>
                             <td>R$/veículo</td>
                         </tr>
                         <tr id="rowcustodinamico">
-                            <td>Custo de recarga (tarifa dinâmica, sem recarga inteligente)</td>
+                            <td>Custo horário de ponta (sem recarga inteligente)</td>
                             <td><span id="custodinamico"></span></td>
                             <td>R$/veículo</td>
                         </tr>
                         <tr id="rowcustosimplesphuel">
-                            <td>Custo de recarga (tarifa simples, com recarga inteligente Phuel)</td>
+                            <td>Custo fora de ponta (recarga inteligente Phuel)</td>
                             <td><span id="custosimplesphuel"></span></td>
                             <td>R$/veículo</td>
                         </tr>
                         <tr id="rowcustodinamicophuel">
-                            <td>Custo de recarga (tarifa dinâmica, com recarga inteligente Phuel)</td>
+                            <td>Custo horário de ponta (recarga inteligente Phuel)</td>
                             <td><span id="custodinamicophuel"></span></td>
                             <td>R$/veículo</td>
                         </tr>

@@ -11,10 +11,18 @@ var colorf = "#aac9e5"
 var phuelBlue = "#38424E"
 var phuelOrange = "#F05022"
 
+var titles = [
+    "Unidade Consumidora",
+    "UC e Geração Renovável",
+    "Recarga de Veículos",
+    "Recarga Phuel",
+    "Solução de Microgrid"
+]
+
 var descriptions = [
 "Este cenário mostra o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca, bem como a capacidade de seu transformador de distribuição.",
 "Mostra o contraste entre o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca e a capacidade de geração de energia por Painéis Fotovoltaicos, operando dentro dos limites da capacidade do seu transformador de distribuição.",
-"Exibe o pico de consumo de energia ocasionado por veículos elétricos chegando na Unidade Consumidora, quando estes são conectados para a recarga. Nesta situação o transformador de distribuição opera em sobrecarga, o que pode causar danos e perda de vida útil.",
+"Exibe o pico de consumo de energia ocasionado por veículos elétricos chegando na Unidade Consumidora, quando estes são conectados para a recarga. Nesta situação o transformador de distribuição pode operar em sobrecarga, o que pode causar danos e perda de vida útil.",
 "Ilustra o benefício maior da solução Phuel, que é o agendamento e automatização das recargas de veículos elétricos. Nesta situação, os veículos são conectados ao mesmo tempo, porém o período de suas recargas é gerenciado, de forma a reduzir o impacto imediato na instalação e obter melhores preços nas recargas.",
 "Contrasta a necessidade energética dos veículos, bem maior que o consumo interno na Unidade Consumidora (isto é, o consumo não relacionado a veículos elétricos) com a geração solar, notando também que os horários não são coincidentes."
 ]
@@ -142,10 +150,10 @@ function setBatterySeries() {
         if (seriesSolarExcessVehiclesControlled[i] < 0) {
             // Battery discharge
             if (seriesSolarExcessVehiclesControlled[i] > -maxEnergyTransfer) {
-                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + seriesSolarExcessVehiclesControlled[i]
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + (seriesSolarExcessVehiclesControlled[i]/2)
             } else {
-                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy - maxEnergyTransfer
-                energyGrid[i] += seriesSolarExcessVehiclesControlled[i] + maxEnergyTransfer
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy - (maxEnergyTransfer/2)
+                energyGrid[i] += seriesSolarExcessVehiclesControlled[i] + (maxEnergyTransfer/2)
             }
             // If level is below zero, adjust
             if (seriesCurrentBatteryEnergy[i] < 0) {
@@ -156,10 +164,10 @@ function setBatterySeries() {
         else if (seriesSolarExcessVehiclesControlled[i] > 0) {
             // Battery charge
             if (seriesSolarExcessVehiclesControlled[i] < maxEnergyTransfer) {
-                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + seriesSolarExcessVehiclesControlled[i]
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + (seriesSolarExcessVehiclesControlled[i]/2)
             } else {
-                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + maxEnergyTransfer
-                energyGrid[i] += seriesSolarExcessVehiclesControlled[i] - maxEnergyTransfer
+                seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + (maxEnergyTransfer/2)
+                energyGrid[i] += seriesSolarExcessVehiclesControlled[i] - (maxEnergyTransfer/2)
             }
             // If level is above capacity, adjust
             if (seriesCurrentBatteryEnergy[i] > batteryCapacity) {
@@ -169,7 +177,7 @@ function setBatterySeries() {
         } 
         else {
             // Sweet spot
-            seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + seriesSolarExcessVehiclesControlled[i]
+            seriesCurrentBatteryEnergy[i] = currentBatteryEnergy + (seriesSolarExcessVehiclesControlled[i]/2)
             energyGrid[i] = 0
         }
         currentBatteryEnergy = seriesCurrentBatteryEnergy[i]
@@ -345,15 +353,17 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
-        },{
-            label: "Consumo de veículos em recarga",
-            backgroundColor: colorf,
-            borderColor: colorf,
-            data: seriesVehicles,
-            fill: false,
-            pointRadius: 0,
-            lineTension: 0.2,
-        },{
+        },
+        // {
+        //     label: "Consumo de veículos em recarga",
+        //     backgroundColor: colorf,
+        //     borderColor: colorf,
+        //     data: seriesVehicles,
+        //     fill: false,
+        //     pointRadius: 0,
+        //     lineTension: 0.2,
+        // },
+        {
             label: "Consumo de veículos em recarga inteligente Phuel",
             backgroundColor: colore,
             borderColor: colore,
@@ -399,8 +409,8 @@ function updateScenario(number) {
             lineTension: 0.2,
         },{
             label: "Nível de energia da bateria",
-            backgroundColor: colorb,
-            borderColor: colorb,
+            backgroundColor: colorf,
+            borderColor: colorf,
             data: seriesCurrentBatteryEnergy,
             fill: false,
             pointRadius: 0,
@@ -424,6 +434,7 @@ function updateScenario(number) {
     chart.data.datasets = datasets
     chart.update()
     
+    $("#title").html(titles[number-1])
     $("#descricao").html(descriptions[number-1])
     
     var totalCost = (seriesTotal.reduce((acc, val) => acc + val)*staticPrice).toFixed(2);
@@ -434,8 +445,12 @@ function updateScenario(number) {
     $("#rowcustosimplesphuel").css('display', 'none')
     $("#rowcustodinamicophuel").css('display', 'none')
     $("#rowbatterycapacity").css('display', 'none')
+    $("#rowsolarpower").css('display', 'none')
+    $("#rowvehicles").css('display', 'none')
     $("#rowsoc").css('display', 'none')
     if (number >= 3) {
+        $("#rowsolarpower").css('display', 'table-row')
+        $("#rowvehicles").css('display', 'table-row')
         $("#rowcustosimples").css('display', 'table-row')
         $("#rowcustodinamico").css('display', 'table-row')
         if (number >= 4) {
@@ -459,6 +474,10 @@ function updateScenario(number) {
             $("#rowbatterycapacity").css('display', 'table-row')
             $("#rowsoc").css('display', 'table-row')
         }
+    }
+
+    if (number == 2) {
+        $("#rowsolarpower").css('display', 'table-row')
     }
     
     for (var i=1; i<=5; i++) {
