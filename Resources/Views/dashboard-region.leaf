@@ -12,16 +12,21 @@
         <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
     </div>
 
+    <div class="btn-group-container">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button id="btnCenario1" type="button" class="btn btn-primary" disabled>Unidades Consumidoras</button>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
-                    <th>Veículo</th>
-                    <th>Placa</th>
-                    <th>Carga</th>
+                    <th>Nome</th>
+                    <th>Região</th>
+                    <th>Gerente</th>
                     <!-- <th>Localização</th> -->
-                    <th>Última recarga</th>
-                    <th>Custo médio</th>
+                    <th>Capacidade da bateria instalada</th>
+                    <th>Pico de consumo de energia</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,10 +40,10 @@
                         </td>
                         <td>#(consumerUnit.manager.name)</td>
                         <td>
-                            #(consumerUnit.batteryCapacity)
+                            #(consumerUnit.batteryCapacity) kWh
                         </td>
-                        <td>#(consumerUnit.energyPeak)</td>
-                        <td>R$#(vehicle.costPerKM)/km</td>
+                        <td>#(consumerUnit.energyPeak) kW</td>
+                        <!-- <td>R$#(vehicle.costPerKM)/km</td> -->
                     </tr>
                 }
             </tbody>
