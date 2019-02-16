@@ -29,6 +29,7 @@
 		1F23D21B2216F8F7004D7A4F /* ConsumerUnitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D21A2216F8F7004D7A4F /* ConsumerUnitController.swift */; };
 		1F23D21D2216FA55004D7A4F /* RegionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D21C2216FA55004D7A4F /* RegionController.swift */; };
 		1F23D21F2217040B004D7A4F /* DashboardRegionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D21E2217040B004D7A4F /* DashboardRegionResponse.swift */; };
+		1F23D2212218168E004D7A4F /* NewConsumerUnitGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D2202218168E004D7A4F /* NewConsumerUnitGetResponse.swift */; };
 		1F65B28E2211D3B3003BD205 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B28D2211D3B3003BD205 /* UserController.swift */; };
 		1F65B2912211D8FC003BD205 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2902211D8FC003BD205 /* LoginRequest.swift */; };
 		1F65B2942211F7B8003BD205 /* DashboardVehicleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2932211F7B8003BD205 /* DashboardVehicleResponse.swift */; };
@@ -5621,6 +5622,7 @@
 		1F23D21A2216F8F7004D7A4F /* ConsumerUnitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsumerUnitController.swift; sourceTree = "<group>"; };
 		1F23D21C2216FA55004D7A4F /* RegionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionController.swift; sourceTree = "<group>"; };
 		1F23D21E2217040B004D7A4F /* DashboardRegionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRegionResponse.swift; sourceTree = "<group>"; };
+		1F23D2202218168E004D7A4F /* NewConsumerUnitGetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConsumerUnitGetResponse.swift; sourceTree = "<group>"; };
 		1F65B28B2211CE3C003BD205 /* libcommonCrypto.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcommonCrypto.tbd; path = usr/lib/system/libcommonCrypto.tbd; sourceTree = SDKROOT; };
 		1F65B28D2211D3B3003BD205 /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		1F65B2902211D8FC003BD205 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
@@ -7366,6 +7368,7 @@
 				1F23D21E2217040B004D7A4F /* DashboardRegionResponse.swift */,
 				1F16FC0922133624004B1F0A /* DashboardStationResponse.swift */,
 				1F65B2952211F896003BD205 /* LoginGetResponse.swift */,
+				1F23D2202218168E004D7A4F /* NewConsumerUnitGetResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -12807,6 +12810,7 @@
 			files = (
 				OBJ_974 /* TodoController.swift in Sources */,
 				1F23D2172216EEF5004D7A4F /* ConsumerUnit.swift in Sources */,
+				1F23D2212218168E004D7A4F /* NewConsumerUnitGetResponse.swift in Sources */,
 				1F65B2912211D8FC003BD205 /* LoginRequest.swift in Sources */,
 				OBJ_975 /* VehicleController.swift in Sources */,
 				1F65B2962211F896003BD205 /* LoginGetResponse.swift in Sources */,

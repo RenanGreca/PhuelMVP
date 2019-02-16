@@ -12,21 +12,17 @@ final class ConsumerUnit: SQLiteModel {
     var id: Int?
     
     let name:String
-    var vehicles:[Vehicle] = []
-    var stations:[Station] = []
     
-    let region:Region
+    var region:Region?
     var manager:User?
     
     let batteryCapacity:Int // kWh
     let energyPeak:Int // kW
     
-    init(id: Int? = nil, name:String, vehicles:[Vehicle], stations:[Station], region:Region, manager:User, batteryCapacity:Int, energyPeak:Int) {
+    init(id: Int? = nil, name:String, region:Region, manager:User, batteryCapacity:Int, energyPeak:Int) {
         self.id = id
         
         self.name = name
-        self.vehicles = vehicles
-        self.stations = stations
         self.region = region
         self.manager = manager
         self.batteryCapacity = batteryCapacity

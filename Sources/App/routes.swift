@@ -1,6 +1,9 @@
 import Vapor
 import Authentication
 
+var currentConsumerUnit:ConsumerUnit?
+var currentRegion:Region?
+
 /// Register your application's routes here.
 public func routes(_ router: Router) throws {
     
@@ -19,9 +22,6 @@ public func routes(_ router: Router) throws {
     loginAuth.get("") { req -> Response in
         return req.redirect(to: "dashboard")
     }
-    
-    var currentConsumerUnit:ConsumerUnit?
-    var currentRegion:Region?
     
     let consumerUnitController = ConsumerUnitController()
     let regionController = RegionController()
@@ -84,10 +84,16 @@ public func routes(_ router: Router) throws {
 //        }
 //    }
     
+    let vehicleModelController = VehicleModelController()
+    loginAuth.get("vehicles/models", use: vehicleModelController.index)
+    loginAuth.post("vehicles/models", use: vehicleModelController.create)
+    loginAuth.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
+    
     let vehicleController = VehicleController()
     loginAuth.get("vehicles", use: vehicleController.index)
     loginAuth.post("vehicles", use: vehicleController.create)
     loginAuth.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
+    loginAuth.get("vehicles", "new", use: vehicleModelController.list)
     
     let stationController = StationController()
     loginAuth.get("stations", use: stationController.index)
@@ -95,6 +101,16 @@ public func routes(_ router: Router) throws {
     
     loginAuth.get("stations", "new") { req -> Future<View> in
         return try req.view().render("stations-new")
+    }
+    
+    loginAuth.get("consumerUnits", use: consumerUnitController.index)
+    loginAuth.post("consumerUnits", use: consumerUnitController.create)
+    loginAuth.get("consumerUnits", "new") { req -> Future<View> in
+        return try regionController.allSubRegions(of: currentRegion!, req).flatMap() { regions in
+            let response = NewConsumerUnitGetResponse(regions: regions)
+            return try req.view().render("consumerunits-new", response)
+        }
+        
     }
 
     // Dashboard
@@ -109,32 +125,37 @@ public func routes(_ router: Router) throws {
     }
     
     loginAuth.get("dashboard", "fleet") { req -> Future<View> in
-        let response = DashboardVehicleResponse(consumerUnit: currentConsumerUnit, vehicles: currentConsumerUnit!.vehicles, errorMessage: errorMessage, successMessage: successMessage)
-        errorMessage = ""
-        successMessage = ""
-        return try req.view().render("dashboard-fleet", response)
+        return try vehicleController.vehicles(of: currentConsumerUnit!, req).flatMap() { vehicles in
+            let response = DashboardVehicleResponse(consumerUnit: currentConsumerUnit, vehicles: vehicles, errorMessage: errorMessage, successMessage: successMessage)
+            errorMessage = ""
+            successMessage = ""
+            return try req.view().render("dashboard-fleet", response)
+        }
     }
     
     loginAuth.get("dashboard", "stations") { req -> Future<View> in
-        let response = DashboardStationResponse(consumerUnit: currentConsumerUnit, stations: currentConsumerUnit!.stations, errorMessage: errorMessage, successMessage: successMessage)
-        errorMessage = ""
-        successMessage = ""
-        return try req.view().render("dashboard-stations", response)
+        return try stationController.stations(of: currentConsumerUnit!, req).flatMap() { stations in
+            let response = DashboardStationResponse(consumerUnit: currentConsumerUnit, stations: stations, errorMessage: errorMessage, successMessage: successMessage)
+            errorMessage = ""
+            successMessage = ""
+            return try req.view().render("dashboard-stations", response)
+        }
     }
     
     loginAuth.get("dashboard", "region") { req -> Future<View> in
-        let response = DashboardRegionResponse(region: currentRegion!, errorMessage: errorMessage, successMessage: successMessage)
-        errorMessage = ""
-        successMessage = ""
-        return try req.view().render("dashboard-region", response)
+        
+        return try consumerUnitController.consumerUnits(of: currentRegion!, req).flatMap() { consumerUnits in
+            
+            
+            let response = DashboardRegionResponse(region: currentRegion!, consumerUnits: consumerUnits, errorMessage: errorMessage, successMessage: successMessage)
+            errorMessage = ""
+            successMessage = ""
+            return try req.view().render("dashboard-region", response)
+            
+        }
+        
+        
     }
-    
-    let vehicleModelController = VehicleModelController()
-    loginAuth.get("vehicles/models", use: vehicleModelController.index)
-    loginAuth.post("vehicles/models", use: vehicleModelController.create)
-    loginAuth.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
-    
-    loginAuth.get("vehicles", "new", use: vehicleModelController.list)
     
     loginAuth.get("simulation") { req in
         return try req.view().render("simulation")

@@ -94,10 +94,14 @@ $( "#stationsForm" ).submit(function( event ) {
     var form = $( this )
     var url = form.attr( "action" );
 
+    var txt = $("#inputPower").val();
+    var power = txt.match(/\d/g);
+    power = power.join("");
+
     var station = {
         model: $("#inputModel").val(),
         current: $('input[name=current]:checked').val(),
-        power: $("#inputPower").val(),
+        power: power,
         specifications: $("#inputSpecifications").val()
     }
    

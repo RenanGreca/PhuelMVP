@@ -17,6 +17,7 @@ final class StationController {
         return try req.content.decode(Station.self).flatMap { station in
             station.status = StationStatus.allCases.randomElement()!.rawValue
             station.lastUsed = randomDateInPastWeek()
+            station.consumerUnit = currentConsumerUnit
             return station.save(on: req)
         }
     }
@@ -29,5 +30,15 @@ final class StationController {
     
     func list(_ req: Request) throws -> Future<[Station]> {
         return Station.query(on: req).all()
+    }
+    
+    func stations(of consumerUnit: ConsumerUnit, _ req: Request) throws -> Future<[Station]> {
+        
+        return Station.query(on: req).all().map { stations in
+            return stations.filter({
+                $0.consumerUnit?.id == consumerUnit.id
+            })
+        }
+        
     }
 }

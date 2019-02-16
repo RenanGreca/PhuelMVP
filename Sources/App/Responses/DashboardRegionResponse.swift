@@ -9,6 +9,7 @@ import Foundation
 
 struct DashboardRegionResponse: Codable {
     let region:Region
+    let consumerUnits: [ConsumerUnit]
     let errorMessage:String
     let successMessage:String
 }

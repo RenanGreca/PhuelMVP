@@ -33,8 +33,9 @@ final class Station: SQLiteModel {
     let specifications: String
     var status: Int?
     var lastUsed: Date?
+    var consumerUnit: ConsumerUnit?
     
-    init(id: Int? = nil, model:String, current: String, power: Int, specifications: String) {
+    init(id: Int? = nil, model:String, current: String, power: Int, specifications: String, consumerUnit: ConsumerUnit) {
         self.id = id
         
         self.model = model
@@ -43,7 +44,7 @@ final class Station: SQLiteModel {
         self.specifications = specifications
         self.status = StationStatus.random?.rawValue
         self.lastUsed = randomDateInPastWeek()
-        
+        self.consumerUnit = consumerUnit
     }
     
 }

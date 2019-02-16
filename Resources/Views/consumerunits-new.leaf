@@ -1,0 +1,55 @@
+#set("title") { Phuel MVP }
+#set("cadastros-active") { active }
+
+#set("body") {
+
+    <div class="starter-template">
+        <h1>Cadastro de unidade consumidora</h1>
+        <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
+    </div>
+
+    <form id="ucForm" action="/consumerUnits">
+        <div class="form-group">
+            <label for="inputName">Nome:</label>
+            <input type="text" class="form-control" id="inputName" name="name">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+
+        <div class="form-group">
+            <label for="inputRegion">Região:</label>
+            <select id="inputRegion" class="form-control" >
+                <option></option>
+                #for(region in regions) {
+                    <option value="#(region.id)">#(region.name), #(region.superRegion.code)</option>
+                }
+            </select>
+            <!-- <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
+        </div>
+
+        <div class="form-group">
+            <label for="inputPower">Potência:</label>
+            <input type="text" class="form-control" id="inputPower" name="power">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+
+        <div class="form-group">
+            <label for="inputSpecifications">Outras especificações:</label>
+            <input type="text" class="form-control" id="inputSpecifications" name="specifications">
+            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+
+        <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-submit">Salvar</button>
+        </div>
+    </form>
+
+    <div id="result">
+    
+    </div>
+
+    <script src="/js/form.js"></script>
+
+}
+
+#set("navbar") { #embed("navbar-region") }
+#embed("base")

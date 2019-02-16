@@ -131,6 +131,7 @@ updateScenario(1);
 
 function setBatterySeries() {
     currentBatteryEnergy = batteryCapacity*SoC/100
+    seriesCurrentBatteryEnergy = Array(len)
     energyGrid = Array(len).fill(0)
     
     seriesTotalVehiclesControlled = seriesUC1.map((val, idx) => val + seriesUC2[idx] + seriesVehiclesControlled[idx])

@@ -19,6 +19,9 @@ final class User: SQLiteModel {
     var password: String
     var passwordHash: String
     
+    var consumerUnit: String?
+    var region: String?
+        
     init(id: Int? = nil, name: String, email: String, password: String) {
         self.id = id
         self.name = name
