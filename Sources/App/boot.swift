@@ -53,6 +53,9 @@ public func boot(_ app: Application) throws {
     let amanda = User(name: "Amanda", email: "amanda@phuel.com.br", password: "1234")
     let _ = try amanda.create(on: conn).wait()
     
+    let ricardo = User(name: "Ricardo", email: "amanda@phuel.com.br", password: "1234")
+    let _ = try ricardo.create(on: conn).wait()
+    
     // Create pre-baked regions
     let brasil = Region(name: "Brasil", code: "BRA", manager: renan)
     let _ = try brasil.create(on: conn).wait()
@@ -75,12 +78,12 @@ public func boot(_ app: Application) throws {
     let _ = try felipe.update(on: conn).wait()
     
     // Create pre-baked consumer units
-    let ucBatel = ConsumerUnit(name: "CDD Batel", region: curitiba, manager: thiago, batteryCapacity: 300, energyPeak: 15)
+    let ucBatel = ConsumerUnit(name: "CDD Batel", region: curitiba, manager: thiago, batteryCapacity: 300, energyPeak: 15, generationPeak: 35)
     let _ = try ucBatel.create(on: conn).wait()
     thiago.consumerUnit = ucBatel.name
     let _ = try thiago.update(on: conn).wait()
     
-    let ucLondrina = ConsumerUnit(name: "CDD Londrina", region: londrina, manager: amanda, batteryCapacity: 300, energyPeak: 15)
+    let ucLondrina = ConsumerUnit(name: "CDD Londrina", region: londrina, manager: amanda, batteryCapacity: 300, energyPeak: 15, generationPeak: 35)
     let _ = try ucLondrina.create(on: conn).wait()
     amanda.consumerUnit = ucLondrina.name
     let _ = try amanda.update(on: conn).wait()

@@ -74,15 +74,17 @@ public func routes(_ router: Router) throws {
             return try req.view().render("login", response)
         }
     }
-    
-//    router.get("users", "new") { req -> Future<View> in
+
+    loginAuth.post("users", use: userController.create)
+    loginAuth.get("users", "new") { req -> Future<View> in
+        return try req.view().render("users-new")
 //        return try userController.list(req).flatMap { vehicles in
 //            let response = LoginGetResponse(errorMessage: errorMessage, successMessage: successMessage)
 //            errorMessage = ""
 //            successMessage = ""
 //            return try req.view().render("signup", response)
 //        }
-//    }
+    }
     
     let vehicleModelController = VehicleModelController()
     loginAuth.get("vehicles/models", use: vehicleModelController.index)
@@ -107,8 +109,10 @@ public func routes(_ router: Router) throws {
     loginAuth.post("consumerUnits", use: consumerUnitController.create)
     loginAuth.get("consumerUnits", "new") { req -> Future<View> in
         return try regionController.allSubRegions(of: currentRegion!, req).flatMap() { regions in
-            let response = NewConsumerUnitGetResponse(regions: regions)
-            return try req.view().render("consumerunits-new", response)
+            return try userController.notManagers(req).flatMap() { users in
+                let response = NewConsumerUnitGetResponse(regions: regions, users: users)
+                return try req.view().render("consumerunits-new", response)
+            }
         }
         
     }
@@ -145,7 +149,6 @@ public func routes(_ router: Router) throws {
     loginAuth.get("dashboard", "region") { req -> Future<View> in
         
         return try consumerUnitController.consumerUnits(of: currentRegion!, req).flatMap() { consumerUnits in
-            
             
             let response = DashboardRegionResponse(region: currentRegion!, consumerUnits: consumerUnits, errorMessage: errorMessage, successMessage: successMessage)
             errorMessage = ""

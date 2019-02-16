@@ -1,0 +1,41 @@
+#set("title") { Phuel MVP }
+#set("cadastros-active") { active }
+
+#set("body") {
+
+    <div class="starter-template">
+        <h1>Cadastro de usuário</h1>
+        <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
+    </div>
+
+    <form id="userForm" action="/users">
+        <div class="form-group">
+            <label for="inputName">Nome:</label>
+            <input type="text" class="form-control" id="inputName" name="name">
+        </div>
+
+        <div class="form-group">
+            <label for="inputEmail">E-mail:</label>
+            <input type="text" class="form-control" id="inputEmail" name="email">
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword">Senha:</label>
+            <input type="password" class="form-control" id="inputPassword" name="password">
+        </div>
+
+        <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-submit">Salvar</button>
+        </div>
+    </form>
+
+    <div id="result">
+    
+    </div>
+
+    <script src="/js/form.js"></script>
+
+}
+
+#set("navbar") { #embed("navbar-region") }
+#embed("base")

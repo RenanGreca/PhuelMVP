@@ -8,29 +8,57 @@
     </div>  
 
     #for(user in users) {
-        <form id="loginForm" method="POST" action="/login">
-            <div class="form-group">
-                <!--<label for="inputEmail">Email:</label>-->
-                <input type="hidden" class="form-control" id="inputEmail" name="email" value="#(user.email)" placeholder="exemplo@teste.com">
-            </div>
+        #if(user.consumerUnit) {
+            <form id="loginForm" method="POST" action="/login">
+                <div class="form-group">
+                    <!--<label for="inputEmail">Email:</label>-->
+                    <input type="hidden" class="form-control" id="inputEmail" name="email" value="#(user.email)" placeholder="exemplo@teste.com">
+                </div>
 
-            <div class="form-group">
-                <!--<label for="inputPassword">Senha:</label>-->
-                <input type="hidden" class="form-control" id="inputPassword" name="password" value="#(user.password)" placeholder="Senha">
-            </div>
+                <div class="form-group">
+                    <!--<label for="inputPassword">Senha:</label>-->
+                    <input type="hidden" class="form-control" id="inputPassword" name="password" value="#(user.password)" placeholder="Senha">
+                </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-submit">#(user.consumerUnit)#(user.region)</button>
-            </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-submit">#(user.consumerUnit)#(user.region)</button>
+                </div>
 
-            <!--<div class="form-group">
-                <a class="btn btn-outline-primary btn-submit" href="/users/new">Cadastrar</a>
-            </div>-->
+                <!--<div class="form-group">
+                    <a class="btn btn-outline-primary btn-submit" href="/users/new">Cadastrar</a>
+                </div>-->
 
-            <div id="result" class="text-danger">
-                #(errorMessage)
-            </div>
-        </form>
+                <div id="result" class="text-danger">
+                    #(errorMessage)
+                </div>
+            </form>
+        }
+
+        #if(user.region) {
+            <form id="loginForm" method="POST" action="/login">
+                <div class="form-group">
+                    <!--<label for="inputEmail">Email:</label>-->
+                    <input type="hidden" class="form-control" id="inputEmail" name="email" value="#(user.email)" placeholder="exemplo@teste.com">
+                </div>
+
+                <div class="form-group">
+                    <!--<label for="inputPassword">Senha:</label>-->
+                    <input type="hidden" class="form-control" id="inputPassword" name="password" value="#(user.password)" placeholder="Senha">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-submit">#(user.consumerUnit)#(user.region)</button>
+                </div>
+
+                <!--<div class="form-group">
+                    <a class="btn btn-outline-primary btn-submit" href="/users/new">Cadastrar</a>
+                </div>-->
+
+                <div id="result" class="text-danger">
+                    #(errorMessage)
+                </div>
+            </form>
+        }
     }
 
     

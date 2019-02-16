@@ -133,3 +133,84 @@ $( "#stationsForm" ).submit(function( event ) {
         $( "#result" ).css("display", "block")
     });
 });
+
+$( "#ucForm" ).submit(function( event ) {
+    event.preventDefault();
+
+    var form = $( this )
+    var url = form.attr( "action" );
+
+    var consumerUnit = {
+        name: $("#inputName").val(),
+        region: $("#inputRegion").val(),
+        user: $("#inputUser").val(),
+        power: $("#inputPower").val(),
+        generation: $("#inputGeneration").val(),
+        capacity: $("#inputCapacity").val()
+    }
+
+    console.log(consumerUnit)
+    var posting = $.post( url, consumerUnit );
+    // Put the results in a div
+    posting.done(function( data ) {
+        if (data.name) {
+            $( "#result" ).empty().append( "Sucesso ao cadastrar unidade consumidora "+data.name+"." );
+            $( "#result" ).removeClass("text-danger")
+            $( "#result" ).addClass("text-success")
+            $( "#result" ).css("display", "block")
+        }
+
+        if (data.error) {
+            $( "#result" ).empty().append( "Erro ao cadastrar unidade consumidora." );
+            $( "#result" ).removeClass("text-success")
+            $( "#result" ).addClass("text-danger")
+            $( "#result" ).css("display", "block")
+        }
+    });
+
+    posting.fail(function( ) {
+        $( "#result" ).empty().append( "Erro ao cadastrar unidade consumidora." );
+        $( "#result" ).removeClass("text-success")
+        $( "#result" ).addClass("text-danger")
+        $( "#result" ).css("display", "block")
+    });
+
+})
+
+$( "#userForm" ).submit(function( event ) {
+    event.preventDefault();
+
+    var form = $( this )
+    var url = form.attr( "action" );
+
+    var user = {
+        name: $("#inputName").val(),
+        email: $("#inputEmail").val(),
+        password: $("#inputPassword").val()
+    }
+
+    var posting = $.post( url, user );
+    // Put the results in a div
+    posting.done(function( data ) {
+        if (data.name) {
+            $( "#result" ).empty().append( "Sucesso ao cadastrar usuário "+data.name+"." );
+            $( "#result" ).removeClass("text-danger")
+            $( "#result" ).addClass("text-success")
+            $( "#result" ).css("display", "block")
+        }
+
+        if (data.error) {
+            $( "#result" ).empty().append( "Erro ao cadastrar unidade consumidora." );
+            $( "#result" ).removeClass("text-success")
+            $( "#result" ).addClass("text-danger")
+            $( "#result" ).css("display", "block")
+        }
+    });
+
+    posting.fail(function( ) {
+        $( "#result" ).empty().append( "Erro ao cadastrar unidade consumidora." );
+        $( "#result" ).removeClass("text-success")
+        $( "#result" ).addClass("text-danger")
+        $( "#result" ).css("display", "block")
+    });
+})

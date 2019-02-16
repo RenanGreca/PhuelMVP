@@ -12,30 +12,41 @@
         <div class="form-group">
             <label for="inputName">Nome:</label>
             <input type="text" class="form-control" id="inputName" name="name">
-            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
         </div>
 
         <div class="form-group">
             <label for="inputRegion">Região:</label>
-            <select id="inputRegion" class="form-control" >
+            <select id="inputRegion" class="form-control" name="region" onchange="updateRegion(self.value)">
                 <option></option>
                 #for(region in regions) {
                     <option value="#(region.id)">#(region.name), #(region.superRegion.code)</option>
                 }
             </select>
-            <!-- <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> -->
         </div>
 
         <div class="form-group">
-            <label for="inputPower">Potência:</label>
+            <label for="inputUser">Gerente:</label>
+            <select id="inputUser" class="form-control" name="user" onchange="updateUser(self.value)">
+                <option></option>
+                #for(user in users) {
+                    <option value="#(user.id)">#(user.name)</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="inputPower">Pico de consumo (kW):</label>
             <input type="text" class="form-control" id="inputPower" name="power">
-            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
         </div>
 
         <div class="form-group">
-            <label for="inputSpecifications">Outras especificações:</label>
-            <input type="text" class="form-control" id="inputSpecifications" name="specifications">
-            <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            <label for="inputGeneration">Pico de geração (kW):</label>
+            <input type="text" class="form-control" id="inputGeneration" name="generation">
+        </div>
+
+        <div class="form-group">
+            <label for="inputCapacity">Capacidade do transformador (kWh):</label>
+            <input type="text" class="form-control" id="inputCapacity" name="capacity">
         </div>
 
         <div class="form-group">

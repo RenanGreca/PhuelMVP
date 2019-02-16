@@ -9,5 +9,6 @@ import Foundation
 
 struct NewConsumerUnitGetResponse: Codable {
     let regions: [Region]
+    let users: [User]
     
 }

@@ -14,10 +14,23 @@ final class ConsumerUnitController {
     }
     
     func create(_ req: Request) throws -> Future<ConsumerUnit> {
-        return try req.content.decode(ConsumerUnit.self).flatMap { consumerUnit in
-            consumerUnit.region = currentRegion
-            return consumerUnit.save(on: req)
-        }
+        return try req.content.decode(NewConsumerUnitRequest.self).flatMap { consumerUnitRequest in
+            return Region.query(on: req).all().flatMap() { regions in
+                let region = regions.filter({$0.id == consumerUnitRequest.region}).first
+                return User.query(on: req).all().flatMap() { users in
+                    let user = users.filter({$0.id == consumerUnitRequest.user}).first
+                    
+                    let consumerUnit = ConsumerUnit(name: consumerUnitRequest.name, region: region, manager: user, batteryCapacity: consumerUnitRequest.capacity, energyPeak: consumerUnitRequest.power, generationPeak: consumerUnitRequest.generation)
+                    
+                    user?.consumerUnit = consumerUnit.name
+                    let _ = user?.update(on: req)
+                    
+                    return consumerUnit.save(on: req)
+//                    return req.redirect(to: "dashboard")
+                    
+                }
+            }
+        } //.transform(to: req.redirect(to: "dashboard").future(req.redirect(to: "dashboard")))
     }
     
     func list(_ req: Request) throws -> Future<[ConsumerUnit]> {
