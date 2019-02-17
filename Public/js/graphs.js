@@ -24,7 +24,7 @@ var descriptions = [
 "Mostra o contraste entre o consumo já existente dentro da Unidade Consumidora (UC) e a capacidade de geração de energia por Painéis Fotovoltaicos, operando dentro dos limites da demanda contratada.",
 "Exibe o pico de consumo de energia ocasionado por veículos elétricos chegando na Unidade Consumidora, quando estes são conectados para a recarga. Nesta situação a estrutura da instalação elétrica pode operar em sobrecarga, o que pode causar danos e perda de vida útil.",
 "Ilustra o benefício maior da solução Phuel, que é o agendamento e automatização das recargas de veículos elétricos. Nesta situação, os veículos são conectados ao mesmo tempo, porém o período de suas recargas é gerenciado, de forma a reduzir o impacto imediato na instalação e obter melhores preços nas recargas.",
-"Contrasta a necessidade energética dos veículos, bem maior que o consumo interno na Unidade Consumidora (isto é, o consumo não relacionado a veículos elétricos) com a geração solar, notando também que os horários não são coincidentes."
+"As recargas inteligentes integradas com um microgrid de renováveis e armazenamento, domando decisões para o melhor uso da energia com o melhor preço."
 ]
 
 // Variables
