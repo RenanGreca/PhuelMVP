@@ -3,9 +3,9 @@
         <li class="nav-item #get(dashboard-active)">
             <a class="nav-link" href="/">Dashboard</a>
         </li>
-        <li class="nav-item #get(graficos-active)">
+        <!--<li class="nav-item #get(graficos-active)">
             <a class="nav-link" href="/simulation">Simulação</a>
-        </li>
+        </li>-->
         <li class="nav-item dropdown #get(cadastros-active)">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Cadastros

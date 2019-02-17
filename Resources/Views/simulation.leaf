@@ -3,7 +3,7 @@
 
 #set("body") {
     <div class="starter-template">
-        <h1>Dados do CDD Mooca Ambev</h1>
+        <h1>Dados da UC #(consumerUnit.name)</h1>
         <!-- <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
     </div>
         
@@ -33,29 +33,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <!--<tr>
                             <td>Capacidade do transformador</td>
-                            <td><input type="text" class="inputsim" id="capacidade" value="45" onkeyup="updateCapacity(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="capacidade" value="#(consumerUnit.apacity)" onkeyup="updateCapacity(this.value);" /></td>
                             <td>kVA</td>
+                        </tr>-->
+                        <tr>
+                            <td>Demanda da UC</td>
+                            <td><input type="text" class="inputsim" id="demandaUC" value="#(consumerUnit.demand)" onkeyup="updateDemand(this.value);" /></td>
+                            <td>kW</td>
                         </tr>
                         <tr>
                             <td>Consumo máximo da UC</td>
-                            <td><input type="text" class="inputsim" id="consumoUC1" value="15" onkeyup="updateTotal(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="consumoUC1" value="#(consumerUnit.energyPeak)" onkeyup="updateTotal(this.value);" /></td>
                             <td>kW</td>
                         </tr>
                         <tr id="rowsolarpower">
                             <td>Pico de geração solar</td>
-                            <td><input type="text" class="inputsim" id="geracaoSolar" value="35" onkeyup="updateMaxSolar(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="geracaoSolar" value="#(consumerUnit.generationPeak)" onkeyup="updateMaxSolar(this.value);" /></td>
                             <td>kWp</td>
                         </tr>
                         <tr id="rowvehicles">
                             <td>Número de veículos elétricos</td>
-                            <td><input type="text" class="inputsim" id="numVeiculos" value="5" onkeyup="updateVehicleNumber(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="numVeiculos" value="#(vehicleCount)" onkeyup="updateVehicleNumber(this.value);" /></td>
                             <td>veículos</td>
                         </tr>
                         <tr id="rowbatterycapacity">
                             <td>Capacidade instalada das baterias</td>
-                            <td><input type="text" class="inputsim" id="batteryCap" value="300" onkeyup="updateBatteryCapacity(this.value);" /></td>
+                            <td><input type="text" class="inputsim" id="batteryCap" value="#(consumerUnit.batteryCapacity)" onkeyup="updateBatteryCapacity(this.value);" /></td>
                             <td>kWh</td>
                         </tr>
                         <tr id="rowsoc">
@@ -105,6 +110,48 @@
             
         </div>
     </div>
+
+    <script>
+        // (input)
+        //var transformerCapacity = 45 // kVA
+        // (input)
+        //var UC1 = #(consumerUnit.energyPeak)*2/3 // kW
+        // (input)
+        //var UC2 = #(consumerUnit.energyPeak)*1/3 // kW
+        // (input)
+        //var maxSolar = #(consumerUnit.generationPeak) // kW
+        // (input)
+        //var noVehicles = #(vehicleCount)
+        // (input)
+        //var chargerPower = 40 // kW
+        // (input)
+        //var batteryCapacity = #(consumerUnit.batteryCapacity)*0.9 // kWh
+        // (input)
+        //var SoC = 50
+        // (input)
+        //var demanda = #(consumerUnit.demand)
+    </script>
+
+    <script>
+        // (input)
+        var transformerCapacity = 45 // kVA
+        // (input)
+        var UC1 = #(consumerUnit.energyPeak)*2/3 // kW
+        // (input)
+        var UC2 = #(consumerUnit.energyPeak)*1/3 // kW
+        // (input)
+        var maxSolar = #(consumerUnit.generationPeak) // kW
+        // (input)
+        var noVehicles = #(vehicleCount)
+        // (input)
+        var chargerPower = 40 // kW
+        // (input)
+        var batteryCapacity = #(consumerUnit.batteryCapacity)*0.9 // kWh
+        // (input)
+        var SoC = 50
+        // (input)
+        var demanda = #(consumerUnit.demand)
+    </script>
 
     <script src="js/Chart.js"></script>
     <script src="js/graphs.js"></script>

@@ -162,8 +162,13 @@ public func routes(_ router: Router) throws {
         
     }
     
-    loginAuth.get("simulation") { req in
-        return try req.view().render("simulation")
+    // Dashboard
+    loginAuth.get("simulation") { req -> Future<View> in
+        return try vehicleController.vehicles(of: currentConsumerUnit!, req).flatMap() { vehicles in
+            let response = SimulationConsumerUnitGetResponse(consumerUnit: currentConsumerUnit, vehicleCount: vehicles.count)
+            
+            return try req.view().render("simulation", response)
+        }
     }
     
     loginAuth.get("operation") { req in

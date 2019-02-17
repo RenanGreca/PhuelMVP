@@ -65,25 +65,8 @@ var dynamicPrice = [0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,
 0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.42,0.54,0.54,
 0.82,0.82,0.82,0.82,0.82,0.82,0.54,0.54,0.42,0.42,0.42,0.42]
 
-// (input)
-var transformerCapacity = 45 // kVA
-// (input)
-var UC1 = 10 // kW
-// (input)
-var UC2 = 5 // kW
-// (input)
-var maxSolar = 35 // kW
-// (input)
-var noVehicles = 5
-// (input)
-var chargerPower = 25 // kW
-// (input)
-var batteryCapacity = 300*0.9 // kWh
-// (input)
-var SoC = 50
-
 // Build the data arrays
-var seriesTransformer = Array(len).fill(transformerCapacity*0.92)
+var seriesTransformer = Array(len).fill(demanda)
 var seriesUC1 = arrPercentage.map(val => val * UC1)
 var seriesUC2 = arrPercentage2.map(val => val * UC2)
 var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
@@ -168,7 +151,11 @@ function setCostSeries() {
     seriesPonta = Array(len).fill(0)
     seriesFora = Array(len).fill(0)
 
-    var demanda = 600
+    seriesEnergyCostPhuel = Array(len).fill(0)
+    seriesPontaPhuel = Array(len).fill(0)
+    seriesForaPhuel = Array(len).fill(0)
+
+    // var demanda = 600
     var tarifaDemanda = 11.17
     var tarifaUltrapassagem = 22.34
 
@@ -303,9 +290,108 @@ function setBatterySeries() {
     }
 }
 
+function setCostWithBatterySeries() {
+    seriesEnergyCost = Array(len).fill(0)
+    seriesPonta = Array(len).fill(0)
+    seriesFora = Array(len).fill(0)
+
+    seriesEnergyCostPhuel = Array(len).fill(0)
+    seriesPontaPhuel = Array(len).fill(0)
+    seriesForaPhuel = Array(len).fill(0)
+
+    // var demanda = 600
+    var tarifaDemanda = 11.17
+    var tarifaUltrapassagem = 22.34
+
+    var tusdPonta = 0.47503
+    var tePonta = 0.41154
+    var tusdFora = 0.05728
+    var teFora = 0.25808
+
+    energyGrid = energyGrid.map((val) => -val)
+
+    for (var i=0; i<len; i++) {
+        if (i > 34 && i < 41) {
+            seriesEnergyCost[i] = (tusdPonta+tePonta)*seriesTotalVehiclesSolar[i]
+            seriesPonta[i] = (tusdPonta+tePonta)*seriesTotalVehiclesSolar[i]
+
+            seriesEnergyCostPhuel[i] = (tusdPonta+tePonta)*energyGrid[i]
+            seriesPontaPhuel[i] = (tusdPonta+tePonta)*energyGrid[i]
+
+            if (seriesTotalVehiclesSolar[i] > demanda*1.1) {
+                seriesEnergyCost[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesPonta[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCost[i] += (demanda*tarifaDemanda/1440)
+                seriesPonta[i] += (demanda*tarifaDemanda/1440)
+            }
+            if (energyGrid[i] > demanda*1.1) {
+                seriesEnergyCostPhuel[i] += (energyGrid[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesPontaPhuel[i] += (energyGrid[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCostPhuel[i] += (demanda*tarifaDemanda/1440)
+                seriesPontaPhuel[i] += (demanda*tarifaDemanda/1440)
+            }
+        } else {
+            seriesEnergyCost[i] = (tusdFora+teFora)*seriesTotalVehiclesSolar[i]
+            seriesFora[i] = (tusdFora+teFora)*seriesTotalVehiclesSolar[i]
+
+            seriesEnergyCostPhuel[i] = (tusdFora+teFora)*energyGrid[i]
+            seriesForaPhuel[i] = (tusdFora+teFora)*energyGrid[i]
+
+            if (seriesTotalVehiclesSolar[i] > demanda*1.1) {
+                seriesEnergyCost[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesFora[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCost[i] += (demanda*tarifaDemanda/1440)
+                seriesFora[i] += (demanda*tarifaDemanda/1440)
+            }
+            if (energyGrid[i] > demanda*1.1) {
+                seriesEnergyCostPhuel[i] += (energyGrid[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesForaPhuel[i] += (energyGrid[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCostPhuel[i] += (demanda*tarifaDemanda/1440)
+                seriesForaPhuel[i] += (demanda*tarifaDemanda/1440)
+            }
+        }
+    }
+
+    var custoPIS = seriesEnergyCost.map(val => (val * 0.93/100))
+    var custoCOFINS = seriesEnergyCost.map(val => (val * 4.26/100))
+    var custoICMS = seriesEnergyCost.map((val, idx) => (val + custoPIS[idx] + custoCOFINS[idx])*1.18)
+
+    var custoPontaPIS = seriesPonta.map(val => (val * 0.93/100))
+    var custoPontaCOFINS = seriesPonta.map(val => (val * 4.26/100))
+    var custoPontaICMS = seriesPonta.map((val, idx) => (val + custoPontaPIS[idx] + custoPontaCOFINS[idx])*1.18)
+
+    var custoForaPIS = seriesFora.map(val => (val * 0.93/100))
+    var custoForaCOFINS = seriesFora.map(val => (val * 4.26/100))
+    var custoForaICMS = seriesFora.map((val, idx) => (val + custoForaPIS[idx] + custoForaCOFINS[idx])*1.18)
+
+    var custoPhuelPIS = seriesEnergyCostPhuel.map(val => (val * 0.93/100))
+    var custoPhuelCOFINS = seriesEnergyCostPhuel.map(val => (val * 4.26/100))
+    var custoPhuelICMS = seriesEnergyCostPhuel.map((val, idx) => (val + custoPhuelPIS[idx] + custoPhuelCOFINS[idx])*1.18)
+
+    var custoPontaPhuelPIS = seriesPontaPhuel.map(val => (val * 0.93/100))
+    var custoPontaPhuelCOFINS = seriesPontaPhuel.map(val => (val * 4.26/100))
+    var custoPontaPhuelICMS = seriesPontaPhuel.map((val, idx) => (val + custoPontaPhuelPIS[idx] + custoPontaPhuelCOFINS[idx])*1.18)
+
+    var custoForaPhuelPIS = seriesForaPhuel.map(val => (val * 0.93/100))
+    var custoForaPhuelCOFINS = seriesForaPhuel.map(val => (val * 4.26/100))
+    var custoForaPhuelICMS = seriesForaPhuel.map((val, idx) => (val + custoForaPhuelPIS[idx] + custoForaPhuelCOFINS[idx])*1.18)
+    
+    seriesEnergyCost = custoICMS
+    seriesPonta = custoPontaICMS
+    seriesFora = custoForaICMS
+
+    seriesEnergyCostPhuel = custoPhuelICMS
+    seriesPontaPhuel = custoPontaPhuelICMS
+    seriesForaPhuel = custoForaPhuelICMS
+}
+
 function updateCapacity(value) {
     transformerCapacity = value  
-    seriesTransformer = Array(len).fill(value)
+    // seriesTransformer = Array(len).fill(value)
     
     updateScenario(currentScenario)
 }
@@ -317,6 +403,22 @@ function updateTotal(value) {
 
     seriesTotalVehicles = seriesTotal.map((val, idx) => val + seriesVehicles[idx])
     seriesTotalVehiclesControlled = seriesTotal.map((val, idx) => val + seriesVehiclesControlled[idx])
+
+    seriesTotalVehiclesSolar = seriesTotalVehicles.map(function(val, idx) {
+        var value = val - seriesSolar[idx]
+        if (value > 0) {
+            return value
+        }
+        return 0
+    })
+
+    seriesTotalVehiclesControlledSolar = seriesTotalVehiclesControlled.map(function(val, idx) {
+        var value = val - seriesSolar[idx]
+        if (value > 0) {
+            return value
+        }
+        return 0
+    })
     
     // chart.data.datasets[1].data = seriesTotal
     // chart.data.datasets[3].data = seriesTotal
@@ -360,12 +462,38 @@ function updateVehicleNumber(value) {
     seriesTotalVehiclesControlled = seriesTotal.map((val, idx) => val + seriesVehiclesControlled[idx])
     seriesSolarExcessVehicles = seriesSolar.map((val, idx) => val - seriesTotalVehicles[idx])
     seriesSolarExcessVehiclesControlled = seriesSolar.map((val, idx) => val - seriesTotalVehiclesControlled[idx])
+
+    seriesTotalVehiclesSolar = seriesTotalVehicles.map(function(val, idx) {
+        var value = val - seriesSolar[idx]
+        if (value > 0) {
+            return value
+        }
+        return 0
+    })
+
+    seriesTotalVehiclesControlledSolar = seriesTotalVehiclesControlled.map(function(val, idx) {
+        var value = val - seriesSolar[idx]
+        if (value > 0) {
+            return value
+        }
+        return 0
+    })
     
     updateScenario(currentScenario)
 }
 
+function updateDemand(value) {
+    demanda = value
+    seriesTransformer = Array(len).fill(value)
+
+    updateScenario(currentScenario)
+}
+
 function updateBatteryCapacity(value) {
-    batteryCapacity = value
+    batteryCapacity = value*0.9
+
+    currentBatteryEnergy = batteryCapacity*SoC/100
+    maxEnergyTransfer = batteryCapacity*2
 
     updateScenario(currentScenario)
 }
@@ -590,7 +718,11 @@ function updateScenario(number) {
     $("#title").html(titles[number-1])
     $("#descricao").html(descriptions[number-1])
     
-    setCostSeries()
+    if (number == 5) {
+        setCostWithBatterySeries()
+    } else {
+        setCostSeries()
+    }
     // var totalCost = (seriesTotalVehicles.reduce((acc, val) => acc + val)*staticPrice).toFixed(2);
     $("#custototal").html(seriesEnergyCost.reduce((acc, val) => acc + val).toFixed(2))
     $("#custoponta").html(seriesPonta.reduce((acc, val) => acc + val).toFixed(2))
