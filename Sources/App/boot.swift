@@ -50,9 +50,6 @@ public func boot(_ app: Application) throws {
     
     let conn = try app.newConnection(to: .sqlite).wait()
     
-    let models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
-    let model = models.filter({$0.make == "Volkswagen" && $0.model == "e-Delivery 6x2"}).first!
-    
     let stationModels = try! conn.select().all().from(StationModel.self).all(decoding: StationModel.self).wait()
     let stationModel = stationModels.filter({$0.make == "Efacec" && $0.model == "QC40"}).first!
     
@@ -111,8 +108,31 @@ public func boot(_ app: Application) throws {
     let _ = try amanda.update(on: conn).wait()
     
     // Create some initial vehicles
-    let vw1 = Vehicle(licensePlate: "AAA-0000", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucMooca)
-    let _ = try vw1.create(on: conn).wait()
+    var models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
+    var model = models.filter({$0.make == "Volkswagen" && $0.model == "e-Delivery 6x2"}).first!
+    
+    var car = Vehicle(licensePlate: "AAA-0000", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucMooca)
+    let _ = try car.create(on: conn).wait()
+    
+    models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
+    model = models.filter({$0.make == "Tesla" && $0.model == "Model S"}).first!
+    
+    car = Vehicle(licensePlate: "AAA-0001", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucMooca)
+    let _ = try car.create(on: conn).wait()
+    
+    models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
+    model = models.filter({$0.make == "Motiva" && $0.model == "Tres MT15 Ambev"}).first!
+    
+    car = Vehicle(licensePlate: "AAA-0002", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucMooca)
+    let _ = try car.create(on: conn).wait()
+    
+    models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
+    model = models.filter({$0.make == "Motiva" && $0.model == "URBI Ambev"}).first!
+    
+    car = Vehicle(licensePlate: "AAA-0003", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucMooca)
+    let _ = try car.create(on: conn).wait()
+    
+    
     
     
     // Create some initial stations
