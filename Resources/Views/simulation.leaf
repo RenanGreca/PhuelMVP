@@ -153,9 +153,13 @@
         var demanda = #(consumerUnit.demand)
     </script>
 
-    <script src="js/Chart.js"></script>
-    <script src="js/graphs.js"></script>
+    <script src="/js/Chart.js"></script>
+    <script src="/js/graphs.js"></script>
 }
 
-#set("navbar") { #embed("navbar") }
+#if(region) {
+    #set("navbar") { #embed("navbar-region") }
+} else {
+    #set("navbar") { #embed("navbar") }
+}
 #embed("base")

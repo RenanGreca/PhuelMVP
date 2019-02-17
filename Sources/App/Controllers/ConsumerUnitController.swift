@@ -37,6 +37,14 @@ final class ConsumerUnitController {
         return ConsumerUnit.query(on: req).all()
     }
     
+    func item(withId id: Int, _ req: Request) throws -> Future<ConsumerUnit?> {
+        return ConsumerUnit.query(on: req).all().map { units in
+            return units.filter({
+                $0.id == id
+            }).first
+        }
+    }
+    
     func item(managedBy user: User, _ req: Request) throws -> Future<ConsumerUnit?> {
         return ConsumerUnit.query(on: req).all().map { units in
             return units.filter({

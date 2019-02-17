@@ -10,4 +10,5 @@ import Foundation
 struct SimulationConsumerUnitGetResponse: Codable {
     let consumerUnit: ConsumerUnit?
     let vehicleCount: Int
+    let region: Bool
 }

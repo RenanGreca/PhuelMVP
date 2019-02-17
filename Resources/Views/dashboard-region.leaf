@@ -33,7 +33,7 @@
                 #for(consumerUnit in consumerUnits) {
                     <tr>
                         <td><!-- <img src="/img/truck.png" class="vehicle-icon" /> -->
-                            #(consumerUnit.name)
+                            <a href="/simulation/#(consumerUnit.id)">#(consumerUnit.name)</a>
                         </td>
                         <td><!-- <img src="/img/truck.png" class="vehicle-icon" /> -->
                             #(consumerUnit.region.name), #(consumerUnit.region.superRegion.code)
