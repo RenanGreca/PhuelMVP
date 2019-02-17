@@ -89,7 +89,7 @@ public func routes(_ router: Router) throws {
     let vehicleModelController = VehicleModelController()
     loginAuth.get("vehicles/models", use: vehicleModelController.index)
     loginAuth.post("vehicles/models", use: vehicleModelController.create)
-    loginAuth.delete("vehicles/models", Vehicle.parameter, use: vehicleModelController.delete)
+    loginAuth.delete("vehicles/models", VehicleModel.parameter, use: vehicleModelController.delete)
     
     let vehicleController = VehicleController()
     loginAuth.get("vehicles", use: vehicleController.index)
@@ -97,13 +97,15 @@ public func routes(_ router: Router) throws {
     loginAuth.delete("vehicles", Vehicle.parameter, use: vehicleController.delete)
     loginAuth.get("vehicles", "new", use: vehicleModelController.list)
     
+    let stationModelController = StationModelController()
+    loginAuth.get("stations/models", use: stationModelController.index)
+    loginAuth.post("stations/models", use: stationModelController.create)
+    loginAuth.delete("stations/models", StationModel.parameter, use: stationModelController.delete)
+    
     let stationController = StationController()
     loginAuth.get("stations", use: stationController.index)
     loginAuth.post("stations", use: stationController.create)
-    
-    loginAuth.get("stations", "new") { req -> Future<View> in
-        return try req.view().render("stations-new")
-    }
+    loginAuth.get("stations", "new", use: stationModelController.list)
     
     loginAuth.get("consumerUnits", use: consumerUnitController.index)
     loginAuth.post("consumerUnits", use: consumerUnitController.create)

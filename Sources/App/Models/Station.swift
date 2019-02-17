@@ -29,13 +29,13 @@ final class Station: SQLiteModel {
     
     let model: String
     let current: String // AC or DC
-    let power: Int // kW or kVA
+    let power: Double // kW or kVA
     let specifications: String
     var status: Int?
     var lastUsed: Date?
     var consumerUnit: ConsumerUnit?
     
-    init(id: Int? = nil, model:String, current: String, power: Int, specifications: String, consumerUnit: ConsumerUnit) {
+    init(id: Int? = nil, model:String, current: String, power: Double, specifications: String, consumerUnit: ConsumerUnit) {
         self.id = id
         
         self.model = model

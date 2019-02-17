@@ -22,7 +22,7 @@
 
             vehicleModels.push(model)
         }
-    </script>    
+    </script>
 
     <form id="vehicleForm" action="/vehicles">
         <div class="form-group">

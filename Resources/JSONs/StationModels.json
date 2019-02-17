@@ -1,0 +1,50 @@
+[
+    {
+        "make": "Emotorwerks",
+        "model": "JuiceBoxPro 32",
+        "power": 7.7,
+        "extras": "240V 32A"
+    },
+    {
+        "make": "Emotorwerks",
+        "model": "JuiceBoxPro 40",
+        "power": 10.0,
+        "extras": "240V 40A"
+    },
+    {
+        "make": "Emotorwerks",
+        "model": "JuiceBoxPro 75",
+        "power": 18,
+        "extras": "240V 75A"
+    },
+    {
+        "make": "Bosch",
+        "model": "EV200",
+        "power": 3.2,
+        "extras": "240V 16A"
+    },
+    {
+        "make": "Bosch",
+        "model": "EV400",
+        "power": 7.2,
+        "extras": "240V 40A"
+    },
+    {
+        "make": "Bosch",
+        "model": "EV600",
+        "power": 7.2,
+        "extras": "240V 30A"
+    },
+    {
+        "make": "ABB",
+        "model": "DC Wallbox",
+        "power": 24.0,
+        "extras": "150-900V 60A"
+    },
+    {
+        "make": "Efacec",
+        "model": "QC40",
+        "power": 40.0,
+        "extras": "240V 40A"
+    }
+]

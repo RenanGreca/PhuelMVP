@@ -89,10 +89,36 @@ var seriesUC2 = arrPercentage2.map(val => val * UC2)
 var seriesVehicles = arrVehicles.map(val => chargerPower * val * noVehicles/5);
 var seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * noVehicles/15);
 var seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
-var seriesTotalVehiclesControlled = seriesUC1.map((val, idx) => val + seriesUC2[idx] + seriesVehiclesControlled[idx])
+var seriesTotalVehicles = seriesTotal.map((val, idx) => val + seriesVehicles[idx])
+var seriesTotalVehiclesControlled = seriesTotal.map((val, idx) => val + seriesVehiclesControlled[idx])
 var seriesSolar = arrSolar.map(val => (val * maxSolar))
 var seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
+var seriesSolarExcessVehicles = seriesSolar.map((val, idx) => val - seriesTotalVehicles[idx])
 var seriesSolarExcessVehiclesControlled = seriesSolar.map((val, idx) => val - seriesTotalVehiclesControlled[idx])
+
+var seriesTotalVehiclesSolar = seriesTotalVehicles.map(function(val, idx) {
+    var value = val - seriesSolar[idx]
+    if (value > 0) {
+        return value
+    }
+    return 0
+})
+
+var seriesTotalVehiclesControlledSolar = seriesTotalVehiclesControlled.map(function(val, idx) {
+    var value = val - seriesSolar[idx]
+    if (value > 0) {
+        return value
+    }
+    return 0
+})
+
+var seriesEnergyCost = Array(len).fill(0)
+var seriesPonta = Array(len).fill(0)
+var seriesFora = Array(len).fill(0)
+
+var seriesEnergyCostPhuel = Array(len).fill(0)
+var seriesPontaPhuel = Array(len).fill(0)
+var seriesForaPhuel = Array(len).fill(0)
 
 var currentBatteryEnergy = batteryCapacity*SoC/100
 var seriesCurrentBatteryEnergy = Array(len)
@@ -136,6 +162,99 @@ var chart = new Chart(ctx, {
     }
 });
 updateScenario(1);
+
+function setCostSeries() {
+    seriesEnergyCost = Array(len).fill(0)
+    seriesPonta = Array(len).fill(0)
+    seriesFora = Array(len).fill(0)
+
+    var demanda = 600
+    var tarifaDemanda = 11.17
+    var tarifaUltrapassagem = 22.34
+
+    var tusdPonta = 0.47503
+    var tePonta = 0.41154
+    var tusdFora = 0.05728
+    var teFora = 0.25808
+
+    for (var i=0; i<len; i++) {
+        if (i > 34 && i < 41) {
+            seriesEnergyCost[i] = (tusdPonta+tePonta)*seriesTotalVehiclesSolar[i]
+            seriesPonta[i] = (tusdPonta+tePonta)*seriesTotalVehiclesSolar[i]
+
+            seriesEnergyCostPhuel[i] = (tusdPonta+tePonta)*seriesTotalVehiclesControlledSolar[i]
+            seriesPontaPhuel[i] = (tusdPonta+tePonta)*seriesTotalVehiclesControlledSolar[i]
+
+            if (seriesTotalVehiclesSolar[i] > demanda*1.1) {
+                seriesEnergyCost[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesPonta[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCost[i] += (demanda*tarifaDemanda/1440)
+                seriesPonta[i] += (demanda*tarifaDemanda/1440)
+            }
+            if (seriesTotalVehiclesControlledSolar[i] > demanda*1.1) {
+                seriesEnergyCostPhuel[i] += (seriesTotalVehiclesControlledSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesPontaPhuel[i] += (seriesTotalVehiclesControlledSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCostPhuel[i] += (demanda*tarifaDemanda/1440)
+                seriesPontaPhuel[i] += (demanda*tarifaDemanda/1440)
+            }
+        } else {
+            seriesEnergyCost[i] = (tusdFora+teFora)*seriesTotalVehiclesSolar[i]
+            seriesFora[i] = (tusdFora+teFora)*seriesTotalVehiclesSolar[i]
+
+            seriesEnergyCostPhuel[i] = (tusdFora+teFora)*seriesTotalVehiclesControlledSolar[i]
+            seriesForaPhuel[i] = (tusdFora+teFora)*seriesTotalVehiclesControlledSolar[i]
+
+            if (seriesTotalVehiclesSolar[i] > demanda*1.1) {
+                seriesEnergyCost[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesFora[i] += (seriesTotalVehiclesSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCost[i] += (demanda*tarifaDemanda/1440)
+                seriesFora[i] += (demanda*tarifaDemanda/1440)
+            }
+            if (seriesTotalVehiclesControlledSolar[i] > demanda*1.1) {
+                seriesEnergyCostPhuel[i] += (seriesTotalVehiclesControlledSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+                seriesForaPhuel[i] += (seriesTotalVehiclesControlledSolar[i]-demanda)*tarifaUltrapassagem + (demanda*tarifaDemanda/1440)
+            } else {
+                seriesEnergyCostPhuel[i] += (demanda*tarifaDemanda/1440)
+                seriesForaPhuel[i] += (demanda*tarifaDemanda/1440)
+            }
+        }
+    }
+
+    var custoPIS = seriesEnergyCost.map(val => (val * 0.93/100))
+    var custoCOFINS = seriesEnergyCost.map(val => (val * 4.26/100))
+    var custoICMS = seriesEnergyCost.map((val, idx) => (val + custoPIS[idx] + custoCOFINS[idx])*1.18)
+
+    var custoPontaPIS = seriesPonta.map(val => (val * 0.93/100))
+    var custoPontaCOFINS = seriesPonta.map(val => (val * 4.26/100))
+    var custoPontaICMS = seriesPonta.map((val, idx) => (val + custoPontaPIS[idx] + custoPontaCOFINS[idx])*1.18)
+
+    var custoForaPIS = seriesFora.map(val => (val * 0.93/100))
+    var custoForaCOFINS = seriesFora.map(val => (val * 4.26/100))
+    var custoForaICMS = seriesFora.map((val, idx) => (val + custoForaPIS[idx] + custoForaCOFINS[idx])*1.18)
+
+    var custoPhuelPIS = seriesEnergyCostPhuel.map(val => (val * 0.93/100))
+    var custoPhuelCOFINS = seriesEnergyCostPhuel.map(val => (val * 4.26/100))
+    var custoPhuelICMS = seriesEnergyCostPhuel.map((val, idx) => (val + custoPhuelPIS[idx] + custoPhuelCOFINS[idx])*1.18)
+
+    var custoPontaPhuelPIS = seriesPontaPhuel.map(val => (val * 0.93/100))
+    var custoPontaPhuelCOFINS = seriesPontaPhuel.map(val => (val * 4.26/100))
+    var custoPontaPhuelICMS = seriesPontaPhuel.map((val, idx) => (val + custoPontaPhuelPIS[idx] + custoPontaPhuelCOFINS[idx])*1.18)
+
+    var custoForaPhuelPIS = seriesForaPhuel.map(val => (val * 0.93/100))
+    var custoForaPhuelCOFINS = seriesForaPhuel.map(val => (val * 4.26/100))
+    var custoForaPhuelICMS = seriesForaPhuel.map((val, idx) => (val + custoForaPhuelPIS[idx] + custoForaPhuelCOFINS[idx])*1.18)
+    
+    seriesEnergyCost = custoICMS
+    seriesPonta = custoPontaICMS
+    seriesFora = custoForaICMS
+
+    seriesEnergyCostPhuel = custoPhuelICMS
+    seriesPontaPhuel = custoPontaPhuelICMS
+    seriesForaPhuel = custoForaPhuelICMS
+}
 
 function setBatterySeries() {
     currentBatteryEnergy = batteryCapacity*SoC/100
@@ -195,8 +314,11 @@ function updateTotal(value) {
     seriesUC1 = arrPercentage.map(val => val * value*2/3)
     seriesUC2 = arrPercentage2.map(val => val * value*1/3)
     seriesTotal = seriesUC1.map((val, idx) => val + seriesUC2[idx])
+
+    seriesTotalVehicles = seriesTotal.map((val, idx) => val + seriesVehicles[idx])
+    seriesTotalVehiclesControlled = seriesTotal.map((val, idx) => val + seriesVehiclesControlled[idx])
     
-    chart.data.datasets[1].data = seriesTotal
+    // chart.data.datasets[1].data = seriesTotal
     // chart.data.datasets[3].data = seriesTotal
     
     updateScenario(currentScenario)
@@ -206,6 +328,24 @@ function updateMaxSolar(value) {
     maxSolar = value
     seriesSolar = arrSolar.map(val => (val * value))
     seriesSolarExcess = seriesSolar.map((val, idx) => val - seriesTotal[idx])
+    seriesSolarExcessVehicles = seriesSolar.map((val, idx) => val - seriesTotalVehicles[idx])
+    seriesSolarExcessVehiclesControlled = seriesSolar.map((val, idx) => val - seriesTotalVehiclesControlled[idx])
+
+    seriesTotalVehiclesSolar = seriesTotalVehicles.map(function(val, idx) {
+        var value = val - seriesSolar[idx]
+        if (value > 0) {
+            return value
+        }
+        return 0
+    })
+
+    seriesTotalVehiclesControlledSolar = seriesTotalVehiclesControlled.map(function(val, idx) {
+        var value = val - seriesSolar[idx]
+        if (value > 0) {
+            return value
+        }
+        return 0
+    })
     
     updateScenario(currentScenario)
 }
@@ -215,6 +355,11 @@ function updateVehicleNumber(value) {
     
     seriesVehicles = arrVehicles.map(val => chargerPower * val * value/5);
     seriesVehiclesControlled = arrControlledCharge.map(val => chargerPower * val * value/15);
+
+    seriesTotalVehicles = seriesTotal.map((val, idx) => val + seriesVehicles[idx])
+    seriesTotalVehiclesControlled = seriesTotal.map((val, idx) => val + seriesVehiclesControlled[idx])
+    seriesSolarExcessVehicles = seriesSolar.map((val, idx) => val - seriesTotalVehicles[idx])
+    seriesSolarExcessVehiclesControlled = seriesSolar.map((val, idx) => val - seriesTotalVehiclesControlled[idx])
     
     updateScenario(currentScenario)
 }
@@ -323,6 +468,14 @@ function updateScenario(number) {
             backgroundColor: colorf,
             borderColor: colorf,
             data: seriesVehicles,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        },{
+            label: "Custo de energia",
+            backgroundColor: colorb,
+            borderColor: colorb,
+            data: seriesEnergyCost,
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
@@ -437,8 +590,15 @@ function updateScenario(number) {
     $("#title").html(titles[number-1])
     $("#descricao").html(descriptions[number-1])
     
-    var totalCost = (seriesTotal.reduce((acc, val) => acc + val)*staticPrice).toFixed(2);
-    $("#custototal").html(totalCost)
+    setCostSeries()
+    // var totalCost = (seriesTotalVehicles.reduce((acc, val) => acc + val)*staticPrice).toFixed(2);
+    $("#custototal").html(seriesEnergyCost.reduce((acc, val) => acc + val).toFixed(2))
+    $("#custoponta").html(seriesPonta.reduce((acc, val) => acc + val).toFixed(2))
+    $("#custofora").html(seriesFora.reduce((acc, val) => acc + val).toFixed(2))
+
+    $("#custototalphuel").html(seriesEnergyCostPhuel.reduce((acc, val) => acc + val).toFixed(2))
+    $("#custopontaphuel").html(seriesPontaPhuel.reduce((acc, val) => acc + val).toFixed(2))
+    $("#custoforaphuel").html(seriesForaPhuel.reduce((acc, val) => acc + val).toFixed(2))
     
     $("#rowcustosimples").css('display', 'none')
     $("#rowcustodinamico").css('display', 'none')

@@ -32,6 +32,8 @@
 		1F23D2212218168E004D7A4F /* NewConsumerUnitGetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D2202218168E004D7A4F /* NewConsumerUnitGetResponse.swift */; };
 		1F23D22322185254004D7A4F /* NewConsumerUnitRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D22222185254004D7A4F /* NewConsumerUnitRequest.swift */; };
 		1F23D225221853DC004D7A4F /* NewUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D224221853DC004D7A4F /* NewUserRequest.swift */; };
+		1F23D2272219654D004D7A4F /* StationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D2262219654D004D7A4F /* StationModel.swift */; };
+		1F23D229221966B2004D7A4F /* StationModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F23D228221966B2004D7A4F /* StationModelController.swift */; };
 		1F65B28E2211D3B3003BD205 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B28D2211D3B3003BD205 /* UserController.swift */; };
 		1F65B2912211D8FC003BD205 /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2902211D8FC003BD205 /* LoginRequest.swift */; };
 		1F65B2942211F7B8003BD205 /* DashboardVehicleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F65B2932211F7B8003BD205 /* DashboardVehicleResponse.swift */; };
@@ -5627,6 +5629,8 @@
 		1F23D2202218168E004D7A4F /* NewConsumerUnitGetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConsumerUnitGetResponse.swift; sourceTree = "<group>"; };
 		1F23D22222185254004D7A4F /* NewConsumerUnitRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConsumerUnitRequest.swift; sourceTree = "<group>"; };
 		1F23D224221853DC004D7A4F /* NewUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserRequest.swift; sourceTree = "<group>"; };
+		1F23D2262219654D004D7A4F /* StationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationModel.swift; sourceTree = "<group>"; };
+		1F23D228221966B2004D7A4F /* StationModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StationModelController.swift; sourceTree = "<group>"; };
 		1F65B28B2211CE3C003BD205 /* libcommonCrypto.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcommonCrypto.tbd; path = usr/lib/system/libcommonCrypto.tbd; sourceTree = SDKROOT; };
 		1F65B28D2211D3B3003BD205 /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		1F65B2902211D8FC003BD205 /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
@@ -7467,6 +7471,7 @@
 				OBJ_16 /* Vehicle.swift */,
 				OBJ_17 /* VehicleModel.swift */,
 				1F16FC0522132A36004B1F0A /* Station.swift */,
+				1F23D2262219654D004D7A4F /* StationModel.swift */,
 				1F23D2162216EEF5004D7A4F /* ConsumerUnit.swift */,
 				1F23D2182216F145004D7A4F /* Region.swift */,
 			);
@@ -9701,6 +9706,7 @@
 				OBJ_12 /* VehicleModelController.swift */,
 				1F65B28D2211D3B3003BD205 /* UserController.swift */,
 				1F16FC0722133219004B1F0A /* StationController.swift */,
+				1F23D228221966B2004D7A4F /* StationModelController.swift */,
 				1F23D21A2216F8F7004D7A4F /* ConsumerUnitController.swift */,
 				1F23D21C2216FA55004D7A4F /* RegionController.swift */,
 			);
@@ -12822,7 +12828,9 @@
 				1F65B2962211F896003BD205 /* LoginGetResponse.swift in Sources */,
 				OBJ_976 /* VehicleModelController.swift in Sources */,
 				OBJ_977 /* Todo.swift in Sources */,
+				1F23D2272219654D004D7A4F /* StationModel.swift in Sources */,
 				OBJ_978 /* User.swift in Sources */,
+				1F23D229221966B2004D7A4F /* StationModelController.swift in Sources */,
 				OBJ_979 /* Vehicle.swift in Sources */,
 				1F23D225221853DC004D7A4F /* NewUserRequest.swift in Sources */,
 				1F65B28E2211D3B3003BD205 /* UserController.swift in Sources */,

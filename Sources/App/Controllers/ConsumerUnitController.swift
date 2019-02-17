@@ -20,7 +20,7 @@ final class ConsumerUnitController {
                 return User.query(on: req).all().flatMap() { users in
                     let user = users.filter({$0.id == consumerUnitRequest.user}).first
                     
-                    let consumerUnit = ConsumerUnit(name: consumerUnitRequest.name, region: region, manager: user, batteryCapacity: consumerUnitRequest.capacity, energyPeak: consumerUnitRequest.power, generationPeak: consumerUnitRequest.generation)
+                    let consumerUnit = ConsumerUnit(name: consumerUnitRequest.name, region: region, manager: user, batteryCapacity: consumerUnitRequest.capacity, energyPeak: consumerUnitRequest.power, generationPeak: consumerUnitRequest.generation, demand: consumerUnitRequest.demand)
                     
                     user?.consumerUnit = consumerUnit.name
                     let _ = user?.update(on: req)

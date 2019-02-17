@@ -29,10 +29,32 @@ public func boot(_ app: Application) throws {
         
     }
     
+    // Add basic station models
+    if  let data = try? Data(contentsOf: URL(fileURLWithPath: directory.workDir)
+        .appendingPathComponent(jsonDir, isDirectory: true)
+        .appendingPathComponent("StationModels.json", isDirectory: false)) {
+        
+        let decoder = JSONDecoder()
+        
+        let decoded = try decoder.decode([StationModel].self, from: data)
+        
+        for stationModel in decoded {
+            let conn = try app.newConnection(to: .sqlite).wait()
+            
+            let _ = try stationModel.create(on: conn).wait()
+            
+            defer { conn.close() }
+        }
+        
+    }
+    
     let conn = try app.newConnection(to: .sqlite).wait()
     
     let models = try! conn.select().all().from(VehicleModel.self).all(decoding: VehicleModel.self).wait()
-    let model = models.filter({$0.make == "Tesla" && $0.model == "Model S"}).first!
+    let model = models.filter({$0.make == "Volkswagen" && $0.model == "e-Delivery 6x2"}).first!
+    
+    let stationModels = try! conn.select().all().from(StationModel.self).all(decoding: StationModel.self).wait()
+    let stationModel = stationModels.filter({$0.make == "Efacec" && $0.model == "QC40"}).first!
     
     // Create pre-baked users
     let renan = User(name: "Renan", email: "renan@phuel.com.br", password: "1234")
@@ -62,41 +84,39 @@ public func boot(_ app: Application) throws {
     renan.region = brasil.name
     let _ = try renan.update(on: conn).wait()
     
-    let parana = Region(name: "Paraná", code: "PR", superRegion: brasil, manager: pedro)
-    let _ = try parana.create(on: conn).wait()
-    pedro.region = parana.name
+    let sp = Region(name: "São Paulo", code: "SP", superRegion: brasil, manager: pedro)
+    let _ = try sp.create(on: conn).wait()
+    pedro.region = sp.name
     let _ = try pedro.update(on: conn).wait()
 
-    let curitiba = Region(name: "Curitiba", code: "CWB", superRegion: parana, manager: paulo)
-    let _ = try curitiba.create(on: conn).wait()
-    paulo.region = curitiba.name
+    let saopaulo = Region(name: "São Paulo", code: "GRU", superRegion: sp, manager: paulo)
+    let _ = try saopaulo.create(on: conn).wait()
+    paulo.region = saopaulo.name
     let _ = try paulo.update(on: conn).wait()
     
-    let londrina = Region(name: "Londrina", code: "LDR", superRegion: parana, manager: felipe)
-    let _ = try londrina.create(on: conn).wait()
-    felipe.region = londrina.name
+    let barueri = Region(name: "Barueri", code: "BAR", superRegion: sp, manager: felipe)
+    let _ = try barueri.create(on: conn).wait()
+    felipe.region = barueri.name
     let _ = try felipe.update(on: conn).wait()
     
     // Create pre-baked consumer units
-    let ucBatel = ConsumerUnit(name: "CDD Batel", region: curitiba, manager: thiago, batteryCapacity: 300, energyPeak: 15, generationPeak: 35)
-    let _ = try ucBatel.create(on: conn).wait()
-    thiago.consumerUnit = ucBatel.name
+    let ucMooca = ConsumerUnit(name: "CDD Mooca", region: saopaulo, manager: thiago, batteryCapacity: 0, energyPeak: 320, generationPeak: 12, demand: 600)
+    let _ = try ucMooca.create(on: conn).wait()
+    thiago.consumerUnit = ucMooca.name
     let _ = try thiago.update(on: conn).wait()
     
-    let ucLondrina = ConsumerUnit(name: "CDD Londrina", region: londrina, manager: amanda, batteryCapacity: 300, energyPeak: 15, generationPeak: 35)
-    let _ = try ucLondrina.create(on: conn).wait()
-    amanda.consumerUnit = ucLondrina.name
+    let ucBarueri = ConsumerUnit(name: "CDD Barueri", region: barueri, manager: amanda, batteryCapacity: 0, energyPeak: 150, generationPeak: 5, demand: 300)
+    let _ = try ucBarueri.create(on: conn).wait()
+    amanda.consumerUnit = ucBarueri.name
     let _ = try amanda.update(on: conn).wait()
     
     // Create some initial vehicles
-    let tesla1 = Vehicle(licensePlate: "AAA-0000", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucBatel)
-    let _ = try tesla1.create(on: conn).wait()
+    let vw1 = Vehicle(licensePlate: "AAA-0000", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[0], consumerUnit: ucMooca)
+    let _ = try vw1.create(on: conn).wait()
     
-    let tesla2 = Vehicle(licensePlate: "AAA-0001", modelId: model.id!, make: model.make, model: model.model, battery: model.battery[1], consumerUnit: ucBatel)
-    let _ = try tesla2.create(on: conn).wait()
     
     // Create some initial stations
-    let station = Station(model: "QC20", current: "DC", power: 50, specifications: "500V", consumerUnit: ucBatel)
+    let station = Station(model: "\(stationModel.make) \(stationModel.model)", current: "DC", power: stationModel.power, specifications: stationModel.extras, consumerUnit: ucMooca)
     let _ = try station.create(on: conn).wait()
     
     defer { conn.close() }

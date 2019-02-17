@@ -14,4 +14,5 @@ struct NewConsumerUnitRequest: Codable {
     let power:Int
     let generation:Int
     let capacity:Int
+    let demand:Int
 }

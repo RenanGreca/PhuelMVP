@@ -19,6 +19,10 @@ final class VehicleController {
             vehicle.lastCharged = randomDateInPastWeek()
             vehicle.costPerKM = Double.random(between: 0.0, and: 1.0).rounded(toPlaces: 2)
             vehicle.consumerUnit = currentConsumerUnit
+            
+            currentConsumerUnit?.vehicleCount += 1
+            let _ = currentConsumerUnit?.update(on: req)
+            
             return vehicle.save(on: req)
         }//.transform(to: req.redirect(to: "vehicles/new"))
     }

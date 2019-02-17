@@ -36,6 +36,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     migrations.add(model: VehicleModel.self, database: .sqlite)
     migrations.add(model: User.self, database: .sqlite)
     migrations.add(model: Station.self, database: .sqlite)
+    migrations.add(model: StationModel.self, database: .sqlite)
     migrations.add(model: ConsumerUnit.self, database: .sqlite)
     migrations.add(model: Region.self, database: .sqlite)
     services.register(migrations)

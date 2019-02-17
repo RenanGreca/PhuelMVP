@@ -38,5 +38,10 @@
         "make": "Motiva",
         "model": "URBI Ambev",
         "battery": [7]
+    },
+    {
+        "make": "Volkswagen",
+        "model": "e-Delivery 6x2",
+        "battery": [100]
     }
 ]

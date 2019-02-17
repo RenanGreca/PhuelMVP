@@ -68,25 +68,30 @@
                             <td><span id="custototal"></span></td>
                             <td>R$</td>
                         </tr>
+                        <tr>
+                            <td>Custo diário de energia da UC com recarga inteligente</td>
+                            <td><span id="custototalphuel"></span></td>
+                            <td>R$</td>
+                        </tr>
                         <tr id="rowcustosimples">
                             <td>Custo fora de ponta (sem recarga inteligente)</td>
-                            <td><span id="custosimples"></span></td>
-                            <td>R$/veículo</td>
+                            <td><span id="custoponta"></span></td>
+                            <td>R$</td>
                         </tr>
                         <tr id="rowcustodinamico">
                             <td>Custo horário de ponta (sem recarga inteligente)</td>
-                            <td><span id="custodinamico"></span></td>
-                            <td>R$/veículo</td>
+                            <td><span id="custofora"></span></td>
+                            <td>R$</td>
                         </tr>
                         <tr id="rowcustosimplesphuel">
                             <td>Custo fora de ponta (recarga inteligente Phuel)</td>
-                            <td><span id="custosimplesphuel"></span></td>
-                            <td>R$/veículo</td>
+                            <td><span id="custopontaphuel"></span></td>
+                            <td>R$</td>
                         </tr>
                         <tr id="rowcustodinamicophuel">
                             <td>Custo horário de ponta (recarga inteligente Phuel)</td>
-                            <td><span id="custodinamicophuel"></span></td>
-                            <td>R$/veículo</td>
+                            <td><span id="custoforaphuel"></span></td>
+                            <td>R$</td>
                         </tr>
                     </tbody>
                 </table>
