@@ -39,7 +39,7 @@
                             <td>kVA</td>
                         </tr>-->
                         <tr>
-                            <td>Demanda da UC</td>
+                            <td>Demanda contratada</td>
                             <td><input type="text" class="inputsim" id="demandaUC" value="#(consumerUnit.demand)" onkeyup="updateDemand(this.value);" /></td>
                             <td>kW</td>
                         </tr>
@@ -68,34 +68,34 @@
                             <td><input type="text" class="inputsim" id="SoC" value="50" onkeyup="updateSoC(this.value);" /></td>
                             <td>%</td>
                         </tr>
-                        <tr>
+                        <tr id="rowcost">
                             <td>Custo diário de energia da UC</td>
                             <td><span id="custototal"></span></td>
                             <td>R$</td>
                         </tr>
-                        <tr>
+                        <tr id="rowcostphuel">
                             <td>Custo diário de energia da UC com recarga inteligente</td>
                             <td><span id="custototalphuel"></span></td>
                             <td>R$</td>
                         </tr>
                         <tr id="rowcustosimples">
                             <td>Custo fora de ponta (sem recarga inteligente)</td>
-                            <td><span id="custoponta"></span></td>
+                            <td><span id="custofora"></span></td>
                             <td>R$</td>
                         </tr>
                         <tr id="rowcustodinamico">
                             <td>Custo horário de ponta (sem recarga inteligente)</td>
-                            <td><span id="custofora"></span></td>
+                            <td><span id="custoponta"></span></td>
                             <td>R$</td>
                         </tr>
                         <tr id="rowcustosimplesphuel">
                             <td>Custo fora de ponta (recarga inteligente Phuel)</td>
-                            <td><span id="custopontaphuel"></span></td>
+                            <td><span id="custoforaphuel"></span></td>
                             <td>R$</td>
                         </tr>
                         <tr id="rowcustodinamicophuel">
                             <td>Custo horário de ponta (recarga inteligente Phuel)</td>
-                            <td><span id="custoforaphuel"></span></td>
+                            <td><span id="custopontaphuel"></span></td>
                             <td>R$</td>
                         </tr>
                     </tbody>

@@ -20,9 +20,9 @@ var titles = [
 ]
 
 var descriptions = [
-"Este cenário mostra o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca, bem como a capacidade de seu transformador de distribuição.",
-"Mostra o contraste entre o consumo já existente dentro da Unidade Consumidora (UC) CDD Mooca e a capacidade de geração de energia por Painéis Fotovoltaicos, operando dentro dos limites da capacidade do seu transformador de distribuição.",
-"Exibe o pico de consumo de energia ocasionado por veículos elétricos chegando na Unidade Consumidora, quando estes são conectados para a recarga. Nesta situação o transformador de distribuição pode operar em sobrecarga, o que pode causar danos e perda de vida útil.",
+"Este cenário mostra o consumo já existente dentro da Unidade Consumidora (UC), bem como a sua demanda contratada.",
+"Mostra o contraste entre o consumo já existente dentro da Unidade Consumidora (UC) e a capacidade de geração de energia por Painéis Fotovoltaicos, operando dentro dos limites da demanda contratada.",
+"Exibe o pico de consumo de energia ocasionado por veículos elétricos chegando na Unidade Consumidora, quando estes são conectados para a recarga. Nesta situação a estrutura da instalação elétrica pode operar em sobrecarga, o que pode causar danos e perda de vida útil.",
 "Ilustra o benefício maior da solução Phuel, que é o agendamento e automatização das recargas de veículos elétricos. Nesta situação, os veículos são conectados ao mesmo tempo, porém o período de suas recargas é gerenciado, de forma a reduzir o impacto imediato na instalação e obter melhores preços nas recargas.",
 "Contrasta a necessidade energética dos veículos, bem maior que o consumo interno na Unidade Consumidora (isto é, o consumo não relacionado a veículos elétricos) com a geração solar, notando também que os horários não são coincidentes."
 ]
@@ -513,7 +513,7 @@ function updateScenario(number) {
     switch (number) {
         case 1:
         datasets = [{
-            label: "Capacidade do transformador",
+            label: "Demanda contratada",
             backgroundColor: colora,
             borderColor: colora,
             data: seriesTransformer,
@@ -533,7 +533,7 @@ function updateScenario(number) {
         case 2:
         datasets = [
         {
-            label: "Capacidade do transformador",
+            label: "Demanda contratada",
             backgroundColor: colora,
             borderColor: colora,
             data: seriesTransformer,
@@ -568,7 +568,7 @@ function updateScenario(number) {
         break
         case 3:
         datasets = [{
-            label: "Capacidade do transformador",
+            label: "Demanda contratada",
             backgroundColor: colora,
             borderColor: colora,
             data: seriesTransformer,
@@ -593,25 +593,27 @@ function updateScenario(number) {
             lineTension: 0.2,
         },{
             label: "Consumo de veículos em recarga",
-            backgroundColor: colorf,
-            borderColor: colorf,
+            backgroundColor: '#000000',
+            borderColor: '#000000',
             data: seriesVehicles,
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
-        },{
-            label: "Custo de energia",
-            backgroundColor: colorb,
-            borderColor: colorb,
-            data: seriesEnergyCost,
-            fill: false,
-            pointRadius: 0,
-            lineTension: 0.2,
-        }]
+        },
+        // {
+        //     label: "Custo de energia",
+        //     backgroundColor: colorb,
+        //     borderColor: colorb,
+        //     data: seriesEnergyCost,
+        //     fill: false,
+        //     pointRadius: 0,
+        //     lineTension: 0.2,
+        // }
+        ]
         break
         case 4:
         datasets = [{
-            label: "Capacidade do transformador",
+            label: "Demanda contratada",
             backgroundColor: colora,
             borderColor: colora,
             data: seriesTransformer,
@@ -634,17 +636,15 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
-        },
-        // {
-        //     label: "Consumo de veículos em recarga",
-        //     backgroundColor: colorf,
-        //     borderColor: colorf,
-        //     data: seriesVehicles,
-        //     fill: false,
-        //     pointRadius: 0,
-        //     lineTension: 0.2,
-        // },
-        {
+        },{
+            label: "Consumo de veículos em recarga",
+            backgroundColor: '#000000',
+            borderColor: '#000000',
+            data: seriesVehicles,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        },{
             label: "Consumo de veículos em recarga inteligente Phuel",
             backgroundColor: colore,
             borderColor: colore,
@@ -656,14 +656,13 @@ function updateScenario(number) {
         break
         case 5:
         datasets = [{
-            label: "Capacidade do transformador",
+            label: "Demanda contratada",
             backgroundColor: colora,
             borderColor: colora,
             data: seriesTransformer,
             fill: false,
             pointRadius: 0,
-            lineTension: 0.2,
-            borderWidth: 1
+            lineTension: 0.2
         },{
             label: "Consumo UC",
             backgroundColor: colord,
@@ -677,6 +676,14 @@ function updateScenario(number) {
             backgroundColor: colorc,
             borderColor: colorc,
             data: seriesSolar,
+            fill: false,
+            pointRadius: 0,
+            lineTension: 0.2,
+        },{
+            label: "Consumo de veículos em recarga",
+            backgroundColor: '#000000',
+            borderColor: '#000000',
+            data: seriesVehicles,
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
@@ -732,6 +739,7 @@ function updateScenario(number) {
     $("#custopontaphuel").html(seriesPontaPhuel.reduce((acc, val) => acc + val).toFixed(2))
     $("#custoforaphuel").html(seriesForaPhuel.reduce((acc, val) => acc + val).toFixed(2))
     
+    $("#rowcostphuel").css('display', 'none')
     $("#rowcustosimples").css('display', 'none')
     $("#rowcustodinamico").css('display', 'none')
     $("#rowcustosimplesphuel").css('display', 'none')
@@ -746,6 +754,7 @@ function updateScenario(number) {
         $("#rowcustosimples").css('display', 'table-row')
         $("#rowcustodinamico").css('display', 'table-row')
         if (number >= 4) {
+            $("#rowcostphuel").css('display', 'table-row')
             $("#rowcustosimplesphuel").css('display', 'table-row')
             $("#rowcustodinamicophuel").css('display', 'table-row')
         }
