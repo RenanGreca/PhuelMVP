@@ -91,12 +91,12 @@ public func boot(_ app: Application) throws {
 
     let saopaulo = Region(name: "São Paulo", code: "GRU", superRegion: sp, manager: paulo)
     let _ = try saopaulo.create(on: conn).wait()
-    paulo.region = saopaulo.name
+    paulo.region = "\(saopaulo.name), \(saopaulo.superRegion!.code)"
     let _ = try paulo.update(on: conn).wait()
     
     let barueri = Region(name: "Barueri", code: "BAR", superRegion: sp, manager: felipe)
     let _ = try barueri.create(on: conn).wait()
-    felipe.region = barueri.name
+    felipe.region = "\(barueri.name), \(barueri.superRegion!.code)"
     let _ = try felipe.update(on: conn).wait()
     
     // Create pre-baked consumer units
