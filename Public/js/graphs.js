@@ -5,7 +5,7 @@ var colora = "#d70206"
 var colorb = "#f05b4f"
 var colorc = "#f4c63d"
 var colord = "#d17905"
-var colore = "#aac905"
+var colore = "#1e9900"
 var colorf = "#aac9e5"
 
 var phuelBlue = "#38424E"
@@ -563,7 +563,7 @@ function updateScenario(number) {
             data: seriesSolarExcess,
             fill: false,
             pointRadius: 0,
-            lineTension: 0.2,
+            lineTension: 0.2
         }]
         break
         case 3:
@@ -599,6 +599,7 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
+            borderWidth: 6
         },
         // {
         //     label: "Custo de energia",
@@ -644,6 +645,7 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
+            borderWidth: 6
         },{
             label: "Consumo de veículos em recarga inteligente Phuel",
             backgroundColor: colore,
@@ -652,6 +654,7 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
+            borderWidth: 7
         }]
         break
         case 5:
@@ -687,6 +690,7 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
+            borderWidth: 6
         },{
             label: "Consumo de veículos em recarga inteligente Phuel",
             backgroundColor: colore,
@@ -695,6 +699,7 @@ function updateScenario(number) {
             fill: false,
             pointRadius: 0,
             lineTension: 0.2,
+            borderWidth: 7
         },{
             label: "Nível de energia da bateria",
             backgroundColor: colorf,
