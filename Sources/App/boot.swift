@@ -1,6 +1,30 @@
 import Vapor
+import FluentSQLite
 
 var globalApp: Application! = nil
+
+func fillDBfromJSON<T: SQLiteModel>(type: T.Type, jsonPath: String) {
+    let directory = DirectoryConfig.detect()
+    let jsonDir = "Resources/JSONs"
+    
+    if  let data = try? Data(contentsOf: URL(fileURLWithPath: directory.workDir)
+        .appendingPathComponent(jsonDir, isDirectory: true)
+        .appendingPathComponent(jsonPath, isDirectory: false)) {
+        
+        let decoder = JSONDecoder()
+        
+        let decoded = try! decoder.decode([T].self, from: data)
+        
+        for vehicleModel in decoded {
+            let conn = try! globalApp.newConnection(to: .sqlite).wait()
+            
+            let _ = try? vehicleModel.create(on: conn).wait()
+            
+            defer { conn.close() }
+        }
+        
+    }
+}
 
 /// Called after your application has initialized.
 public func boot(_ app: Application) throws {
@@ -11,42 +35,11 @@ public func boot(_ app: Application) throws {
     let jsonDir = "Resources/JSONs"
     
     // Add basic vehicle models
-    if  let data = try? Data(contentsOf: URL(fileURLWithPath: directory.workDir)
-         .appendingPathComponent(jsonDir, isDirectory: true)
-         .appendingPathComponent("VehicleModels.json", isDirectory: false)) {
-        
-        let decoder = JSONDecoder()
-
-        let decoded = try decoder.decode([VehicleModel].self, from: data)
-        
-        for vehicleModel in decoded {
-            let conn = try app.newConnection(to: .sqlite).wait()
-            
-            let _ = try vehicleModel.create(on: conn).wait()
-            
-            defer { conn.close() }
-        }
-        
-    }
+    fillDBfromJSON(type: VehicleModel.self, jsonPath: "VehicleModels.json")
+    
     
     // Add basic station models
-    if  let data = try? Data(contentsOf: URL(fileURLWithPath: directory.workDir)
-        .appendingPathComponent(jsonDir, isDirectory: true)
-        .appendingPathComponent("StationModels.json", isDirectory: false)) {
-        
-        let decoder = JSONDecoder()
-        
-        let decoded = try decoder.decode([StationModel].self, from: data)
-        
-        for stationModel in decoded {
-            let conn = try app.newConnection(to: .sqlite).wait()
-            
-            let _ = try stationModel.create(on: conn).wait()
-            
-            defer { conn.close() }
-        }
-        
-    }
+    fillDBfromJSON(type: StationModel.self, jsonPath: "StationModels.json")
     
     let conn = try app.newConnection(to: .sqlite).wait()
     
